@@ -1,0 +1,498 @@
+/* --------------
+ * Personal Reset
+ * -------------- */
+*{
+    position: relative;
+    box-sizing: border-box;
+}
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+}
+
+html, body, #root, #app{ height: 100% }
+
+/* --------------
+* background
+* -------------- */
+.register-bg{
+    background: url(%PUBLIC_URL%/testImages/backgrounds/kittens.jpg);
+    background-size: cover;
+    background-position: bottom;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --------------
+* Fonts
+* -------------- */
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+body, html{
+    font-family: 'Noto Sans TC', Helvetica, sans-serif, arial, 'Lora';
+}
+
+/* heading */
+h1,h2,h3,h4,h5,h6{
+    margin: 0;
+    color: #484848;
+}
+
+h1{
+    font-size: 80px;
+    font-weight: 800;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+h2{
+    font-size: 48px;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+h3{
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 48px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+h4{
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+h5{
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+h6{
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 32px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+p{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0; /* p的文字間距預設是0 */
+    margin-top: 24px;
+    color: #484848;
+}
+
+/* --------------
+* Color Theme
+* -------------- */
+
+.font-white{ color: #fefefe; }
+  
+/* --------------
+* Icons
+* -------------- */
+@font-face {
+    font-family: 'fontello';
+    src: url(/font/fontello.eot?83408330);
+    src: url(/font/fontello.eot?83408330#iefix) format('embedded-opentype'),
+        url(/font/fontello.woff2?83408330) format('woff2'),
+        url(/font/fontello.woff?83408330) format('woff'),
+        url(/font/fontello.ttf?83408330) format('truetype'),
+        url(/font/fontello.svg?83408330#fontello) format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?69031617#fontello') format('svg');
+    }
+}
+*/
+     
+[class^="icon-"]:before, [class*=" icon-"]:before {
+    font-family: "fontello";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    /* margin-right: .2em; */
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    /* line-height: 1em; */
+    line-height: 24px;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    /* margin-left: .2em; */
+
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+  
+.icon-comment:before { content: '\e800'; } /* '' */
+.icon-search:before { content: '\e801'; } /* '' */
+.icon-mail:before { content: '\e802'; } /* '' */
+.icon-heart-empty:before { content: '\e803'; } /* '' */
+.icon-picture:before { content: '\e804'; } /* '' */
+.icon-heart:before { content: '\e805'; } /* '' */
+.icon-star-empty:before { content: '\e806'; } /* '' */
+.icon-star:before { content: '\e807'; } /* '' */
+.icon-home:before { content: '\e808'; } /* '' */
+.icon-phone:before { content: '\e809'; } /* '' */
+.icon-chat:before { content: '\e80a'; } /* '' */
+.icon-key:before { content: '\e80b'; } /* '' */
+.icon-instagram:before { content: '\f16d'; } /* '' */
+.icon-facebook-squared:before { content: '\f308'; } /* '' */
+  
+/* --------------
+* link anchor
+* -------------- */
+a{
+    text-decoration: none;
+    color: #484848;
+}
+
+a:hover,
+a:focus,
+a:active{
+    text-decoration: none;
+    color: #484848;
+}
+
+.link{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+  
+/* --------------
+* list
+* -------------- */
+/* Inline our ul for our menu */
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul li { display: inline-block; margin: 8px; }
+  
+/* --------------
+* Button
+* -------------- */
+.btn{
+    /* 基礎定位 */
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    /* btn外觀 */
+    height: 32px;
+    padding: 0 8px; /* 上下的高度由padding去撐開 */
+    min-width: 64px;
+    background-color: #d1d2d3;
+    border: 0;
+    border-radius: 2px;
+    outline: 0;
+    overflow: hidden;
+    /* btn文字 */
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    text-decoration: none;
+    letter-spacing: 0;
+    /* 使用者互動 */
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+}
+  
+.btn.btn-sm{
+    /* btn外觀 */
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 2px;
+    /* btn文字 */
+    font-size: 16px;
+    line-height: 32px;
+}
+
+.btn.btn-lg{
+    /* btn外觀 */
+    height: 48px;
+    padding: 0 8px;
+    border-radius: 2px;
+    /* btn文字 */
+    font-size: 16px;
+    line-height: 48px;
+}
+  
+.btn-primary,
+.btn-secondary,
+.btn-tertiary{ color: #fefefe; }
+
+.btn.btn-primary{ background-color: #f4ae31}
+.btn.btn-primary:hover{
+    background-color: #e8a834;
+    color: #fefefe;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.5) inset;
+}
+
+.btn.btn-secondary{ background-color: #5fcaf3; }
+.btn.btn-secondary:hover{
+    background-color: #51abce;
+    color: #fefefe;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.5) inset;
+}
+
+.btn.btn-tertiary{ background-color: #77cc3e; }
+.btn.btn-tertiary:hover{
+    background-color: #61a531;
+    color: #fefefe;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.5) inset;
+}
+
+.btn.btn-fb{ background-color: #3b5998; }
+.btn.btn-fb:hover{
+    background-color: #2b4e98;
+    color: #fefefe;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.5) inset;
+}
+
+.btn-group .btn{
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.btn-group-center{
+    text-align: center;
+}
+
+/* Icon Btn */
+
+.icon-btn{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    line-height: 16px;
+}
+
+.icon-btn .icon{
+    display: block;
+    text-align: center;
+}
+
+.icon-btn.active,
+.icon-btn:hover{
+    background-color: #ccc;
+    border-radius: 50%;
+}
+  
+
+
+/* --------------
+* imgBox
+* -------------- */
+figure{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.imageBox{
+    width: 100%;
+    overflow: hidden;
+}
+
+.imageBox .imageBox__ratio{
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
+  
+.imageBox .imageBox__ratio .image{
+    /* 定位 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 圖片 */
+    background-size: cover;
+    background-position: center;
+}
+  
+/* --------------
+* Avatar
+* -------------- */
+.avatar-wrapper .image{
+    border-radius: 50%;
+}
+
+/* --------------
+* form
+* -------------- */
+
+.form_container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 800px;
+}
+
+.form_header{
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: #484848;
+}
+  
+.form input[type="password"],
+.form input[type="email"],
+.form input[type="text"] {
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 8px 16px;
+    padding-left: 36px;
+    /* 輸入框 */
+    border: 1px solid #cdcdcd;
+    border-radius: 4px;
+    background-color: #fefefe;
+    /* color: #484848; */
+    color: red;
+}
+
+.form input[type="password"]:focus,
+.form input[type="email"]:focus,
+.form input[type="text"]:focus{
+    outline: 0;
+    background-color: #cdcdcd;
+}
+  
+.form .label-text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    padding-left: 32px;
+    pointer-events: none;
+    transition: all 0.3s;
+}
+.form .label-text.active{
+    font-size: 12px;
+    transform: translate(-32px, -24px);
+}
+
+.search-form-field.icon-search::before,
+.form-field-email.icon-mail::before,
+.form-field-password.icon-key::before{
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+  
+/* ----------------------------------
+* Utils
+* 通常utils的權重比較大, 會加上important
+* ---------------------------------- */
+
+/* float */
+.u-push-right{ float: right !important; }
+.u-push-left{ float: left !important; }
+
+/* 置中 */
+.u-text-center{ text-align: center !important; }
+.u-div-center{ margin: 0 auto !important; }
+
+/* padding */
+.u-padding-16{ padding: 16px !important; }
+.u-clearPadding{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* margin */
+.u-expandMargin{
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+}
+.u-mt-24{ margin-top: 24px !important; }
+.u-mt-16{ margin-top: 16px !important; }
+
+.u-sm-hidden{ display: none !important; }
+@media (max-width: 768px){
+    .u-xs-hidden{ display: none !important; }
+}
+
+@media (max-width: 768px){
+    .u-xs-visible{ display: block !important; }
+}
+
+/* wrapper */
+.u-wrapper-absolute-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 300px;
+}
+.u-wrapper-fixed-w100-h100{
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* --------------
+* z-index
+* -------------- */
+.z-index-2{ z-index: 2 !important; }
+.z-index-99{ z-index: 99 !important; } /* header */
+.z-index-100{ z-index: 100 !important; } /* FullPageDialog */
+  
+  
+  
+  
+  
+  
