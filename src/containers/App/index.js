@@ -7,6 +7,7 @@ import Header from './Header';
 import { fetchMember } from '../../redux/member';
 import Routes from './routes';
 import FullPageDialog from './FullPageDialog';
+import ScrollWrapper from '../../components/ScrollWrapper';
 
 import './app.css';
 
@@ -19,15 +20,26 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
 },dispatch));
 
 class App extends Component {
-    componentDidMount() { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
+    constructor() {
+        super();
+        this.state = {
+            isScroll: false
+        }
+    }
+    componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
+    }
+    handleScroll (isScroll) {
+        isScroll ? this.setState({isScroll: true}) : this.setState({isScroll: false});
     }
     render() {
         return (
             <div id="app">
                 <div id="app_bg"></div>
-                <Header />
-                <Routes />
+                <Header shoudHeaderColored={this.state.isScroll} />
+                <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)}>
+                    <Routes />
+                </ScrollWrapper>
                 <FullPageDialog />
             </div>
         );

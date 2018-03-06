@@ -8,6 +8,11 @@
     width: 100%;
 }
 
+#header-colored{
+    background-color: #fefefe;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
 .header .logo{
     width: 64px;
     height: 64px;

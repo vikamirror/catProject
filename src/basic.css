@@ -11,7 +11,7 @@
     padding: 0;
 }
 
-html, body, #root, #app{ height: 100% }
+/* html, body{ height: 100% } */
 
 /* --------------
 * background
@@ -89,11 +89,32 @@ p{
     color: #484848;
 }
 
+.font-size-16{ font-size: 16px; line-height: 24px; }
+.font-size-18{ font-size: 18px; line-height: 22px; }
+
+.font-weight-5{ font-weight: 500; }
+
+.text-ellipsis {
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 /* --------------
-* Color Theme
+* font color
 * -------------- */
 
 .font-white{ color: #fefefe; }
+
+/* --------------
+* 分隔線
+* -------------- */
+.hr-line-style1{
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+}
   
 /* --------------
 * Icons
@@ -192,6 +213,8 @@ a:active{
     height: 100%;
 }
   
+
+
 /* --------------
 * list
 * -------------- */
@@ -306,6 +329,10 @@ ul li { display: inline-block; margin: 8px; }
     line-height: 16px;
 }
 
+a.icon-btn{
+    line-height: 32px;
+}
+
 .icon-btn .icon{
     display: block;
     text-align: center;
@@ -338,7 +365,7 @@ figure{
     position: relative;
 }
   
-.imageBox .imageBox__ratio .image{
+.imageBox .image{
     /* 定位 */
     position: absolute;
     top: 0;
@@ -348,6 +375,15 @@ figure{
     /* 圖片 */
     background-size: cover;
     background-position: center;
+}
+
+/* 頭像 Avatar */
+.avatar{
+    border: 3px solid white;
+    border-radius: 50%;
+}
+.avatar .imageBox .image{
+    border-radius: 50%;
 }
   
 /* --------------
@@ -449,6 +485,9 @@ label{
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+.u-padding-l-16{ padding-left: 16px !important; }
+.u-padding-r-16{ padding-right: 16px !important; }
+.u-padding-b-16{ padding-bottom: 16px !important; }
 
 /* margin */
 .u-expandMargin{
@@ -457,6 +496,11 @@ label{
 }
 .u-mt-24{ margin-top: 24px !important; }
 .u-mt-16{ margin-top: 16px !important; }
+.u-mb-16{ margin-bottom: 16px !important; }
+.u-margin-header{ margin-top: 64px; }
+@media (max-width: 768px) {
+    .u-margin-header{ margin-top: 56px; }
+}
 
 .u-sm-hidden{ display: none !important; }
 @media (max-width: 768px){

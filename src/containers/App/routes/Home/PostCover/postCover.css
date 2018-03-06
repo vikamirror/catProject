@@ -1,0 +1,30 @@
+.postCover{
+    /* width: 20%; */
+    border: 1px solid #484848;
+    border-radius: 4px;
+    background-color: #fefefe;
+    display: inline-block;
+    margin: 4px;
+    padding:  16px;
+    width:  100%; 
+}
+
+.postCover .imageBox img{
+    width: 100%;
+}
+
+.postCover .avatar{
+    position: absolute;
+    top: 0;
+    left: 16px;
+    width: 40px;
+    transform: translateY(-100%);
+}
+
+.avatar_title .title{
+    padding-left: 42px;
+}
+
+.postCover-footer .more{
+    line-height: 32px;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import SearchBar from './SearchBar';
 import LoginOrLogout from './LoginOrLogout';
 
-import './header.css' 
+import './header.css';
 
 const mapStateToProps = state => ({ 
     member: state.member,
@@ -27,8 +27,9 @@ class Header extends Component {
 		: this.setState({ showMiniSearchBar: true });
     }
     render() {
+        const header_id = this.props.shoudHeaderColored ? "header-colored" : "";
         return (
-            <header className="header z-index-99" id="header">
+            <header className="header z-index-99" id={header_id}>
                 <div className="container">
                     <nav className="nav u-expandMargin">
                         <div className="row">
@@ -58,6 +59,10 @@ class Header extends Component {
             </header>
         );
     }
+}
+
+Header.propTypes = {
+    shoudHeaderColored: PropTypes.bool.isRequired
 }
 
 // 讓Header能使用this.props.location (在shouldComponentUpdate才能調用)
