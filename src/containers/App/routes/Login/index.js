@@ -73,9 +73,7 @@ class Login extends Component {
                  .then((res) => {
 					this.setState({isLoading: false});
                     if (res.status === 200) {
-                        accessLocalStorage.setItems(res.data);
-						this.props.fetchMember();
-						this.props.history.push('/home');                  
+                        this.loginSuccess(res.data);                
                     }
                  })
                  .catch((err) => {
@@ -91,9 +89,7 @@ class Login extends Component {
 			         .then((res) => {
 						this.setState({isLoading: false});
 						if (res.status === 200) {// 註冊成功
-							accessLocalStorage.setItems(res.data);
-							this.props.fetchMember();
-							this.props.history.push('/home');
+							this.loginSuccess(res.data);
 						}
 					 })
 					 .catch((err) => {
@@ -112,6 +108,11 @@ class Login extends Component {
 				});
 			}
 		});
+	}
+	loginSuccess(data) {
+		accessLocalStorage.setItems(data);
+		this.props.fetchMember();
+		this.props.history.push('/');
 	}
     render() {
         return (

@@ -105,6 +105,7 @@ p{
 * -------------- */
 
 .font-white{ color: #fefefe; }
+.font-grey{ color: #6c6c6c; }
 
 /* --------------
 * 分隔線
@@ -121,12 +122,12 @@ p{
 * -------------- */
 @font-face {
     font-family: 'fontello';
-    src: url(/font/fontello.eot?83408330);
-    src: url(/font/fontello.eot?83408330#iefix) format('embedded-opentype'),
-        url(/font/fontello.woff2?83408330) format('woff2'),
-        url(/font/fontello.woff?83408330) format('woff'),
-        url(/font/fontello.ttf?83408330) format('truetype'),
-        url(/font/fontello.svg?83408330#fontello) format('svg');
+    src: url(/font/fontello.eot?7819281);
+    src: url(/font/fontello.eot?7819281#iefix) format('embedded-opentype'),
+         url(/font/fontello.woff2?7819281) format('woff2'),
+         url(/font/fontello.woff?7819281) format('woff'),
+         url(/font/fontello.ttf?7819281) format('truetype'),
+         url(/font/fontello.svg?7819281#fontello) format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -189,6 +190,11 @@ p{
 .icon-phone:before { content: '\e809'; } /* '' */
 .icon-chat:before { content: '\e80a'; } /* '' */
 .icon-key:before { content: '\e80b'; } /* '' */
+.icon-user:before { content: '\e80c'; } /* '' */
+.icon-pencil:before { content: '\e80d'; } /* '' */
+.icon-edit:before { content: '\e80e'; } /* '' */
+.icon-trash-empty:before { content: '\e80f'; } /* '' */
+.icon-logout:before { content: '\e810'; } /* '' */
 .icon-instagram:before { content: '\f16d'; } /* '' */
 .icon-facebook-squared:before { content: '\f308'; } /* '' */
   
@@ -205,6 +211,7 @@ a:focus,
 a:active{
     text-decoration: none;
     color: #484848;
+    /* color: #3f83e0; */
 }
 
 .link{
@@ -225,7 +232,13 @@ ul {
     list-style: none;
 }
 
-ul li { display: inline-block; margin: 8px; }
+ul li { 
+    /* display: inline-block;  */
+    /* margin: 8px; */
+    /* margin-top: 8px; */
+    /* margin-bottom: 8px; */
+    padding: 10px 16px;
+}
   
 /* --------------
 * Button
@@ -257,7 +270,7 @@ ul li { display: inline-block; margin: 8px; }
     user-select: none;
     transition: all 0.3s;
 }
-  
+
 .btn.btn-sm{
     /* btn外觀 */
     height: 32px;
@@ -330,7 +343,7 @@ ul li { display: inline-block; margin: 8px; }
 }
 
 a.icon-btn{
-    line-height: 32px;
+    line-height: 24px;
 }
 
 .icon-btn .icon{
@@ -338,11 +351,11 @@ a.icon-btn{
     text-align: center;
 }
 
-.icon-btn.active,
+/* .icon-btn.active,
 .icon-btn:hover{
     background-color: #ccc;
     border-radius: 50%;
-}
+} */
   
 
 
@@ -487,16 +500,22 @@ label{
 }
 .u-padding-l-16{ padding-left: 16px !important; }
 .u-padding-r-16{ padding-right: 16px !important; }
+.u-padding-t-16{ padding-top: 16px !important; }
 .u-padding-b-16{ padding-bottom: 16px !important; }
+.u-padding-t-8{ padding-top: 8px !important; }
+.u-padding-b-8{ padding-bottom: 8px !important; }
 
 /* margin */
 .u-expandMargin{
     margin-left: -16px !important;
     margin-right: -16px !important;
 }
+
+.u-margin-r-4{ margin-right: 4px !important; }
 .u-mt-24{ margin-top: 24px !important; }
 .u-mt-16{ margin-top: 16px !important; }
 .u-mb-16{ margin-bottom: 16px !important; }
+.u-margin-r-16{ margin-right: 16px !important; }
 .u-margin-header{ margin-top: 64px; }
 @media (max-width: 768px) {
     .u-margin-header{ margin-top: 56px; }
@@ -533,7 +552,7 @@ label{
 * -------------- */
 .z-index-2{ z-index: 2 !important; }
 .z-index-99{ z-index: 99 !important; } /* header */
-.z-index-100{ z-index: 100 !important; } /* FullPageDialog */
+.z-index-100{ z-index: 100 !important; } /* FullPageDialog */ /* overlap-menu */
   
   
   

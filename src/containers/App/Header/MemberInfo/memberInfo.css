@@ -1,0 +1,89 @@
+/*----------------
+ * 會員頭像的Button
+ *----------------*/
+.member-info{
+    margin: 12px;
+    padding: 4px 16px;
+    /* border: 1px solid black; */
+    border-radius: 20px;
+    cursor: pointer;
+    outline: 0;
+    user-select: none;
+    background-color: none;
+}
+.member-info:hover{
+    background-color: #dadada;
+    transition: all 0.3s;
+}
+@media (max-width: 768px){
+    .member-info{
+        padding: 4px 8px;
+        margin: 8px;
+    }
+}
+/* 頭像 */
+.member-info .avatar{
+    width: 32px;
+    margin-right: 8px;
+}
+@media (max-width: 768px){
+    .member-info .avatar{
+        margin-right: 4px;
+    }
+}
+
+.member-info .name{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0px;
+}
+
+/*-------------------------
+ * md(含)以上的螢幕: 下拉式選單
+ *-------------------------*/
+ .dropdown-menu-wrapper{
+    width: 180px;
+    position: absolute;
+    top: 52px;
+    right: 0;
+    /* box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5); */
+}
+
+.member-info .dropdown-menu{
+    background-color: #fefefe;
+}
+
+.member-info .dropdown-menu li{
+    color: #484848;
+    width: 100%;
+}
+.member-info .dropdown-menu li:hover{ 
+    background-color: #dadada;
+    transition: all 0.2s;
+}
+
+.member-info .dropdown-menu .icon-btn{
+    width: 24px; height: 24px;
+    margin-right: 8px;
+}
+
+/*-------------------------
+ * sm(含)以下的螢幕: 下拉式選單
+ *-------------------------*/
+.overlay-menu-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    background-color: #fefefe;
+    overflow: hidden;
+}
+
+.overlay-menu-wrapper .overlay-menu__item{
+    color: #484848;
+    text-align: center;
+    line-height: 56px;
+}

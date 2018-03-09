@@ -1,4 +1,25 @@
 article.articles{
-    column-width: 20em;
+    column-width: 23em;
     column-gap: 1em;
+}
+
+@media (max-width: 1440px){
+    article.articles{
+        column-width: 21em;
+        column-gap: 1em;
+    }
+}
+
+@media (max-width: 1024px){
+    article.articles{
+        column-width: 20em;
+        column-gap: 1em;
+    }
+}
+
+@media (max-width: 768px){
+    article.articles{
+        column-width: 18em;
+        column-gap: 8px;
+    }
 }

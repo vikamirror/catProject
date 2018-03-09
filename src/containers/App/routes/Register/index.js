@@ -86,12 +86,12 @@ class Register extends Component {
 			this.setState({ errorMsg: 'Oops,有資料未填寫完整喔' });
 			return;
 		}
+		this.setState({isLoading: true});
 		memberAPI.register(this.state.email, this.state.password, this.state.name)
 				 .then((res) => {
+					this.setState({isLoading: false});
 					if (res.status === 200) {
-						accessLocalStorage.setItems(res.data);
-						this.props.fetchMember();
-						this.props.history.push('/');
+						this.registerSuccess(res.data);
 					}
 				 })
 				 .catch((err) => {
@@ -107,9 +107,7 @@ class Register extends Component {
 			         .then((res) => {
 						this.setState({isLoading: false});
 						if (res.status === 200) {// 註冊成功
-							accessLocalStorage.setItems(res.data);
-							this.props.fetchMember();
-							this.props.history.push('/home');
+							this.registerSuccess(res.data);
 						}
 					 })
 					 .catch((err) => {
@@ -128,6 +126,11 @@ class Register extends Component {
 				});
 			}
 		});
+	}
+	registerSuccess(data) {
+		accessLocalStorage.setItems(data);
+		this.props.fetchMember();
+		this.props.history.push('/');
 	}
     render() {
 		return (

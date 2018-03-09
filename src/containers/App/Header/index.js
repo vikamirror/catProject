@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import SearchBar from './SearchBar';
-import LoginOrLogout from './LoginOrLogout';
+import LoginOrRegister from './LoginOrRegister';
+import MemberInfo from './MemberInfo';
 
 import './header.css';
 
@@ -18,7 +19,7 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-			showMiniSearchBar: false,
+            showMiniSearchBar: false,
 		};
     }
     toggleMiniSearchBar() {
@@ -31,28 +32,28 @@ class Header extends Component {
         return (
             <header className="header z-index-99" id={header_id}>
                 <div className="container">
-                    <nav className="nav u-expandMargin">
-                        <div className="row">
-                            {/* Logo */}
-                            <div className="u-push-left">
-                                <div className="logo">
-                                    <Link to="/" className="link">
-                                        <img className="image" src="/favicon.ico" alt="logo" />
-                                    </Link>
-                                </div>
+                    <nav className="nav u-clearfix">
+                        {/* Logo */}
+                        <div className="u-push-left">
+                            <div className="logo u-padding-t-8 u-padding-b-8">
+                                <Link to="/" className="link">
+                                    <img className="image" src="/favicon.ico" alt="logo" />
+                                </Link>
                             </div>
-                            {/* 搜尋欄 */}
-                            <SearchBar
-                                showMiniSearchBar={this.state.showMiniSearchBar}
-                                toggleMiniSearchBar={() => this.toggleMiniSearchBar()}
-                            />
+                        </div>
+                        {/* 搜尋欄 */}
+                        <SearchBar
+                            showMiniSearchBar={this.state.showMiniSearchBar}
+                            toggleMiniSearchBar={() => this.toggleMiniSearchBar()}
+                        />
+                        <div className="u-push-right">
+                            {/* 會員中心 */}
+                            <MemberInfo member={this.props.member} />
                             {/* 登入 登出 */}
-                            <div className="col-md-4 u-push-right">
-                                <LoginOrLogout
-                                    cuid={this.props.member.cuid}
-                                    pathname={this.props.location.pathname}
-                                />
-                            </div>
+                            <LoginOrRegister
+                                member={this.props.member}
+                                pathname={this.props.location.pathname}
+                            />
                         </div>
                     </nav>
                 </div>

@@ -129,7 +129,9 @@ export function loginWithFacebook(req, res) {
                 } else {
                     shouldFillEmail = true;
                 }
-                if (sanitizeHtml(newMember.avatar)) { newMember.avatar = 'fromFB'; }
+                if (sanitizeHtml(newMember.avatar)) {
+                    newMember.avatar = `http://graph.facebook.com/${newMember.facebookID}/picture?type=small`;
+                }
                 // 取代_id的亂數
                 newMember.cuid = cuid();
                 console.log('newMember', newMember);
@@ -150,7 +152,7 @@ export function loginWithFacebook(req, res) {
                                 member: {
                                     cuid: newMember.cuid,
                                     name: newMember.name,
-                                    avatar: newMember.avata
+                                    avatar: newMember.avatar
                                 },
                                 shouldFillEmail: shouldFillEmail // 是否提醒會員填寫email
                             });

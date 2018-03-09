@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Avatar from '../../../../../components/Avatar';
+
 import './postCover.css';
+
+const testAvatar = "./testImages/avatar.png";
 
 const ellipsisTextAfterMaxLength = (text, maxLength) => {
     return text.substring(0, maxLength-1) + '...';
@@ -10,19 +14,20 @@ const ellipsisTextAfterMaxLength = (text, maxLength) => {
 export default function PostCover({image,title,introduction}) {
     return (
         <section className="postCover">
-            <div className="album u-padding-b-16">
-                <div className="imageBox">           
-                    <img src={image} alt="" />
-                </div>
+            <div className="imageBox u-padding-b-16">
+
+                <img src={image} alt="" />
+
             </div>
             <div className="avatar_title u-padding-l-16 u-padding-r-16">
-                <div className="avatar">
+                <Avatar avatarUrl={testAvatar} />
+                {/* <div className="avatar">
                     <div className="imageBox">
                         <div className="imageBox__ratio">
-                            <div className="image" style={{ backgroundImage: `url("./testImages/avatar.png")` }} />
+                            <div className="image" style={{ backgroundImage: `url()` }} />
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="title font-size-18 font-weight-5 u-mb-16">{title}</div>
             </div>
             <div className="introduceContent font-size-16 u-padding-l-16 u-padding-r-16">{ellipsisTextAfterMaxLength(introduction, 80)}</div>

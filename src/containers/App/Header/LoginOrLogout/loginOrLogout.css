@@ -1,9 +1,0 @@
-.login-register-group{
-    padding: 16px;
-}
-
-@media (max-width: 768px){
-    .login-register-group{
-        padding: 12px 8px;
-    }
-}

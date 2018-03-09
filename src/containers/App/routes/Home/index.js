@@ -18,12 +18,11 @@ class Home extends Component {
                         <article className="articles">
                         {
                             testDatas.map((post) => (
-                                <div key={post.cuid}>
-                                    <PostCover 
-                                        image={post.image}
-                                        title={post.title}
-                                        introduction={post.content} />
-                                </div>
+                                <PostCover
+                                    key={post.cuid}
+                                    image={post.image}
+                                    title={post.title}
+                                    introduction={post.content} />
                             ))
                         }
                         </article>

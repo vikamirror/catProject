@@ -23,6 +23,7 @@
     padding-left: 16px;
     padding-right: 16px;
     /* max-width: 1172px; */
+    max-width: 1920px;
 }
 .container-fluid {
     margin-right: auto;

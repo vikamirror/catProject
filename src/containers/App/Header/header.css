@@ -17,8 +17,8 @@
     width: 64px;
     height: 64px;
     background: transparent;
-    margin-left: 16px;
-    padding: 8px;
+    /* margin-left: 16px; */
+    /* padding: 8px; */
 }
 /* .logo:hover{
     animation: logoHover 1s infinite;
@@ -35,9 +35,6 @@
     .header .logo{
         width: 56px;
         height: 56px;
-        background: transparent;
-        margin-left: 16px;
-        padding: 8px;
     }
 }
 /* @keyframes logoHover{

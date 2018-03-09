@@ -6,6 +6,7 @@ import './searchBar.css';
 function SearchBar(props) {
     return (
         <div className="searchBar_box">
+            {/* 螢幕<768px */}
             <div className="u-push-left u-xs-visible u-sm-hidden">
                 <div className="searchBar__xs__icon">
                     <a
@@ -16,6 +17,7 @@ function SearchBar(props) {
                     </a>
                 </div>
             </div>
+            {/* 螢幕>768px */}
             <div className="col-sm-5 col-md-5 u-xs-hidden u-clearPadding">
                 <div className="searchBar">
                     <form className="form search-form-field icon-search">

@@ -20,7 +20,6 @@ export function closeLogoutDialog() {
 }
 
 const initialState = {
-    type: CLOSE_DIALOG,
     isShow: false,
 };
 
