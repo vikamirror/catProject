@@ -11,7 +11,10 @@ import FadeInOut from '../../../../components/FadeInOut';
 
 import './memberInfo.css';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    member: state.member,
+    isSmallDevice: state.isSmallDevice,
+});
 const mapDispatchToProps = dispatch => (bindActionCreators({ 
     showLogoutDialog: showLogoutDialog 
 }, dispatch));
@@ -21,11 +24,7 @@ class MemberInfo extends Component{
         super();
         this.state = {
             isShowMenu: false,
-            isSmallDevice: false,
         }
-    }
-    componentDidMount() {
-        window.innerWidth < 768 ? this.setState({isSmallDevice: true}) : this.setState({isSmallDevice: false});
     }
     tuggleMenu() {
         this.state.isShowMenu ? 
@@ -35,7 +34,7 @@ class MemberInfo extends Component{
         this.setState({isShowMenu:false});
     }
     render() {
-        const { member } = this.props;
+        const { member, isSmallDevice } = this.props;
         if (member.cuid) {
             return (
                 <div tabIndex="0" className="member-info u-clearfix" 
@@ -49,7 +48,7 @@ class MemberInfo extends Component{
                         {member.name}
                     </div>
                     {
-                        this.state.isSmallDevice ? 
+                        isSmallDevice ?
                         <FadeInOut inCondition={this.state.isShowMenu}>
                             <div className="overlay-menu-wrapper z-index-100">
                                 <div className="container u-margin-header">

@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { showLogoutDialog } from '../../../../redux/fullPageDialog';
 import RenderAfterSeconds from '../../../../components/RenderAfterSeconds'; 
 
 import './loginOrRegister.css';
 
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => (bindActionCreators({ 
-    showLogoutDialog: showLogoutDialog 
-}, dispatch));
+const mapStateToProps = state => ({
+    member: state.member,
+});
+const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
 
-
-const LoginOrRegister = ({member, pathname}) => {
+const LoginOrRegister = ({member, location}) => {
     if (member.cuid) {
         return '';
     } else {
@@ -23,11 +21,11 @@ const LoginOrRegister = ({member, pathname}) => {
             <RenderAfterSeconds milliseconds={1000}>
                 <div className="login-register-group u-push-right btn-group">
                 {
-                    pathname === '/login' ?
+                    location.pathname === '/login' ?
                     '' : <Link to="/login" className="btn btn-sm btn-secondary btn-login">登入</Link>
                 }
                 {
-                    pathname === '/register' ? 
+                    location.pathname === '/register' ? 
                     '' : <Link to="/register" className="btn btn-sm btn-primary btn-register">註冊</Link>
                 }
                 </div>
@@ -41,4 +39,7 @@ LoginOrRegister.proptypes = {
     pathname: PropTypes.string.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginOrRegister);
+//export default connect(mapStateToProps, mapDispatchToProps)(LoginOrRegister);
+
+// 讓LoginOrRegister能使用this.props.location (在shouldComponentUpdate才能調用)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginOrRegister));

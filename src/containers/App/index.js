@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import Header from './Header';
 import { fetchMember } from '../../redux/member';
+import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
 import FullPageDialog from './FullPageDialog';
 import ScrollWrapper from '../../components/ScrollWrapper';
@@ -13,10 +14,11 @@ import './app.css';
 
 const mapStateToProps = state => ({ 
     member: state.member,
-    background: state.background,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    fetchMember: fetchMember
+    fetchMember: fetchMember,
+    smallDeviceTrue: smallDeviceTrue,
+    smallDeviceFalse: smallDeviceFalse,
 },dispatch));
 
 class App extends Component {
@@ -28,6 +30,10 @@ class App extends Component {
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
+        this.isSmallDevice();
+    }
+    isSmallDevice () {
+        window.innerWidth < 768 ? this.props.smallDeviceTrue() : this.props.smallDeviceFalse();
     }
     handleScroll (isScroll) {
         isScroll ? this.setState({isScroll: true}) : this.setState({isScroll: false});

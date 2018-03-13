@@ -6,6 +6,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    background-color: pink;
 }
 
 #header-colored{
@@ -17,12 +18,14 @@
     width: 64px;
     height: 64px;
     background: transparent;
-    /* margin-left: 16px; */
-    /* padding: 8px; */
 }
-/* .logo:hover{
+
+/*
+.logo:hover{
     animation: logoHover 1s infinite;
-} */
+}
+*/
+
 .header .logo .image{
     max-width: 100%;
     max-height: 100%;
@@ -37,6 +40,7 @@
         height: 56px;
     }
 }
+
 /* @keyframes logoHover{
     0% { background: linear-gradient(to bottom right, #8c9bd3,#a07ab8,#c98799,#e7a09c,#f7d6b0,#f7e2b4); }
     25% { background: linear-gradient(to bottom right, #647edd,#9454bb,#cc6681,#e97a74,#f3bf82,#fad689); }
@@ -51,3 +55,39 @@
     75% { background: linear-gradient(to bottom right, #647edd,#9454bb,#cc6681,#e97a74,#f3bf82,#fad689); }
     100% { background: linear-gradient(to bottom right, #8c9bd3,#a07ab8,#c98799,#e7a09c,#f7d6b0,#f7e2b4); }
 } */
+
+/* -------------------
+ * searchBar__xs__icon
+ * ------------------- */
+ .searchBar_box .searchBar__xs__icon{
+    width: 48px;
+    height: 56px;
+    padding-top: 4px; /* 為active的正圓留上下空間 */
+    padding-bottom: 4px;
+}
+.searchBar__xs__icon .icon-btn{ 
+    width: 100%;
+    height: 100%;
+}
+.searchBar__xs__icon .icon{
+    line-height: 42px;
+    height: 100%;
+}
+
+/* ----------------------------
+ * searchBar search-form-field
+ * ---------------------------- */
+.header .searchBar .form input[type="text"]{
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+@media (max-width: 768px){
+    .header .searchBar .form input[type="text"]{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .header .searchBar{
+        margin-bottom: 8px;
+    }
+}

@@ -5,6 +5,13 @@ export function setItems(data) {
     localStorage.setItem('memberToken', data.memberToken);
 }
 
+export function removeMemberCached() {
+    localStorage.removeItem('memberCuid');
+    localStorage.removeItem('memberName');
+    localStorage.removeItem('memberAvatar');
+    localStorage.removeItem('memberToken');
+}
+
 export function getMemberCached() {
     const cuid = localStorage.getItem('memberCuid');
     const name = localStorage.getItem('memberName');

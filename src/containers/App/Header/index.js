@@ -1,31 +1,69 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import SearchBar from './SearchBar';
+// import SearchBar from './SearchBar';
 import LoginOrRegister from './LoginOrRegister';
 import MemberInfo from './MemberInfo';
 
 import './header.css';
 
-const mapStateToProps = state => ({ 
-    member: state.member,
+const SearchBarIconBtn = ({showMiniSearchBar, toggleMiniSearchBar}) => (
+    <div className="u-push-left">
+        <div className="searchBar__xs__icon">
+            <div
+                className={showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}
+                onClick={() => toggleMiniSearchBar()}
+            >
+                <i className="icon icon-search" />
+            </div>
+        </div>
+    </div>
+);
+SearchBarIconBtn.propTypes = {
+    showMiniSearchBar: PropTypes.bool.isRequired,
+    toggleMiniSearchBar: PropTypes.func.isRequired
+};
+
+const SearchBarLarge = () => (
+    <div className="col-sm-5 col-md-5 u-clearPadding">
+        <div className="searchBar">
+            <form className="form search-form-field icon-search">
+                <input type="text"  />
+            </form>
+        </div>
+    </div>
+);
+
+const SearchBarSmall = () => (
+    <div className="col-sm-5 col-md-5 u-clearPadding">
+        <div className="searchBar">
+            <form className="form search-form-field icon-search">
+                <input type="text" autoFocus />
+            </form>
+        </div>
+    </div>
+);
+
+const mapStateToProps = state => ({
+    isSmallDevice: state.isSmallDevice,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
+    constructor () {
+        super();
         this.state = {
             showMiniSearchBar: false,
 		};
     }
-    toggleMiniSearchBar() {
-		this.state.showMiniSearchBar
-		? this.setState({ showMiniSearchBar: false })
-		: this.setState({ showMiniSearchBar: true });
+    toggleMiniSearchBar () {
+		this.state.showMiniSearchBar ? 
+        this.setState({ showMiniSearchBar: false })
+        : 
+        this.setState({ showMiniSearchBar: true });
     }
     render() {
         const header_id = this.props.shoudHeaderColored ? "header-colored" : "";
@@ -42,20 +80,32 @@ class Header extends Component {
                             </div>
                         </div>
                         {/* 搜尋欄 */}
-                        <SearchBar
-                            showMiniSearchBar={this.state.showMiniSearchBar}
-                            toggleMiniSearchBar={() => this.toggleMiniSearchBar()}
-                        />
+                        <div className="searchBar_box">
+                            {
+                                this.props.isSmallDevice ?
+                                <SearchBarIconBtn 
+                                    showMiniSearchBar={this.state.showMiniSearchBar} 
+                                    toggleMiniSearchBar={() => this.toggleMiniSearchBar()} 
+                                 />
+                                :
+                                <SearchBarLarge />
+                            }
+                        </div>
                         <div className="u-push-right">
                             {/* 會員中心 */}
-                            <MemberInfo member={this.props.member} />
+                            <MemberInfo />
                             {/* 登入 登出 */}
-                            <LoginOrRegister
-                                member={this.props.member}
-                                pathname={this.props.location.pathname}
-                            />
+                            <LoginOrRegister />
                         </div>
+                        {/* 螢幕<768, 按下SearchBarIconBtn後, 彈出的搜尋框 */}
+                        
                     </nav>
+                    {
+                        this.state.showMiniSearchBar ?
+                        <SearchBarSmall />
+                        :
+                        ''
+                    }
                 </div>
             </header>
         );
@@ -67,4 +117,4 @@ Header.propTypes = {
 }
 
 // 讓Header能使用this.props.location (在shouldComponentUpdate才能調用)
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

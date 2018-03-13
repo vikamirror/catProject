@@ -11,7 +11,7 @@ const ellipsisTextAfterMaxLength = (text, maxLength) => {
     return text.substring(0, maxLength-1) + '...';
 }
 
-export default function PostCover({image,title,introduction}) {
+export default function PostCover({cuid, image,title,introduction}) {
     return (
         <section className="postCover">
             <div className="imageBox u-padding-b-16">
@@ -34,7 +34,7 @@ export default function PostCover({image,title,introduction}) {
             <hr className="hr-line-style1" />
             <div className="postCover-footer u-padding-l-16 u-padding-r-16 u-clearfix">
                 <div className="more u-push-left">
-                    <Link to="#">更多資訊</Link>
+                    <Link to={`/post/${cuid}`}>更多資訊</Link>
                 </div>
                 <div className="likes_messages icons u-push-right">
                     <Link to="#" className="icon-btn">

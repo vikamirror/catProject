@@ -1,4 +1,5 @@
 import * as memberAPI from '../fetch/memberAPI';
+import { removeMemberCached } from '../fetch/accessLocalStorage';
 
 const LOGIN_TRUE = 'LOGIN_TRUE';
 const LOGIN_FALSE = 'LOGIN_FALSE';
@@ -24,21 +25,14 @@ export function fetchMember() {
 
 export function logout() {
     return (dispatch) => {
-        localStorage.removeItem('memberCuid');
-        localStorage.removeItem('memberName');
-        localStorage.removeItem('memberAvatar');
-        localStorage.removeItem('memberToken');
+        removeMemberCached();
         dispatch({
             type: LOGIN_FALSE,
         });
     };
 }
 
-const initialState = {
-    cuid: '',
-    name: '',
-    avatar: '', // token不應該當成state
-};
+const initialState = {};
 
 export default (state = initialState, action) => {
     switch(action.type) {
@@ -50,12 +44,7 @@ export default (state = initialState, action) => {
                 avatar: action.member.avatar,
             };
         case LOGIN_FALSE:
-            return {
-                ...state,
-                cuid: '',
-                name: '',
-                avatar: '',
-            };
+            return {};
         default:
             return state;
     }

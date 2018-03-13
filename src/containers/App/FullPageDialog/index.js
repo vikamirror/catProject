@@ -19,6 +19,7 @@ class FullPageDialog extends React.Component {
         const reqLogout = () => {
             this.props.logout();
             this.props.history.push('/login');
+            this.props.closeLogoutDialog();
         }
         return (
             <div>

@@ -20,6 +20,7 @@ class Home extends Component {
                             testDatas.map((post) => (
                                 <PostCover
                                     key={post.cuid}
+                                    cuid={post.cuid}
                                     image={post.image}
                                     title={post.title}
                                     introduction={post.content} />

@@ -1,0 +1,21 @@
+.post-wrapper{
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.post-wrapper .container{
+    max-width: 768px;
+}
+
+.post-wrapper .article{
+    border: 1px solid #484848;
+    border-radius: 4px;
+    padding: 16px;
+    background-color: #e7f2f7;
+}
+
+.post-wrapper .article .avatar{
+    width: 60px;
+    height: 60px;
+}
+
+
