@@ -1,0 +1,16 @@
+.author_date .avatar{
+    width: 54px;
+    height: 54px;
+    position: absolute;
+}
+
+.author_date .info{
+    padding-left: 72px;
+}
+
+.author_date .name{ line-height: 30px; }
+
+.author_date .date{
+    font-size: 14px;
+    line-height: 24px;
+}

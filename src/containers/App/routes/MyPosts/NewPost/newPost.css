@@ -1,0 +1,64 @@
+/* --------------
+* 輸入表單
+* -------------- */
+.new-post .div-inputText{
+    width: 100%;
+    display: inline-block;
+    /* 字體 */
+    font-size: 16px;
+    color: #484848;
+    line-height: 32px;
+    /* 外型 */
+    height: auto;
+}
+.div-inputText:focus{
+    outline: 0;
+}
+
+.new-post .div-textarea:not(:last-child){
+    margin-bottom: 8px;
+}
+
+.fake-placeholder:empty:not(:focus):before,
+.div-inputText:empty:not(:focus):before{
+    content:attr(placeholder);
+    color: #a9a9a9;
+}
+
+.new-post .select{
+    border: none;
+    background: none;
+    appearance: none;
+    color: #484848;
+    font-family: inherit;
+    vertical-align: center;
+    vertical-align: middle;
+}
+.select:focus{
+    outline: 0;
+    outline-style: none;
+    outline-width: 0;
+}
+
+/* .group-input{ padding-right: 0; } */
+
+.group-input .icon-btn{
+    height: auto;
+    font-size: 12px;
+    line-height: 30px;
+    color: #4F8196;
+}
+
+.new-post.form input[type="text"]{
+    padding: 0;
+    border: 0;
+}
+
+.new-post.form input[type="text"]:focus{
+    background-color: inherit;
+}
+
+.new-post .group-input .checkbox label,
+.new-post .group-input .radio-button label{
+    line-height: 24px;
+}

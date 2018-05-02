@@ -1,18 +1,11 @@
 .postCover{
-    border: 1px solid #484848;
+    /* border: 1px solid #484848; */
     border-radius: 4px;
     background-color: #fefefe;
     display: inline-block;
     width: 100%; 
     margin-bottom: 24px;
 }
-
-a.icon-btn .icon-heart-empty:hover{
-    color: #ff7c7c;
-}
-/* a.icon-btn .icon-comment:hover{
-    color: #3f83e0;
-} */
 
 .postCover:hover{
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
@@ -54,8 +47,4 @@ a.icon-btn .icon-heart-empty:hover{
     .avatar_title .title.u-mb-16{
         margin-bottom: 8px !important;
     }
-}
-
-.postCover-footer .more{
-    line-height: 24px;
 }

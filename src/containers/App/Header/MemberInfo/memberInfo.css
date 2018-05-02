@@ -45,13 +45,13 @@
  .dropdown-menu-wrapper{
     width: 180px;
     position: absolute;
-    top: 52px;
-    right: 0;
+    top: 48px;
+    right: -40px;
     /* box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5); */
 }
 
 .member-info .dropdown-menu{
-    background-color: #fefefe;
+    background-color: rgba(255,255,255,0.9);
 }
 
 .member-info .dropdown-menu li{
@@ -61,6 +61,11 @@
 .member-info .dropdown-menu li:hover{ 
     background-color: #dadada;
     transition: all 0.2s;
+}
+
+.dropdown-menu li a {
+    display: inline-block;
+    width: 100%;
 }
 
 .member-info .dropdown-menu .icon-btn{

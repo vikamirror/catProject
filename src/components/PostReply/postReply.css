@@ -1,0 +1,56 @@
+/* -------------------------------
+* postReply-wrapper.u-expandMargin
+* -------------------------------- */
+.postReply-wrapper.u-expandMargin{
+    margin-left: -46px !important;
+    margin-right: -46px !important;
+}
+@media (max-width: 768px) {
+    .postReply-wrapper.u-expandMargin{
+        margin-left: -16px !important;
+        margin-right: -16px !important;
+    }
+}
+/* -----------------------
+* postReply_inner-padding
+* ------------------------*/
+.postReply_inner-padding{
+    padding: 16px 46px 16px 46px;
+}
+@media (max-width: 768px){
+    .postReply_inner-padding{
+        padding: 16px;
+    }
+}
+
+/* ------------
+* message-info
+* ------------- */
+.message-info{border-bottom: 1px solid #e1f7f9;}
+/* --------------------------
+* postReply-wrapper icon-btn
+* --------------------------- */
+.message-info .icon-btn{
+    font-size: 14px;
+    width: 24px;
+    line-height: 28px;
+    vertical-align: middle;
+    color: inherit;
+}
+
+/* ------------------------
+* postReply-wrapper avatar
+* ------------------------- */
+.postReply-wrapper .avatar{
+    position: absolute;
+    width: 48px;
+    height: 48px;
+}
+
+/* --------------------------------
+* postReply-wrapper message-content
+* --------------------------------- */
+.postReply-wrapper .message-content{
+    padding-left: 72px;
+}
+

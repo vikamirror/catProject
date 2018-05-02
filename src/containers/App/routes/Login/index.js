@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,14 +8,16 @@ import FadeErrMsg from '../../../../components/FadeErrMsg';
 import * as memberAPI from '../../../../fetch/memberAPI';
 import * as accessLocalStorage from '../../../../fetch/accessLocalStorage';
 import { fetchMember } from '../../../../redux/member';
+import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 import BounceInUp from '../../../../components/BounceInUp';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
 
 import './login.css';
 
 const mapStateToProps = state => ({ member: state.member });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    fetchMember: fetchMember
+	fetchMember: fetchMember,
+	loadingTrue: loadingTrue,
+	loadingFalse: loadingFalse,
 },dispatch));
 
 class Login extends Component {
@@ -27,7 +30,6 @@ class Login extends Component {
 			email: '',
 			password: '',
 			errorMsg: '',
-			isLoading: false,
 		};
     }
     checkEmail(evt) {
@@ -68,33 +70,34 @@ class Login extends Component {
 			this.setState({ errorMsg: 'Oops,有資料未填寫完整喔' });
 			return;
 		}
-		this.setState({isLoading: true});
+		this.props.loadingTrue();
         memberAPI.login(this.state.email, this.state.password)
                  .then((res) => {
-					this.setState({isLoading: false});
+					this.props.loadingFalse();
                     if (res.status === 200) {
                         this.loginSuccess(res.data);                
                     }
                  })
                  .catch((err) => {
-					console.log('Login requestLogin, err:',err);
-					this.setState({isLoading: false});
+					console.log('Login requestLogin, err:',err.response.data);
+					this.setState({ errorMsg: `Oops, ${err.response.data}`});
+					this.props.loadingFalse();
 				 });  
 	}
 	requestLoginWithFB() {
-		this.setState({isLoading: true});
+		this.props.loadingTrue();
 		const FB = window.FB;
 		const requestLogin = (authResponse) => {
 			memberAPI.loginWithFacebook(authResponse)
 			         .then((res) => {
-						this.setState({isLoading: false});
+						this.props.loadingFalse();
 						if (res.status === 200) {// 註冊成功
 							this.loginSuccess(res.data);
 						}
 					 })
 					 .catch((err) => {
-						console.log('Login, requestLoginWithFB, error:', err);
-						this.setState({isLoading: false});
+						console.log('Login, requestLoginWithFB, error:', err.response.data);
+						this.props.loadingFalse();
 					 });
 		}
 		FB.getLoginStatus((res) => {
@@ -155,10 +158,16 @@ class Login extends Component {
 						</form>
 					</BounceInUp>
                 </div>
-				<LoadingSpinner isLoading={this.state.isLoading} />
             </div>
         );
     }
 }
+
+Login.propTypes = {
+	fetchMember: PropTypes.func.isRequired,
+	loadingTrue: PropTypes.func.isRequired,
+	loadingFalse: PropTypes.func.isRequired,
+	history: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

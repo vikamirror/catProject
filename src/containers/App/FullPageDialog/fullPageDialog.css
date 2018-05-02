@@ -2,14 +2,8 @@
  * background
  * ---------- */
  #full_page_msg_wrapper{
-    /* position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; */
-    background-color: rgba(0, 0, 27, 0.6);
-    background-size: cover;
-    background-position: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 16px;
 }
 
 /* 遮罩: 利用偽元素 */
@@ -18,8 +12,9 @@
     position: absolute; /* 因為父層是fixed, 所以會自動對齊父層 */
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 27, 0.6);
-    opacity: 0.6;
+    bottom: 0;
+    right: 0;
+    /* width: 100%; */
+    /* height: 100%; */
+    /* opacity: 0.6; */
 }

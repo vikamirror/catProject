@@ -8,3 +8,9 @@
     margin-left: 0;
     margin-right: 0;
 }
+
+.form_login input[type="password"],
+.form_login input[type="email"],
+.form_login input[type="text"]{
+    padding-left: 36px;
+}

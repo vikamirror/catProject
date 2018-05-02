@@ -9,6 +9,7 @@ import { Route } from 'react-router-dom';
 // import './css/basic.css';
 import 'normalize.css'
 import './bootstrapGrid.css';
+// import './animate.css';
 import './basic.css';
 
 import store, { history } from './store';

@@ -3,15 +3,18 @@ import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { closeLogoutDialog } from '../../../redux/fullPageDialog';
+import { closeFullPageDialog, showInputDialog } from '../../../redux/fullPageDialog';
 import { logout } from '../../../redux/member';
+import { ErrorAlert } from '../../../components/TopAlert';
+import InputDialog from './InputDialog';
 
 import './fullPageDialog.css';
 
 const mapStateToProps = state => ({ fullPageDialog: state.fullPageDialog });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    closeLogoutDialog: closeLogoutDialog,
-    logout: logout
+    closeFullPageDialog: closeFullPageDialog,
+    logout: logout,
+    showInputDialog: showInputDialog,
 }, dispatch));
 
 class FullPageDialog extends React.Component {
@@ -19,22 +22,34 @@ class FullPageDialog extends React.Component {
         const reqLogout = () => {
             this.props.logout();
             this.props.history.push('/login');
-            this.props.closeLogoutDialog();
+            this.props.closeFullPageDialog();
         }
         return (
-            <div>
+            <div className="u-wrapper-absolute-center u-text-center">
                 <h3 className="font-white">確定要登出嗎?</h3>
                 <div className="btn-group">
-                    <button className="btn btn-lg btn-secondary" onClick={() => this.props.closeLogoutDialog()}>取消</button>
+                    <button className="btn btn-lg btn-secondary" onClick={() => this.props.closeFullPageDialog()}>取消</button>
                     <button className="btn btn-lg btn-tertiary" onClick={() => reqLogout()}>登出</button>
                 </div>
             </div>
         );
     }
+    topErrorAlert () {
+        return (
+            <ErrorAlert errorMsg={this.props.fullPageDialog.message} />
+        );  
+    }
     dialogContent () {
         switch(this.props.fullPageDialog.type) {
             case 'LOGOUT_DIALOG':
                 return this.logoutDialog();
+            case 'ERROR_ALERT':
+                return this.topErrorAlert();
+            case 'INPUT_DIALOG':
+                return <InputDialog 
+                            title={this.props.fullPageDialog.title}
+                            text={this.props.fullPageDialog.text}
+                        />;
             default: 
                 return <div></div>
         }
@@ -45,10 +60,8 @@ class FullPageDialog extends React.Component {
             <div>
             {
                 fullPageDialog.isShow ? 
-                <div className="u-wrapper-fixed-w100-h100 z-index-100" id="full_page_msg_wrapper">
-                    <div className="u-wrapper-absolute-center u-text-center">
-                        {this.dialogContent()}
-                    </div>
+                <div className="u-wrapper-fixed-w100-h100 z-index-100 u-div-outline-0" id="full_page_msg_wrapper">
+                    {this.dialogContent()}
                 </div>
                 : 
                 ''

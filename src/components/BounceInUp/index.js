@@ -15,8 +15,8 @@ const transitionStyles = {
 	exiting: { opacity: '0', display: 'block', transform: 'translateY(10%)'}, // Fade element out and slide it back up on exit.
 };
 
-const BounceInUp = ({inCondition, children}) => (
-	<Transition in={inCondition} timeout={{enter: 300, exit: 300}}>
+const BounceInUp = ({inCondition, enterMilliseconds, children}) => (
+	<Transition in={inCondition} timeout={{enter: enterMilliseconds || 300, exit: 300}}>
 	{
 		(status) => (
 			<div style={{
@@ -32,6 +32,7 @@ const BounceInUp = ({inCondition, children}) => (
 
 BounceInUp.proptypes = {
 	inCondition: PropTypes.bool.isRequired,
+	enterMilliseconds: PropTypes.number,
 }
 
 export default BounceInUp;

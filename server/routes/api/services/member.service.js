@@ -3,10 +3,8 @@ import cuid from 'cuid';
 import sanitizeHtml from 'sanitize-html';
 import crypto from 'crypto'; // nodejs內建
 import jwt from 'jsonwebtoken';
-import axios from 'axios';
 
 import sendMail from '../middlewares/sendEmail';
-import { ESRCH } from 'constants';
 
 /**
  * 取得會員資訊
@@ -14,13 +12,14 @@ import { ESRCH } from 'constants';
  * @returns res.status(200).send({會員token, 會員資料, res.status, 成功訊息})
  */
 export function getMember(req, res) {
-    const cuid = JSON.parse(req.headers.authorization).cuid;
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     if (cuid) {
         Member
             .find({cuid: cuid}, {
                 _id: 0, //只有_id預設是“顯示”的, 因此只有_id要設為0
                 name: 1,
                 avatar: 1,
+                favoritePosts: 1,
                 cuid: 1})
             .then(data => {
                 res.status(200).json({
@@ -30,11 +29,13 @@ export function getMember(req, res) {
             })
             .catch((err) => {
                 res.status(500).json({
-                    message: `api/services/getMember server錯誤: ${err}`
+                    message: 'api/services/getMember server錯誤'
                 });
+                console.error(`api/services/getMember server錯誤: ${err}`);
             });
     }
 }
+
 /**
  * 會員註冊
  * @param {email, password, name}
@@ -76,18 +77,22 @@ export function register(req, res) {
                                     member: jwtpayload,
                                 },
                         }, process.env.JWT_SECRET);
-                        res.status(200).send(JSON.stringify({// 請養成stringify的好習慣
+                        res.status(200).json({
                             memberToken: jwtToken,
                             member: {
                                 cuid: newMember.cuid,
                                 name: newMember.name,
                                 avatar: newMember.avatar,
+                                favoritePosts: newMember.favoritePosts,
                             },
-                        }));
+                        });
                     })
-                    .catch(err => res.status(500).json({
-                        message: `api/services/register member新增錯誤: ${err}`
-                    }));
+                    .catch(err => {
+                        res.status(500).json({
+                            message: 'api/services/register member新增錯誤'}
+                        );
+                        console.error(`api/services/register member新增錯誤: ${err}`);
+                    });
         })
         .catch((err) => {
             if (err.name === 'emailExisted') {
@@ -96,8 +101,9 @@ export function register(req, res) {
                 });
             }
             res.status(500).json({
-                message: `api/services/register server錯誤: ${err}`
+                message: 'api/services/register server錯誤'
             });
+            console.log(`api/services/register server錯誤: ${err}`);
         });
 }
 
@@ -152,7 +158,8 @@ export function loginWithFacebook(req, res) {
                                 member: {
                                     cuid: newMember.cuid,
                                     name: newMember.name,
-                                    avatar: newMember.avatar
+                                    avatar: newMember.avatar,
+                                    favoritePosts: newMember.favoritePosts,
                                 },
                                 shouldFillEmail: shouldFillEmail // 是否提醒會員填寫email
                             });
@@ -185,13 +192,14 @@ export function loginWithFacebook(req, res) {
                         cuid: data[0].cuid,
                         name: data[0].name,
                         avatar: data[0].avatar,
+                        favoritePosts: data[0].favoritePosts,
                     },
                     shouldFillEmail: shouldFillEmail
                 });
             };
         })
         .catch(err => {
-            console.log('service loginWithFacebook err:', err);
+            console.error('service loginWithFacebook err:', err);
         });
 }
 
@@ -226,20 +234,71 @@ export function login(req, res) {
                         cuid: data[0].cuid,
                         name: data[0].name,
                         avatar: data[0].avatar,
+                        favoritePosts: data[0].favoritePosts,
                     },
                 });
             } else {
-                res.status(401).json({
+                res.status(400).json({
                     message: 'Oops,密碼不正確'
                 });
             }
         })
         .catch((err) => {
             res.status(500).json({
-                message: `api/services/login server錯誤: ${err}`
+                message: 'api/services/login server錯誤'
             });
+            console.error(`api/services/login server錯誤: ${err}`);
         });
 };
+
+/**
+ * 會員新增一個我的最愛Post
+ * 參數:x-www-form-urlencoded:
+ * @param {postCuid}
+ */
+export function addFavoritePost (req, res) {
+    if (!req.body.postCuid) {
+        res.status(400).json({message: 'postCuid為空值或undefined'});
+        return;
+    }
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const postCuid = sanitizeHtml(req.body.postCuid);
+    Member
+        .update({cuid: cuid}, 
+            {$push: {favoritePosts: {postCuid: postCuid}}}
+        )
+        .then(() => res.status(200).json({message: '收藏成功'}))
+        .catch((err) => {
+            res.status(500).json({
+                message: 'api/services/addFavoritePost server錯誤'
+            });
+            console.error('api/services/addFavoritePost server錯誤:', err);
+        });
+}
+
+/**
+ * 會員移除一個我的最愛Post
+ * 參數:x-www-form-urlencoded:
+ * @param {postCuid}
+ */
+export function removeFavoritePost (req, res) {
+    if (!req.params.postCuid) {
+        res.status(400).json({message: 'postCuid為空值或undefined'});
+        return;
+    }
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    Member
+        .update({cuid: cuid}, 
+            {$pull: {favoritePosts: {postCuid: req.params.postCuid}}}
+        )
+        .then(() => res.status(200).json({message: '已從收藏中刪除'}))
+        .catch((err) => {
+            res.status(500).json({
+                message: 'api/services/removeFavoritePost server錯誤'
+            });
+            console.error('api/services/removeFavoritePost server錯誤:', err);
+        });
+}
 
 
 

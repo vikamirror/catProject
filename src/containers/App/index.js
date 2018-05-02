@@ -7,8 +7,10 @@ import Header from './Header';
 import { fetchMember } from '../../redux/member';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
-import FullPageDialog from './FullPageDialog';
+// import FullPageDialog from './FullPageDialog';
+import Dialog from './Dialog';
 import ScrollWrapper from '../../components/ScrollWrapper';
+import Loading from './Loading';
 
 import './app.css';
 
@@ -25,12 +27,36 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            isScroll: false
+            isScroll: false,
+            backgroundClass: 'bg_home'
         }
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
         this.isSmallDevice();
+    }
+    componentWillReceiveProps (nextProps) {
+        if (nextProps.location.pathname !== this.props.location.pathname) {
+            this.setBackground(nextProps.location.pathname);
+        }
+    }
+    setBackground (pathname) {
+        switch (pathname) {
+            case '/':
+                this.setState({backgroundClass: 'bg_home'});
+                break;
+            case '/myPosts':
+                this.setState({backgroundClass: 'bg_myPosts'});
+                break;
+            case '/login':
+                this.setState({backgroundClass: 'bg_login'});
+                break;
+            case '/register':
+                this.setState({backgroundClass: 'bg_register'});
+                break;
+            default:
+                break;
+        }
     }
     isSmallDevice () {
         window.innerWidth < 768 ? this.props.smallDeviceTrue() : this.props.smallDeviceFalse();
@@ -41,12 +67,14 @@ class App extends Component {
     render() {
         return (
             <div id="app">
-                <div id="app_bg"></div>
+                <div id="app_bg" className={this.state.backgroundClass}></div>
                 <Header shoudHeaderColored={this.state.isScroll} />
                 <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)}>
                     <Routes />
                 </ScrollWrapper>
-                <FullPageDialog />
+                <Loading />
+                <Dialog />
+                {/* <FullPageDialog /> */}
             </div>
         );
     }

@@ -68,7 +68,7 @@ class Header extends Component {
     render() {
         const header_id = this.props.shoudHeaderColored ? "header-colored" : "";
         return (
-            <header className="header z-index-99" id={header_id}>
+            <header className="header z-index-98" id={header_id}>
                 <div className="container">
                     <nav className="nav u-clearfix">
                         {/* Logo */}
@@ -98,7 +98,6 @@ class Header extends Component {
                             <LoginOrRegister />
                         </div>
                         {/* 螢幕<768, 按下SearchBarIconBtn後, 彈出的搜尋框 */}
-                        
                     </nav>
                     {
                         this.state.showMiniSearchBar ?
@@ -116,5 +115,4 @@ Header.propTypes = {
     shoudHeaderColored: PropTypes.bool.isRequired
 }
 
-// 讓Header能使用this.props.location (在shouldComponentUpdate才能調用)
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,0 +1,54 @@
+.textarea img{
+    max-width: 95%;
+    display: block;
+    margin: 0 auto;
+}
+
+/* --------------
+* img-upload-btn
+* -------------- */
+.img-upload-btn{ 
+    opacity: 0.6;
+    overflow: hidden;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+.img-upload-btn:hover{
+    opacity: 1;  
+}
+
+.img-upload-btn .icon-btn{
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    line-height: 36px;
+ }
+
+.img-upload-btn input[type=file]{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.img-upload-btn .btn{
+    background-color: inherit;
+    height: auto;
+    width: 100%;
+    font-size: 16px;
+    min-width: 32px;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+/* --------------
+* inline-control
+* -------------- */
+.inline-control{
+    position: absolute;
+    top: 0;
+    right: 0;
+}

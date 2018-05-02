@@ -1,0 +1,8 @@
+.check{
+    padding-left: 8px;
+}
+@media (max-width: 768px) {
+    .check{
+        padding-left: 8px;
+    }
+}

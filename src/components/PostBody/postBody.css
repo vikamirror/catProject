@@ -1,0 +1,73 @@
+/* ----------------
+* input type="text"
+* ----------------- */
+.form input[type="text"].edit{
+    padding: 0;
+    border: 0;
+    line-height: 32px;
+}
+
+.form input[type="text"],
+.form input[type="text"]:focus{
+    background-color: inherit;
+}
+
+/* --------------
+* textarea
+* -------------- */
+.textarea{
+    width: 100%;
+    display: block;
+    /* 字體 */
+    font-size: 16px;
+    line-height: 24px;
+    color: #484848;
+    padding: 8px 16px;
+    /* 外型 */
+    min-height: 94px;
+    line-height: 24px;
+}
+
+.textarea div,
+.textarea p{
+    /* 字體 */
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 8px;
+    color: #484848;
+    letter-spacing: 0; /* p的文字間距預設是0 */
+}
+
+.textarea:focus{
+    outline: 0;
+}
+
+/* --------------
+* textarea edit
+* -------------- */
+.textarea.edit:empty:not(:focus):before{
+    content:attr(placeholder);
+    color: #a9a9a9;
+}
+
+/* --------------
+* group-info
+* -------------- */
+.group-info .icon-btn{
+    height: auto;
+    font-size: 12px;
+    line-height: 30px;
+    color: #4F8196;
+}
+.group-info.text{
+    display: inline-block;
+    vertical-align: middle;
+    color: #484848;
+    line-height: 34px;
+}
+.group-info .text{
+    display: inline-block;
+    vertical-align: middle;
+    color: #484848;
+    line-height: 34px;
+}

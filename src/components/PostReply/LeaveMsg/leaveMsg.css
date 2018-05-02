@@ -1,0 +1,48 @@
+.leave-msg-wrapper span{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* --------------------------
+* .leave-msg-wrapper .avatar
+* --------------------------- */
+.leave-msg-wrapper .avatar{
+    top: 28px;
+}
+@media (max-width: 768px) {
+    .leave-msg-wrapper .avatar{
+        top: auto;
+    }
+}
+
+/* --------------
+* textarea
+* -------------- */
+.leave-msg-wrapper .textarea{
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid #b4dbed;
+    border-radius: 4px;
+    box-shadow: 0 0 3px #c4e6f5;
+    min-height: 40px;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    /* 框內文字 */
+    text-align: left;
+    line-height: 38px;
+}
+.leave-msg-wrapper .textarea.activeFocus{
+    min-height: 96px;
+    line-height: 24px;
+}
+@media (max-width: 768px) {
+    .leave-msg-wrapper .textarea{
+        margin-top: 4px;
+        margin-bottom: 4px;
+        padding: 0;
+    }
+}
+
+
+

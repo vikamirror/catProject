@@ -1,0 +1,42 @@
+/* ---------------
+* message-wrapper
+* ---------------- */
+.message-wrapper:hover{
+    background-color: #f8f8ff;
+}
+
+.message-wrapper{
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* --------------
+* member
+* -------------- */
+.message-wrapper .member *{
+    display: inline-block;
+}
+/* --------------
+* reply-to
+* -------------- */
+.message-wrapper .reply-to,
+.message-wrapper .message{
+    text-align: left;
+}
+
+.reply-to .label{
+    vertical-align: top;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* --------------
+* reply-btn
+* -------------- */
+.reply-btn{ cursor: pointer; }
+.reply-btn:hover{
+    color: #008fff;
+}
+.reply-btn .icon-btn{
+    width: auto;
+    padding-right: 8px;
+}

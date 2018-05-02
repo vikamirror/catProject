@@ -5,8 +5,10 @@ import morgan from 'morgan';
 import path from 'path';
 
 import index from './routes';
-import universalLoader from './routes/universal';
+// import universalLoader from './routes/universal';
 import memberRoutes from './routes/api/controllers/member.controller';
+import postRoutes from './routes/api/controllers/post.controller';
+import messageRoutes from './routes/api/controllers/message.controller';
 
 // import database from './mongoose';
 import database from './mongoose';
@@ -22,6 +24,8 @@ app.use(morgan('dev'));
 
 // 引入api
 app.use('/api', memberRoutes);
+app.use('/api', postRoutes);
+app.use('/api', messageRoutes);
 app.use('/', index); // 引入univeral.js
 // app.use('/', universalLoader);
 

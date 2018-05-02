@@ -1,0 +1,23 @@
+.closeCross{
+    width: 56px;
+    height: 56px;
+}
+
+.closeCross span{
+    width: 16px;
+    height: 2px;
+    background-color: #484848;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.closeCross span:first-child{
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+
+.closeCross span:last-child{
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+

@@ -3,12 +3,15 @@ import jwt from 'jsonwebtoken';
 const jwtSecret = process.env.JWT_SECRET;
 
 export default function authToken(req, res, next) {
-    const token = JSON.parse(req.headers.authorization).token; // 沒有token的話 為undefined
+    let token;
+    if (req.headers.authorization) {
+        token = JSON.parse(req.headers.authorization).token;
+    }
     if (token) {
         jwt.verify(token, jwtSecret, (err, decoded) => {
-            decoded ? next() : res.send(JSON.stringify({ validToken: false }));
+            decoded ? next() : res.send({ validToken: false });
         });
     } else {
-        res.send({ validToken: false });
+        res.status(401).send({ validToken: false });
     }
 }

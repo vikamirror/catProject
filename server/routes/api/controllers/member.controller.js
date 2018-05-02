@@ -6,11 +6,12 @@ import * as facebookAPI from '../middlewares/facebookAPI';
 const router = express.Router();
 
 router.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept'
-    );
+     // Website you wish to allow to connect
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    // Request methods you wish to allow
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    // Request headers you wish to allow
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
     next();
 });
 
@@ -25,5 +26,11 @@ router.post('/loginWithFacebook', facebookAPI.hasAccessToken, MemberService.logi
 
 // 會員登入
 router.post('/login', MemberService.login);
+
+// 會員新增一個我的最愛Post
+router.put('/favoritePost', authToken, MemberService.addFavoritePost);
+
+// 會員移除一個我的最愛Post
+router.delete('/favoritePost/:postCuid', authToken, MemberService.removeFavoritePost);
 
 export default router;

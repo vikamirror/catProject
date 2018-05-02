@@ -2,20 +2,22 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 
 import * as memberAPI from '../../../../fetch/memberAPI';
 import * as accessLocalStorage from '../../../../fetch/accessLocalStorage';
 import { fetchMember } from '../../../../redux/member';
 import FadeErrMsg from '../../../../components/FadeErrMsg';
 import BounceInUp from '../../../../components/BounceInUp';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
+import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 
 import './register.css';
 
 const mapStateToProps = state => ({ member: state.member });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    fetchMember: fetchMember
+	fetchMember: fetchMember,
+	loadingTrue: loadingTrue,
+	loadingFalse: loadingFalse,
 },dispatch));
 
 class Register extends Component {
@@ -30,7 +32,6 @@ class Register extends Component {
 			password: '',
 			name: '',
 			errorMsg: '',
-			isLoading: false,
 		};
 	}
     checkEmail(evt) {
@@ -86,33 +87,33 @@ class Register extends Component {
 			this.setState({ errorMsg: 'Oops,有資料未填寫完整喔' });
 			return;
 		}
-		this.setState({isLoading: true});
+		this.props.loadingTrue();
 		memberAPI.register(this.state.email, this.state.password, this.state.name)
 				 .then((res) => {
-					this.setState({isLoading: false});
+					this.props.loadingFalse();
 					if (res.status === 200) {
 						this.registerSuccess(res.data);
 					}
 				 })
 				 .catch((err) => {
 					console.log('Register, requestRegister, error:', err);
-					this.setState({isLoading: false});
+					this.props.loadingFalse();
 				 });
 	}
 	requestLoginWithFB() {
-		this.setState({isLoading: true});
+		this.props.loadingTrue();
 		const FB = window.FB;
 		const requestLogin = (authResponse) => {
 			memberAPI.loginWithFacebook(authResponse)
 			         .then((res) => {
-						this.setState({isLoading: false});
+						this.props.loadingFalse();
 						if (res.status === 200) {// 註冊成功
 							this.registerSuccess(res.data);
 						}
 					 })
 					 .catch((err) => {
 						console.log('Register, requestLoginWithFB, error:', err);
-						this.setState({isLoading: false});
+						this.props.loadingFalse();
 					 });
 		}
 		FB.getLoginStatus((res) => {
@@ -151,10 +152,6 @@ class Register extends Component {
 							<div className="btn-group btn-group-center btn-register">
 								<input type="button" value="以Facebook帳號繼續" className="btn btn-lg btn-fb font-white" onClick={() => this.requestLoginWithFB()} />
 							</div>
-							{/* <FadeErrMsg
-								inCondition={this.state.errorMsg !== '' ? true : false}
-								errorMsg={this.state.errorMsg} 
-							/> */}
 						</div>
 						:
 						''						
@@ -180,11 +177,10 @@ class Register extends Component {
 						</form>
 					</BounceInUp>		
 				</div>
-				<LoadingSpinner isLoading={this.state.isLoading} />
 			</div>
 		);
 	}
 }
 
 // 使這個Component拿到browser history
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
