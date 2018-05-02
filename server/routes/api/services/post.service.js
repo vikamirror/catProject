@@ -118,6 +118,7 @@ export function getOnePost(req, res) {
 export function getPostsByAuthor (req, res) {
     Post
         .find({"author.cuid": req.params.cuid}, {_id:0, __v:0})
+        .sort({"dateAdded": -1})
         .then((posts) => {
             res.status(200).json({
                 posts: posts

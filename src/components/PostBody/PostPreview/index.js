@@ -35,7 +35,7 @@ const PostPreview = ({post}) => {
                 />
             </div>
             <div className="clickPost">
-                <Link to={`/post/${post.cuid}`} className="font-lightGrey">檢視更多</Link>
+                <Link to={`/post/${post.cuid}`} className="link font-lightGrey">檢視更多</Link>
             </div>           
         </div>
     );

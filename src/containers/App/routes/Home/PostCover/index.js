@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import LazyLoad from 'react-lazyload';
 // import WaterWave from 'water-wave';
 
 import Avatar from '../../../../../components/Avatar';
@@ -27,7 +28,9 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
     return (
         <section className="postCover">
             <div className="imageBox u-padding-b-16">
-                <img src={cover} alt="" />
+                <LazyLoad height={300}>
+                    <img src={cover} alt="" />
+                </LazyLoad>
             </div>
             <div className="avatar_title u-padding-l-16 u-padding-r-16">
                 <Avatar avatarUrl={avatar} />

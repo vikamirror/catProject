@@ -8,6 +8,7 @@ import PostPreview from '../../../../components/PostBody/PostPreview';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 import * as postAPI from '../../../../fetch/postAPI';
 import Post from '../Home/Post';
+import LoadingSpinner from '../../Loading/LoadingSpinner';
 
 const mapStateToProps = state => ({
     member: state.member,
@@ -34,8 +35,7 @@ class MyFavorites extends Component {
             .getFavoritePosts()
             .then((res) => {
                 this.setState({
-                    // favoritePosts: [...res.data.posts],
-                    favoritePosts: [],
+                    favoritePosts: [...res.data.posts],
                     isFetched: true,
                 });
             })
@@ -50,7 +50,9 @@ class MyFavorites extends Component {
                             <div className="container">
                             {
                                 !this.state.isFetched ?
-                                <div></div>
+                                <div className="loadingWrapper u-wrapper-fixed-w100-h100 z-index-100 u-text-center">
+                                    <LoadingSpinner isLoading={true} />
+                                </div>
                                 :
                                 <div>
                                 {

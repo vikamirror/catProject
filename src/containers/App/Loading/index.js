@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
 const Loading = ({isLoading}) => {
     if (isLoading) {
         return (
-            <div className="loadingWrapper u-wrapper-fixed-w100-h100 z-index-100">
+            <div className="loadingWrapper u-wrapper-fixed-w100-h100 z-index-100 u-text-center">
                 <LoadingSpinner isLoading={isLoading} />
             </div>
         );

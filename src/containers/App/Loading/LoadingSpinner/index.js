@@ -1,3 +1,5 @@
+// https://loading.io/css/
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,7 +11,7 @@ const LoadingSpinner = ({isLoading}) => {
     } else {
         return (
             <div className="u-wrapper-absolute-center">
-                <div className="lds-css ng-scope spinner-wrapper">
+                {/* <div className="lds-css ng-scope spinner-wrapper">
                     <div className="lds-spin">
                         <div>
                             <div></div>
@@ -36,7 +38,8 @@ const LoadingSpinner = ({isLoading}) => {
                             <div></div>
                         </div>
                     </div>  
-                </div>
+                </div> */}
+                <div class="lds-hourglass"></div>
             </div>
         );
     }

@@ -172,8 +172,5 @@ class Post extends Component {
         );
     }
 }
-Post.propTypes = {
-    handleClose: PropTypes.func.isRequired,
-};
 
 export default Post;
