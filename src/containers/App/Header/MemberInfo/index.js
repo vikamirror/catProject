@@ -9,6 +9,7 @@ import { showDialog } from '../../../../redux/dialog';
 import BounceInUp from '../../../../components/BounceInUp';
 import FadeInOut from '../../../../components/FadeInOut';
 import OnBlurListener from '../../../../components/OnBlurListener';
+import { logout } from '../../../../redux/member';
 
 import './memberInfo.css';
 
@@ -17,7 +18,8 @@ const mapStateToProps = state => ({
     isSmallDevice: state.isSmallDevice,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({ 
-    showDialog: showDialog 
+    showDialog: showDialog,
+    logout: logout,
 }, dispatch));
 
 class MemberInfo extends Component{
@@ -43,8 +45,14 @@ class MemberInfo extends Component{
             cancelButtonText: "取消",
             showConfirmButton: true,
             confirmButtonText: "登出",
+            onClickConfirmButton: (confirmValue) => this.logout(confirmValue),
             buttonsAlign: "center",
         });
+    }
+    logout (confirmValue) {
+        if (confirmValue.confirm) {
+            this.props.logout();
+        }
     }
     render() {
         const { member, isSmallDevice } = this.props;
@@ -136,6 +144,7 @@ class MemberInfo extends Component{
 
 MemberInfo.propTypes = {
     showDialog: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MemberInfo);

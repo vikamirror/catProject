@@ -39,7 +39,7 @@ const LoadingSpinner = ({isLoading}) => {
                         </div>
                     </div>  
                 </div> */}
-                <div class="lds-hourglass"></div>
+                <div className="lds-hourglass"></div>
             </div>
         );
     }

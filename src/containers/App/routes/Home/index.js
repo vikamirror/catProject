@@ -7,18 +7,13 @@ import { connect } from 'react-redux';
 
 import PostCover from './PostCover';
 import Post from './Post';
-import { fetchPosts } from '../../../../redux/postList';
+// import { fetchPosts } from '../../../../redux/postList';
 
 import './home.css';
 
 const mapStateToProps = state => ({ postList: state.postList });
-const mapDispatchToProps = dispatch => (bindActionCreators({
-    fetchPosts: fetchPosts,
-}, dispatch));
+const mapDispatchToProps = dispatch => (bindActionCreators({ }, dispatch));
 class Home extends Component {
-    componentWillMount () {
-        this.props.fetchPosts();
-    }
     handleModalClose () {
         this.props.routing.location.push('/');
     }

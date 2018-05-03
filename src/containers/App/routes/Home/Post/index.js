@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-// import { bindActionCreators } from 'redux';
-// import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // import { fetchOnePost } from '../../../../../redux/post';
 import * as postAPI from '../../../../../fetch/postAPI';
@@ -19,10 +19,13 @@ import Spay from '../../../../../components/PostBody/Spay';
 import Requirements from '../../../../../components/PostBody/Requirements';
 import Contact from '../../../../../components/PostBody/Contact';
 import Stream from '../../../../../components/PostBody/Stream';
+import Edit from '../../../../../components/PostBody/Edit';
 import PostReply from '../../../../../components/PostReply';
 
 import '../../../../../components/PostBody/postBody.css';
 
+const mapStateToProps = state => ({ });
+const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
 class Post extends Component {
     constructor () {
         super();
@@ -48,8 +51,10 @@ class Post extends Component {
                 avatar: '',
                 cuid: ''
             },
-            isFetched: false,
+            isFetched: false, // 是否拿到後端的post了, 是true的話PostWrapper才會顯示
+            isEdit: false, // 是否是編輯模式
         };
+        this.postBeforeEdit = {};
     }
     componentDidMount () {
         this.fetchOnePost();
@@ -59,13 +64,6 @@ class Post extends Component {
             .getOnePost(this.props.match.params.cuid)
             .then((res) => {
                 if (res.status === 200) {
-                    const copiedRequirements = [...res.data.post.requirements];
-                    const copiedAuthor = {
-                        ...this.state.author,
-                        name: res.data.post.author.name,
-                        avatar: res.data.post.author.avatar,
-                        cuid: res.data.post.author.cuid
-                    };
                     this.setState({
                         cuid: res.data.post.cuid,
                         title: res.data.post.title,
@@ -77,13 +75,18 @@ class Post extends Component {
                         age: res.data.post.age,
                         gender: res.data.post.gender,
                         isSpay: res.data.post.isSpay,
-                        requirements: copiedRequirements,
+                        requirements: [...res.data.post.requirements],
                         remark: res.data.post.remark,
                         contact: res.data.post.contact,
                         contactInfo: res.data.post.contactInfo,
                         dateAdded: res.data.post.dateAdded,
                         lastModify: res.data.post.lastModify,
-                        author: copiedAuthor
+                        author: {
+                            ...this.state.author,
+                            name: res.data.post.author.name,
+                            avatar: res.data.post.author.avatar,
+                            cuid: res.data.post.author.cuid
+                        }
                     });
                     this.setState({isFetched: true});
                 }
@@ -91,7 +94,69 @@ class Post extends Component {
             .catch(err => console.error(err.message));
     }
     handleClose () {
-        this.props.history.goBack();
+        if (!this.state.isEdit) {
+            this.props.history.goBack();
+        } else {
+            this.setState({isEdit: false});
+            this.setState({
+                title: this.postBeforeEdit.title,
+                cover: this.postBeforeEdit.cover,
+                story: this.postBeforeEdit.story,
+                charactor: this.postBeforeEdit.charactor,
+                city: this.postBeforeEdit.city,
+                district: this.postBeforeEdit.district,
+                age: this.postBeforeEdit.age,
+                gender: this.postBeforeEdit.gender,
+                isSpay: this.postBeforeEdit.isSpay,
+                requirements: [...this.postBeforeEdit.requirements],
+                remark: this.postBeforeEdit.remark,
+                contact: this.postBeforeEdit.contact,
+                contactInfo: this.postBeforeEdit.contactInfo
+            });
+        }
+    }
+    handleEdit () {
+        this.setState({isEdit: true});
+        this.savePostBeforeEdit();
+    }
+    savePostBeforeEdit () {
+        this.postBeforeEdit = {
+            title: this.state.title,
+            cover: this.state.cover,
+            story: this.state.story,
+            charactor: this.state.charactor,
+            city: this.state.city,
+            district: this.state.district,
+            age: this.state.age,
+            gender: this.state.gender,
+            isSpay: this.state.isSpay,
+            requirements: this.state.requirements.slice(0),
+            remark: this.state.remark,
+            contact: this.state.contact,
+            contactInfo: this.state.contactInfo
+        };
+    }
+    handleState (item, value) {
+        // console.log('item:',item, 'value:',value);
+        this.setState({[item]: value});
+    }
+    handleUpdate () {
+        const updatedPost = {
+            title: this.state.title,
+            cover: this.state.cover,
+            story: this.state.story,
+            charactor: this.state.charactor,
+            city: this.state.city,
+            district: this.state.district,
+            age: this.state.age,
+            gender: this.state.gender,
+            isSpay: this.state.isSpay,
+            requirements: this.state.requirements,
+            remark: this.state.remark,
+            contact: this.state.contact,
+            contactInfo: this.state.contactInfo
+        }
+        this.setState({isEdit: false});
     }
     render() {
         return (
@@ -101,67 +166,88 @@ class Post extends Component {
                 </Helmet>
                 <article>
                     <PostWrapper
-                        isEdit={false}
+                        isEdit={this.state.isEdit}
                         isFetched={this.state.isFetched}
                         onClickClose={() => this.handleClose()}
                     >
                         <Title 
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             title={this.state.title}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style2" />
                         <DateAndAuthor 
-                            isEdit={false}
+                            isEdit={this.state.isEdit}
                             author={this.state.author}
                             dateAdded={this.state.dateAdded}
                             lastModify={this.state.lastModify} 
                         />
                         <Cover
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             cover={this.state.cover}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <Charactor 
-                            isEdit={false} 
+                            isEdit={this.state.isEdit}
                             charactor={this.state.charactor}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <CityAndDistrict
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             city={this.state.city}
                             district={this.state.district}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <Age 
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             age={this.state.age}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <Gender
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             gender={this.state.gender}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <Spay
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             isSpay={this.state.isSpay}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <Requirements 
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             requirements={this.state.requirements}
                             remark={this.state.remark}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
                         <Contact 
-                            isEdit={false} 
+                            isEdit={this.state.isEdit} 
                             contact={this.state.contact}
                             contactInfo={this.state.contactInfo}
+                            handleState={(item, value) => this.handleState(item, value)}
                         />
                         <hr className="hr-line-style1" />
-                        <Stream
-                            postCuid={this.state.cuid}
-                        />
+                        {
+                            this.state.isEdit ? 
+                            ''
+                            :
+                            <div>
+                                <Stream
+                                    author={this.state.author}
+                                    postCuid={this.state.cuid}
+                                />
+                                <Edit
+                                    author={this.state.author}
+                                    handleEdit={() => this.handleEdit()}
+                                />
+                            </div>
+                        }
                         <PostReply
                             postCuid={this.state.cuid}
                             postAuthor={this.state.author} 
@@ -171,6 +257,5 @@ class Post extends Component {
             </div>
         );
     }
-}
-
-export default Post;
+}5
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

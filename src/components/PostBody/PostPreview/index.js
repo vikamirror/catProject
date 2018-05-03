@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Title from '../Title';
@@ -39,6 +39,17 @@ const PostPreview = ({post}) => {
             </div>           
         </div>
     );
+};
+PostPreview.propTypes = {
+    post: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        author: PropTypes.object.isRequired,
+        dateAdded: PropTypes.string.isRequired,
+        lastModify: PropTypes.string.isRequired,
+        cover: PropTypes.string.isRequired,
+        charactor: PropTypes.string.isRequired,
+        cuid: PropTypes.string.isRequired,
+    })
 };
 
 export default PostPreview;

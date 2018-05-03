@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -14,8 +14,8 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     addFavoritePost: addFavoritePost,
     removeFavoritePost: removeFavoritePost,
 }, dispatch));
-const Stream = ({member, postCuid, addFavoritePost, removeFavoritePost}) => {
-    if (!member.cuid || !postCuid) {
+const Stream = ({member, postCuid, author, addFavoritePost, removeFavoritePost}) => {
+    if (!member.cuid || !postCuid || member.cuid === author.cuid) {
         return '';
     }
     const isFavorite = isContainedInArray(member.favoritePosts, 'postCuid', postCuid);
@@ -29,6 +29,14 @@ const Stream = ({member, postCuid, addFavoritePost, removeFavoritePost}) => {
         }
         </div>
     );
+};
+
+Stream.propTypes = {
+    member: PropTypes.object.isRequired,
+    postCuid: PropTypes.string.isRequired,
+    author: PropTypes.object.isRequired,
+    addFavoritePost: PropTypes.func.isRequired,
+    removeFavoritePost: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stream);

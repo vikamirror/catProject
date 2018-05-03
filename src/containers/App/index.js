@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import Header from './Header';
 import { fetchMember } from '../../redux/member';
+import { fetchPosts } from '../../redux/postList';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
 // import FullPageDialog from './FullPageDialog';
@@ -19,6 +20,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     fetchMember: fetchMember,
+    fetchPosts: fetchPosts,
     smallDeviceTrue: smallDeviceTrue,
     smallDeviceFalse: smallDeviceFalse,
 },dispatch));
@@ -33,6 +35,7 @@ class App extends Component {
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
+        this.props.fetchPosts();
         this.isSmallDevice();
     }
     componentWillReceiveProps (nextProps) {

@@ -23,9 +23,10 @@ import '../../../../../components/PostBody/postBody.css';
 
 const mapStateToProps = state => ({ 
     member: state.member,
-    myPosts: state.myPosts
 });
-const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
+const mapDispatchToProps = dispatch => (bindActionCreators({
+
+}, dispatch));
 class NewPost extends Component {
     constructor () {
         super();

@@ -62,7 +62,7 @@ export function createPost(req, res) {
         .then(() => {
             res.status(200).json({
                 message: '新增成功',
-                cuid: newPost.cuid
+                post: newPost
             });
         })
         .catch(err => {

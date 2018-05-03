@@ -11,13 +11,16 @@ import NewPost from './NewPost';
 import * as postAPI from '../../../../fetch/postAPI';
 import PostPreview from '../../../../components/PostBody/PostPreview';
 import Post from '../Home/Post';
+import { addOnePost } from '../../../../redux/postList';
 
 import './myPosts.css';
 
 const mapStateToProps = state => ({ 
     member: state.member
 });
-const mapDispatchToProps = dispatch => (bindActionCreators({ }, dispatch));
+const mapDispatchToProps = dispatch => (bindActionCreators({ 
+    addOnePost: addOnePost,
+}, dispatch));
 class MyPosts extends Component{
     constructor () {
         super();
@@ -51,11 +54,12 @@ class MyPosts extends Component{
             .createPost(newPost)
             .then((res) => {
                 if (res.status === 200) {
-                    newPost.cuid = res.data.cuid;
+                    newPost = res.data.post;
                     this.setState({myPosts: [newPost, ...this.state.myPosts]});
+                    this.props.addOnePost(newPost);
                 }
             })
-            .catch(err => console.error(err.message));
+            .catch(err => console.error(err.response.data));
     }
     render () {
         return (

@@ -13,36 +13,46 @@ import OnBlurListener from '../../OnBlurListener';
 import './requirements.css';
 
 class Requirements extends Component {
-    constructor () {
-        super();
-        this.state = {
-            requirements: []
-        };
-    }
-    componentDidMount () {
-        this.setState({requirements: [...this.props.requirements]});
-    }
+    // constructor () {
+    //     super();
+    //     this.state = {
+    //         requirements: []
+    //     };
+    // }
+    // componentWillReceiveProps (nextProps) {
+    //     // ComponentDidmount的時候, 父層的requirements還是空陣列
+    //     // 要等到父層ComponentDidUpdate, 這裡的props才會跟著update
+    //     if (nextProps.requirements !== this.props.requirements) {
+    //         this.setState({requirements: [...nextProps.requirements]})
+    //     }
+    // }
     setRequirementCheck (index, bool) {
-        const copyRequirements = [...this.state.requirements];
+        // https://stackoverflow.com/questions/35174489/reactjs-setstate-of-object-key-in-array
+        // array of objects正確的setState方式: 要先複製state, 建立一個新的reference A;
+        const copyRequirements = this.props.requirements.slice(0);
+        // 指定要修改reference A裡面的哪一個位址
+        copyRequirements[index] = { ...copyRequirements[index] };
         copyRequirements[index].value = bool;
         // ex: newRequirements[3].value = true;
-        this.setState({requirements: copyRequirements});
+        this.props.handleState('requirements', copyRequirements);
+        // this.setState({requirements: copyRequirements});
     }
     setRemark () {
         const htmlString = findDOMNode(this.refs.input_remark).innerHTML;
         const remark = htmlString.replace(/(style="[^>]+)|(class="[^>]+)/g, ''); // 拿掉任何style, class
         this.props.handleState('remark',remark);
     }
-    completeRequirements () {
-        const copyRequirements = [...this.state.requirements];
-        this.props.handleState('requirements', copyRequirements);
-    }
+    // completeRequirements () {
+    //     const copyRequirements = [...this.state.requirements];
+    //     this.props.handleState('requirements', copyRequirements);
+    // }
     render () {
         const { isEdit, requirements, remark } = this.props;
         if (isEdit) {
             return (
                 <OnBlurListener 
-                        inactiveFocus={() => this.completeRequirements()} 
+                        //inactiveFocus={() => this.completeRequirements()} 
+                        inactiveFocus={() => {}} 
                         activeFocus={() => {}}>
                     <div className="row">
                         <label className="col-xs-4 col-sm-4" htmlFor="">認養條件</label>
