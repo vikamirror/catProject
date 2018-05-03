@@ -1,9 +1,24 @@
+/* --------------
+* .Lazyload
+* --------------- */
+.LazyLoad{
+    display: inline-block;
+    width: 100%;
+    height: 512px;
+}
+.LazyLoad.is-visible{
+    height: auto;
+}
+
+/* --------------
+* .postCover
+* --------------- */
 .postCover{
     /* border: 1px solid #484848; */
     border-radius: 4px;
     background-color: #fefefe;
-    display: inline-block;
-    width: 100%; 
+    /* display: inline-block; */
+    /* width: 100%;  */
     margin-bottom: 24px;
 }
 
@@ -11,19 +26,19 @@
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* --------------
+* .postCover .img
+* --------------- */
+.postCover .imageBox img{
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+}
 @media (max-width: 768px){
     .postCover .imageBox .sm-ratio{
         height: 0;
         padding-top: 60%;
         overflow: hidden;
     }
-}
-
-.postCover .imageBox img{
-    width: 100%;
-    border-radius: 4px 4px 0 0;
-}
-@media (max-width: 768px){
     .postCover .imageBox .sm-ratio img{
         position: absolute;
         top: 0;
@@ -32,6 +47,9 @@
     }
 }
 
+/* -----------------
+* .postCover .avatar
+* ------------------ */
 .postCover .avatar{
     position: absolute;
     top: 0;
@@ -40,6 +58,9 @@
     transform: translateY(-100%);
 }
 
+/* -----------------
+* .postCover .title
+* ------------------ */
 .avatar_title .title{
     padding-left: 42px;
 }

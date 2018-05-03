@@ -29,9 +29,9 @@ class Home extends Component {
                             <div className="container home-container">
                                 <article className="articles">
                                 {
-                                    this.props.postList.map((post) => (
+                                    this.props.postList.map((post, index) => (
                                         <PostCover
-                                            key={post.cuid}
+                                            key={index}
                                             cuid={post.cuid}
                                             cover={post.cover}
                                             title={post.title}
