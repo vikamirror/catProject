@@ -8,7 +8,8 @@ import rootReducer from './redux';
 
 export const history = createHistory();
 
-const initialState = {};
+// const initialState = {};
+const initialState = window.__PRELOADED_STATE__;
 
 const middleware = [thunk, logger, routerMiddleware(history)];
 // const enhancers = [];

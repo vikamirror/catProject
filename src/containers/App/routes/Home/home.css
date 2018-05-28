@@ -30,3 +30,10 @@ article.articles{
 * home-container
 * -------------- */
 .home-container{ padding-top: 24px; }
+
+/* ------------------
+* 包住postCover的a標籤
+* ------------------- */
+.articles a {
+    display: block;
+}

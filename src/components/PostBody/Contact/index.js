@@ -1,22 +1,29 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 // import { findDOMNode } from 'react-dom';
-// import { bindActionCreators } from 'redux';
-// import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-// import { inputPost } from '../../../redux/post';
+import { changeContact, changeContactInfo } from '../../../redux/post';
 
+const mapStateToProps = state => ({ });
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    changeContact: changeContact,
+    changeContactInfo: changeContactInfo,
+}, dispatch));
 class Contact extends Component {
     setContact (e) {
         const inputContact = e.target.value;
-        this.props.handleState('contact', inputContact);
+        // this.props.handleState('contact', inputContact);
+        this.props.changeContact(inputContact);
     }
     setInfo (e) {
         const inputContactInfo = e.target.value;
-        this.props.handleState('contactInfo', inputContactInfo);
+        // this.props.handleState('contactInfo', inputContactInfo);
+        this.props.changeContactInfo(inputContactInfo);
     }
     render () {
-        const { isEdit, contact, contactInfo } = this.props;
+        const {isEdit, contact, contactInfo} = this.props;
         if (isEdit) {
             return (
                 <div>
@@ -72,6 +79,7 @@ Contact.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     contact: PropTypes.string.isRequired,
     contactInfo: PropTypes.string.isRequired,
-    handleState: PropTypes.func
+    changeContact: PropTypes.func.isRequired,
+    changeContactInfo: PropTypes.func.isRequired,
 };
-export default Contact;
+export default connect(mapStateToProps, mapDispatchToProps)(Contact);

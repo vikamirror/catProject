@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { loadingTrue, loadingFalse } from '../../../redux/isLoading';
-// import { inputPost } from '../../../redux/post';
+import { changeCover } from '../../../redux/post';
 import * as imgurAPI from '../../../fetch/imgurAPI';
 // import RenderAfterSeconds from '../../RenderAfterSeconds';
 
@@ -13,10 +13,12 @@ import './cover.css';
 
 const mapStateToProps = state => ({
     isLoading: state.isLoading,
+    post: state.post,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     loadingTrue: loadingTrue,
     loadingFalse: loadingFalse,
+    changeCover: changeCover,
 }, dispatch));
 
 class Cover extends Component {
@@ -32,7 +34,8 @@ class Cover extends Component {
                         //     cover: imgurRes.data.data.link //只更新cover的部分
                         // };
                         // this.props.inputPost(newPost);
-                        this.props.handleState('cover', imgurRes.data.data.link);
+                        // this.props.handleState('cover', imgurRes.data.data.link);
+                        this.props.changeCover(imgurRes.data.data.link);
                         this.props.loadingFalse();
                     })
                     .catch((err) => {
@@ -42,7 +45,7 @@ class Cover extends Component {
         }
     }
     render () {
-        const { isEdit, cover } = this.props;
+        const {isEdit, cover} = this.props;
         if (isEdit) {
             return (
                 <div className="upload-post-cover u-margin-b-16">
@@ -86,8 +89,9 @@ class Cover extends Component {
 Cover.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     cover: PropTypes.string.isRequired,
-    handleLoading: PropTypes.func,
-    handleState: PropTypes.func
+    loadingTrue: PropTypes.func.isRequired,
+    loadingFalse: PropTypes.func.isRequired,
+    changeCover: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cover);

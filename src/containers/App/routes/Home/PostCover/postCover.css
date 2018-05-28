@@ -37,7 +37,7 @@
     .postCover .imageBox .sm-ratio{
         height: 0;
         padding-top: 60%;
-        overflow: hidden;
+        /* overflow: hidden; */
     }
     .postCover .imageBox .sm-ratio img{
         position: absolute;
@@ -58,6 +58,13 @@
     transform: translateY(-100%);
 }
 
+/* --------------------
+* .postCover .imageBox
+* --------------------- */
+.postCover .imageBox{
+    overflow: initial;
+}
+
 /* -----------------
 * .postCover .title
 * ------------------ */
@@ -68,4 +75,12 @@
     .avatar_title .title.u-mb-16{
         margin-bottom: 8px !important;
     }
+}
+
+/* ---------------------------------------------------------
+* .postCover .ql-editor 避免editor的文字在首頁有奇怪的scroll行為
+* ----------------------------------------------------------*/
+.postCover .ql-editor{
+    padding: 0 0;
+    overflow-y: initial;
 }

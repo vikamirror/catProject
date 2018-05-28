@@ -6,10 +6,13 @@ import { connect } from 'react-redux';
 
 import Avatar from '../../../../components/Avatar';
 import { showDialog } from '../../../../redux/dialog';
+import DropdownMenu from '../../../../components/DropdownMenu';
+import MenuItem from '../../../../components/DropdownMenu/DropdownMenuItem';
 import BounceInUp from '../../../../components/BounceInUp';
 import FadeInOut from '../../../../components/FadeInOut';
 import OnBlurListener from '../../../../components/OnBlurListener';
 import { logout } from '../../../../redux/member';
+import * as sockets from '../../../../sockets/loginOrOut';
 
 import './memberInfo.css';
 
@@ -51,11 +54,40 @@ class MemberInfo extends Component{
     }
     logout (confirmValue) {
         if (confirmValue.confirm) {
+            sockets.logoutAllTheOtherDevicesEmitter(this.props.member.cuid);
             this.props.logout();
         }
     }
     render() {
         const { member, isSmallDevice } = this.props;
+        const items = [{
+            itemType: "link",
+            linkTo: "/myPosts",
+            hasIcon: true,
+            itemIcon: "icon-pencil",
+            itemText: "我的貼文"
+        },{
+            itemType: "link",
+            linkTo: "/myFavorites",
+            hasIcon: true,
+            itemIcon: "icon-heart",
+            itemText: "我的關注"
+        },{
+            itemType: "link",
+            linkTo: "#",
+            hasIcon: true,
+            itemIcon: "icon-user",
+            itemText: "帳號設定"
+        },{
+            itemType: "divider",
+            hasIcon: false,
+        },{
+            itemType: "button",
+            clickHandler: () => this.showLogoutDialog(),
+            hasIcon: true,
+            itemIcon: "icon-logout",
+            itemText: "登出",
+        }];
         if (member.cuid) {
             return (
                 <div tabIndex="0" className="member-info u-clearfix">
@@ -69,68 +101,74 @@ class MemberInfo extends Component{
                         </div>
                         {
                             isSmallDevice ?
-                            <FadeInOut inCondition={this.state.isShowMenu}>
-                                <div className="overlay-menu-wrapper z-index-100">
-                                    <div className="container u-margin-header">
-                                        <ul>
-                                            <li className="overlay-menu__item">
-                                                <Link to="/myPosts">
-                                                    <div className="icon-btn"><i className="icon icon-pencil" /></div>
-                                                    我的貼文
-                                                </Link> 
-                                            </li>
-                                            <li className="overlay-menu__item">
-                                                <Link to="#">
-                                                    <div className="icon-btn"><i className="icon icon-heart" /></div>
-                                                    我的關注
-                                                </Link>
-                                            </li>
-                                            <li className="overlay-menu__item">
-                                                <Link to="#">
-                                                    <div className="icon-btn"><i className="icon icon-user" /></div>
-                                                    帳號設定
-                                                </Link>
-                                            </li>
-                                            <li className="overlay-menu__item">
-                                                <div onClick={() => this.showLogoutDialog()}>
-                                                    <div className="icon-btn"><i className="icon icon-logout" /></div>
-                                                    登出
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </FadeInOut>
+                            <div className="menu-xs">   
+                                <DropdownMenu isShowMenu={this.state.isShowMenu}>  
+                                    {
+                                        items.map((item, index) => (
+                                            <MenuItem
+                                                index={index}
+                                                itemType={item.itemType}
+                                                linkTo={item.linkTo || null}
+                                                clickHandler={item.clickHandler || null}
+                                                hasIcon={item.hasIcon}
+                                                itemIcon={item.itemIcon || null}
+                                                itemText={item.itemText || null}
+                                                divider={item.divider}
+                                            />
+                                        ))
+                                    }
+                                </DropdownMenu>
+                            </div>
+                            // <FadeInOut inCondition={this.state.isShowMenu}>
+                            //     <div className="overlay-menu-wrapper z-index-100">
+                            //         <div className="container u-margin-header">
+                            //             <ul>
+                            //                 <li className="overlay-menu__item">
+                            //                     <Link to="/myPosts">
+                            //                         <div className="icon-btn"><i className="icon icon-pencil" /></div>
+                            //                         我的貼文
+                            //                     </Link> 
+                            //                 </li>
+                            //                 <li className="overlay-menu__item">
+                            //                     <Link to="#">
+                            //                         <div className="icon-btn"><i className="icon icon-heart" /></div>
+                            //                         我的關注
+                            //                     </Link>
+                            //                 </li>
+                            //                 <li className="overlay-menu__item">
+                            //                     <Link to="#">
+                            //                         <div className="icon-btn"><i className="icon icon-user" /></div>
+                            //                         帳號設定
+                            //                     </Link>
+                            //                 </li>
+                            //                 <li className="overlay-menu__item">
+                            //                     <div onClick={() => this.showLogoutDialog()}>
+                            //                         <div className="icon-btn"><i className="icon icon-logout" /></div>
+                            //                         登出
+                            //                     </div>
+                            //                 </li>
+                            //             </ul>
+                            //         </div>
+                            //     </div>
+                            // </FadeInOut>
                             :
-                            <div className="dropdown-menu-wrapper">
-                                <BounceInUp inCondition={this.state.isShowMenu}>
-                                    <ul className="dropdown-menu">
-                                        <li>
-                                            <Link to="/myPosts">
-                                                <div className="icon-btn"><i className="icon icon-pencil" /></div>
-                                                我的貼文
-                                            </Link> 
-                                        </li>
-                                        <li>
-                                            <Link to="/myFavorites">
-                                                <div className="icon-btn"><i className="icon icon-heart" /></div>
-                                                我的關注
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="#">
-                                                <div className="icon-btn"><i className="icon icon-user" /></div>
-                                                帳號設定
-                                            </Link>
-                                        </li>
-                                        <hr className="hr-line-style1" />
-                                        <li>
-                                            <div onClick={() => this.showLogoutDialog()}>
-                                                <div className="icon-btn"><i className="icon icon-logout" /></div>登出                
-                                            </div>
-                                        </li>           
-                                    </ul>
-                                </BounceInUp>  
+                            <div className="menu">
+                                <DropdownMenu isShowMenu={this.state.isShowMenu}>
+                                    {
+                                        items.map((item, index) => (
+                                            <MenuItem
+                                                index={index}
+                                                itemType={item.itemType}
+                                                linkTo={item.linkTo || null}
+                                                clickHandler={item.clickHandler || null}
+                                                hasIcon={item.hasIcon}
+                                                itemIcon={item.itemIcon || null}
+                                                itemText={item.itemText || null}
+                                                divider={item.divider}
+                                            />
+                                        ))
+                                    }
+                                </DropdownMenu>
                             </div>
                         }
                     </OnBlurListener>

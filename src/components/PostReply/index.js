@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -13,6 +13,7 @@ import './postReply.css';
 const mapStateToProps = state => ({ 
     dialog: state.dialog,
     member: state.member,
+    post: state.post,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     showDialog: showDialog,
@@ -27,19 +28,20 @@ class PostReply extends Component {
             orderByAscend: true
         };
     }
-    // componentWillReceiveProps (nextProps) {
-    //     if (nextProps.postCuid && (nextProps.postCuid !== this.props.postCuid)) {
-    //         this.fetchMessages(nextProps.postCuid);
-    //     }
-    // }
-    componentDidMount () {
-        if (this.props.postCuid) {
-            this.fetchMessages(this.props.postCuid);
+    componentWillReceiveProps (nextProps) {
+        // 我怕componentDidMount的時候redux prop尚未更新
+        if (nextProps.post.cuid && (nextProps.post.cuid !== this.props.post.cuid)) {
+            this.fetchMessages(nextProps.post.cuid);
         }
     }
-    fetchMessages (postCuid) {
+    // componentDidMount () {
+    //     if (this.props.post.cuid) {
+    //         this.fetchMessages(this.props.post.cuid);
+    //     }
+    // }
+    fetchMessages (cuid) {
         messageAPI
-            .getMessages(postCuid)
+            .getMessages(cuid)
             .then((res) => {
                 if (res.status === 200) {
                     this.setState({messages: res.data.messages});
@@ -75,7 +77,7 @@ class PostReply extends Component {
     }
     sendMsg (confirmValue) {
         const newMessage = {
-            postCuid: this.props.postCuid,
+            postCuid: this.props.post.cuid,
             member: {
                 cuid: this.props.member.cuid,
                 name: this.props.member.name,
@@ -104,7 +106,7 @@ class PostReply extends Component {
         return (
             <div className="postReply-wrapper u-expandMargin">
                 <LeaveMsg
-                    postAuthor={this.props.postAuthor}
+                    postAuthor={this.props.post.author}
                     openMsgDialog={(name) => this.openMsgDialog(name)}
                 />
                 <div className="message-info postReply_inner-padding u-padding-t-8 u-padding-b-8">
@@ -137,6 +139,9 @@ class PostReply extends Component {
 }
 
 PostReply.propTypes = {
-
+    post: PropTypes.shape({
+        cuid: PropTypes.string,
+        author: PropTypes.object
+    }),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PostReply);

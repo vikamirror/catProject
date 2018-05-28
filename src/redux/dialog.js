@@ -2,6 +2,9 @@ const SHOW_DIALOG = 'SHOW_DIALOG';
 const CLOSE_DIALOG = 'CLOSE_DIALOG';
 
 export function showDialog (config) {
+    if (!config.type || !config.title ) {
+        return;
+    }
     return (dispatch) => {
         dispatch({
             type: SHOW_DIALOG,
@@ -9,12 +12,12 @@ export function showDialog (config) {
                 isShow: true,
                 type: config.type,
                 title: config.title,
-                htmlString: config.htmlString,
+                htmlString: config.htmlString || initialState.htmlString,
                 inputPlaceholder: config.inputPlaceholder || initialState.inputPlaceholder,
-                showCancelButton: config.showCancelButton,
-                cancelButtonText: config.cancelButtonText,
-                showConfirmButton: config.showConfirmButton,
-                confirmButtonText: config.confirmButtonText,
+                showCancelButton: config.showCancelButton || initialState.showCancelButton,
+                cancelButtonText: config.cancelButtonText || initialState.cancelButtonText,
+                showConfirmButton: config.showConfirmButton || initialState.showConfirmButton,
+                confirmButtonText: config.confirmButtonText || initialState.confirmButtonText,
                 onClickCancelButton: config.onClickCancelButton || initialState.onClickCancelButton,
                 onClickConfirmButton: config.onClickConfirmButton || initialState.onClickConfirmButton,
                 buttonsAlign: config.buttonsAlign || initialState.buttonsAlign,

@@ -13,7 +13,8 @@ import './bootstrapGrid.css';
 import './basic.css';
 
 import store, { history } from './store';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 
 import App from './containers/App';
 
@@ -25,5 +26,5 @@ render(
     </Provider>,
     document.getElementById('root')
 );
-
-registerServiceWorker();
+unregister();
+// registerServiceWorker();

@@ -1,4 +1,11 @@
 /* ----------------
+* label
+* ----------------- */
+
+.article label{
+    margin-right: 0;
+}
+/* ----------------
 * input type="text"
 * ----------------- */
 .form input[type="text"].edit{

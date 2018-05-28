@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { bindActionCreators } from 'redux';
-// import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import { CheckBox } from '../../FormInputs';
+import { changeSpay } from '../../../redux/post';
 
-const Spay = ({ isEdit, isSpay, handleState }) => {
+const mapStateToProps = state => ({ });
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    changeSpay: changeSpay,
+}, dispatch));
+const Spay = ({isEdit, isSpay, changeSpay}) => {
     if (isEdit) {
         return (
             <div className="row">
@@ -16,7 +21,7 @@ const Spay = ({ isEdit, isSpay, handleState }) => {
                         name='isSpay'
                         isChecked={isSpay === true}
                         label='是'
-                        onChangeHandler={isSpay => handleState('isSpay', isSpay)}
+                        onChangeHandler={isSpay => changeSpay(isSpay)}
                     />
                 </div>
             </div>
@@ -30,10 +35,9 @@ const Spay = ({ isEdit, isSpay, handleState }) => {
         );
     } 
 }
-
 Spay.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     isSpay: PropTypes.bool.isRequired,
-    handleState: PropTypes.func,
+    changeSpay: PropTypes.func.isRequired,
 };
-export default Spay;
+export default connect(mapStateToProps, mapDispatchToProps)(Spay);

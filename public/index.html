@@ -4,11 +4,20 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
         <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
         <title>Cat Crush</title>
     </head>
     <body>
-        <div id="fb-root"></div>      
+        <noscript>
+            You need to enable JavaScript to run this app.
+            請允許瀏覽器使用JavaScript, 才能瀏覽此網站
+        </noscript>
+        <div id="fb-root"></div>  
+        <script>
+            window.__PRELOADED_STATE__ = INIT_STATE;
+        </script>    
         <div id="root"></div>
         <script>
             window.fbAsyncInit = () => {

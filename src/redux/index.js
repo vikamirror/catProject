@@ -6,8 +6,10 @@ import member from './member';
 import dialog from './dialog';
 import isSmallDevice from './isSmallDevice';
 import isLoading from './isLoading';
-// import post from './post';
+import post from './post';
 import postList from './postList';
+import myPosts from './myPosts';
+// import routerLocation from './routerLocation';
 
 export default combineReducers({
     routing: routerReducer,
@@ -17,6 +19,8 @@ export default combineReducers({
     isSmallDevice,
     // citySelect,
     isLoading,
-    // post,
+    post,
+    myPosts,
     postList,
+    // routerLocation
 });

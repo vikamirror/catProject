@@ -1,6 +1,29 @@
 import axios from 'axios';
 import { authHeader } from './authHeader';
 
+export function deletePost (cuid) {
+    return axios.delete(`/api/post/${cuid}`, authHeader());
+}
+
+export function updatePost (post) {
+    return axios.put(`/api/post`, {
+        cuid: post.cuid,
+        title: post.title,
+        cover: post.cover,
+        story: post.story,
+        charactor: post.charactor,
+        city: post.city,
+        district: post.district,
+        age: post.age,
+        gender: post.gender,
+        isSpay: post.isSpay,
+        requirements: post.requirements,
+        remark: post.remark,
+        contact: post.contact,
+        contactInfo: post.contactInfo
+    }, authHeader());
+}
+
 export function getFavoritePosts () {
     return axios.get(`/api/favoritePosts?${+Date.now()}`, authHeader());
 }

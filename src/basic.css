@@ -303,14 +303,6 @@ ul {
     padding: 0;
     list-style: none;
 }
-
-ul li { 
-    /* display: inline-block;  */
-    /* margin: 8px; */
-    /* margin-top: 8px; */
-    /* margin-bottom: 8px; */
-    padding: 10px 16px;
-}
   
 /* --------------
 * Button
@@ -330,9 +322,9 @@ ul li {
     border: 0;
     border-radius: 5px;
     outline: 0;
-    overflow: hidden;
+    /* overflow: hidden; */
     /* btn文字 */
-    font-size: 14px;
+    font-size: inherit;
     text-align: center;
     line-height: 32px;
     text-decoration: none;
@@ -424,8 +416,8 @@ ul li {
 
 .icon-btn{
     display: inline-block;
-    width: 32px;
-    height: 32px;
+    /* width: 32px; */
+    /* height: 32px; */
     font-size: 24px;
     line-height: 16px;
 }

@@ -2,31 +2,36 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+// import { Route, Link, Switch } from "react-router-dom";
+// import { ConnectedRouter } from 'react-router-redux';
 
 import Title from '../../../../components/PostBody/Title';
-import DateAndAuthor from '../../../../components/PostBody/DateAndAuthor';
+// import DateAndAuthor from '../../../../components/PostBody/DateAndAuthor';
 import Charactor from '../../../../components/PostBody/Charactor';
-import NewPost from './NewPost';
-import * as postAPI from '../../../../fetch/postAPI';
+// import NewPost from './NewPost';
+// import * as postAPI from '../../../../fetch/postAPI';
 import PostPreview from '../../../../components/PostBody/PostPreview';
-import Post from '../Home/Post';
-import { addOnePost } from '../../../../redux/postList';
+// import Post from '../Home/Post';
+// import PostModal from '../../../../components/PostModal';
+import { fetchMyPosts } from '../../../../redux/myPosts';
 
 import './myPosts.css';
 
 const mapStateToProps = state => ({ 
-    member: state.member
+    member: state.member,
+    myPosts: state.myPosts,
 });
-const mapDispatchToProps = dispatch => (bindActionCreators({ 
-    addOnePost: addOnePost,
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    fetchMyPosts: fetchMyPosts,
 }, dispatch));
 class MyPosts extends Component{
     constructor () {
         super();
         this.state = {
-            myPosts: [],
-            isShowNewPostWrapper: false,
+            shouldRender: false,
+            // myPosts: [],
+            // isShowNewPostWrapper: false,
         }
     }
     componentDidMount () {
@@ -34,78 +39,55 @@ class MyPosts extends Component{
             this.props.history.push("/");
             return;
         }
-        postAPI
-            .getPostsByAuthor(this.props.member.cuid)
-            .then((res) => {
-                if (res.status === 200) {
-                    this.setState({myPosts: [...res.data.posts]});
-                }
-            })
-            .catch(err => console.error(err.response.data));
-    }
-    onFocusNewPost () {
-        this.setState({isShowNewPostWrapper: true});
-    }
-    handleClose () {
-        this.setState({isShowNewPostWrapper: false});
-    }
-    addOnePost (newPost) {
-        postAPI
-            .createPost(newPost)
-            .then((res) => {
-                if (res.status === 200) {
-                    newPost = res.data.post;
-                    this.setState({myPosts: [newPost, ...this.state.myPosts]});
-                    this.props.addOnePost(newPost);
-                }
-            })
-            .catch(err => console.error(err.response.data));
+        this.setState({shouldRender: true});
+        this.props.fetchMyPosts(this.props.member.cuid);
     }
     render () {
+        if (!this.state.shouldRender) {
+            return '';
+        }
         return (
-            <Router>
-                <div>
-                    <div className="myPosts-wrapper">
-                        <div className="u-margin-header u-padding-b-40">
-                            <div className="container">
-                                <div className="fake-new-post form u-margin-t-40 u-margin-b-40">
-                                    <div className="postWrapper" onClick={() => this.onFocusNewPost()}>
-                                        <Title 
-                                            isEdit={false} 
-                                            title={"新文章"}
-                                        />
-                                        <hr className="hr-line-style2" />
-                                        <DateAndAuthor 
-                                            isEdit={false}
-                                            author={this.props.member}
-                                            dateAdded={new Date()}
-                                            lastModify={''} 
-                                        /> 
-                                        <hr className="hr-line-style1" />
-                                        <Charactor 
-                                            isEdit={false} 
-                                            charactor="寫下貓的故事....."
-                                        />
-                                    </div>
-                                </div>
-                                {
-                                    this.state.myPosts.map((post, index) => (
-                                        <PostPreview key={index} post={post} />
-                                    ))
-                                }
+            <div className="myPosts-wrapper">
+                <div className="u-margin-header u-padding-b-40">
+                    <div className="u-padding-t-16">
+                        <div className="fake-new-post form u-margin-t-40 u-margin-b-40">
+                            <div className="postWrapper">
+                                <Link to={{
+                                    pathname: "/myPosts/newPost",
+                                    state: {isShowNewPostModal: true},
+                                }}>
+                                    <Title 
+                                        isEdit={false}
+                                        title="新文章"
+                                    />
+                                    <hr className="hr-line-style2" />
+                                    {/* <DateAndAuthor 
+                                        isEdit={false}
+                                        author={this.props.member}
+                                        dateAdded={new Date().toISOString()}
+                                        lastModify={new Date().toISOString()}
+                                    /> 
+                                    <hr className="hr-line-style1" /> */}
+                                    <Charactor 
+                                        isEdit={false} 
+                                        charactor=""
+                                    />
+                                </Link>
                             </div>
                         </div>
-                        {   
-                            this.state.isShowNewPostWrapper ? 
-                                <NewPost 
-                                    handleClose={() => this.handleClose()}
-                                    addOnePost={(newPost) => this.addOnePost(newPost)}
-                                /> : ''
+                        {
+                            this.props.myPosts.map((post, index) => (
+                                <PostPreview 
+                                    key={index}
+                                    post={post}
+                                    currentPath="/myPosts"
+                                    updateMyPost={(updatedPost) => this.updateMyPost(updatedPost)}
+                                />
+                            ))
                         }
                     </div>
-                    <Route exact path={`/post/:cuid`} component={Post} />;
                 </div>
-            </Router>
+            </div>
         );
     }
 }

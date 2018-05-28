@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Header from './Header';
-import { fetchMember } from '../../redux/member';
+import { fetchMember, logout } from '../../redux/member';
 import { fetchPosts } from '../../redux/postList';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
@@ -12,6 +12,7 @@ import Routes from './routes';
 import Dialog from './Dialog';
 import ScrollWrapper from '../../components/ScrollWrapper';
 import Loading from './Loading';
+import * as sockets from '../../sockets/loginOrOut';
 
 import './app.css';
 
@@ -23,6 +24,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     fetchPosts: fetchPosts,
     smallDeviceTrue: smallDeviceTrue,
     smallDeviceFalse: smallDeviceFalse,
+    logout: logout,
 },dispatch));
 
 class App extends Component {
@@ -35,13 +37,33 @@ class App extends Component {
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
-        this.props.fetchPosts();
-        this.isSmallDevice();
-    }
-    componentWillReceiveProps (nextProps) {
-        if (nextProps.location.pathname !== this.props.location.pathname) {
-            this.setBackground(nextProps.location.pathname);
+        if (!window.__PRELOADED_STATE__) {
+            this.props.fetchPosts();
         }
+        this.isSmallDevice();
+        this.tologoutListener();
+    }
+    componentDidUpdate (prevProps, prevState) {
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.setBackground(this.props.location.pathname);
+        }
+        if (this.props.member.cuid && (this.props.member.cuid !== prevProps.member.cuid)) {
+            this.logoutEmitter(this.props.member.cuid);
+            this.loginEmitter(this.props.member.cuid);
+        }
+    }
+    logoutEmitter (cuid) {
+        sockets.logoutAllTheOtherDevicesEmitter(cuid);
+    }
+    loginEmitter (cuid) {
+        sockets.loginEmitter(cuid);
+    }
+    tologoutListener () {
+        const logoutAllTheOtherDevicesHandler = () => {
+            this.props.logout();
+            this.props.history.push('/');
+        };
+        sockets.logoutAllTheOtherDevicesListener(logoutAllTheOtherDevicesHandler);
     }
     setBackground (pathname) {
         switch (pathname) {
@@ -72,12 +94,11 @@ class App extends Component {
             <div id="app">
                 <div id="app_bg" className={this.state.backgroundClass}></div>
                 <Header shoudHeaderColored={this.state.isScroll} />
-                <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)}>
-                    <Routes />
+                <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)} wrapperId="app">
+                    <Routes location={this.props.location} />
                 </ScrollWrapper>
                 <Loading />
                 <Dialog />
-                {/* <FullPageDialog /> */}
             </div>
         );
     }

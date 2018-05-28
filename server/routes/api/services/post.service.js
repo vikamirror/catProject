@@ -2,7 +2,6 @@ import Post from '../models/post';
 import Member from '../models/member';
 import cuid from 'cuid';
 import sanitizeHtml from 'sanitize-html';
-import axios from 'axios';
 
 /**
  * 會員發新文章
@@ -34,13 +33,12 @@ export function createPost(req, res) {
             res.status(400).json({
                 message: '必填欄位為undefined或空值'
             });
+        return;
     }
     const newPost = new Post(req.body);
     // sanitizeHtml:避免XSS攻擊
     newPost.title = sanitizeHtml(newPost.title);
-    newPost.cover = sanitizeHtml(newPost.cover, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
-    });
+    newPost.cover = sanitizeHtml(newPost.cover);
     // newPost.story = sanitizeHtml(newPost.story, {
     //     allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
     // });
@@ -66,14 +64,14 @@ export function createPost(req, res) {
             });
         })
         .catch(err => {
-            res.status(500).json({message: `api/services/post createPost錯誤: ${err}`});
+            res.status(500).json({message: `api/services/post createPost錯誤`});
             console.log(err);
         });
 }
 
 export function getPosts(req, res) {
     Post
-        .find({}, {_id:0, __v:0}) // 不需要的欄位
+        .find({"isDeleted": false}, {_id:0, __v:0}) // 不需要的欄位
         .sort({lastModify: -1}) // 最近更新文章的排在前面
         .then((posts) => {
             res.status(200).json({
@@ -83,6 +81,62 @@ export function getPosts(req, res) {
         .catch(err => {
             res.status(500);
             console.log(err);
+        });
+}
+
+export function updatePost (req, res) {
+    if (!req.body.cuid) {
+        res.status(400).json({
+            message: '缺少post.cuid'
+        });
+        return;
+    }
+    if (!req.body.title || 
+        !req.body.cover ||
+        !req.body.charactor ||
+        !req.body.city ||
+        !req.body.district ||
+        !req.body.age ||
+        !req.body.gender ||
+        !req.body.remark ||
+        !req.body.contact ||
+        !req.body.contactInfo) {
+            res.status(400).json({
+                message: '必填欄位為undefined或空值'
+            });
+            return;
+    };
+    const postForUpdate = {
+        "title": req.body.title,
+        "cover": req.body.cover,
+        // "story": req.body.story,
+        "charactor": req.body.charactor,
+        "city": req.body.city,
+        "district": req.body.district,
+        "age": req.body.age,
+        "gender": req.body.gender,
+        "requirements": req.body.requirements,
+        "remark": req.body.remark,
+        "contact": req.body.contact,
+        "contactInfo": req.body.contactInfo,
+        "lastModify": Date.now()
+    };
+    Post
+        .findOneAndUpdate(
+            {"cuid": req.body.cuid}, 
+            {$set: postForUpdate},
+            {new: true, _id: false, __v: false}, // 這樣才會回傳update後的
+        )
+        .then((updatedPost) => {
+            res.status(200).json({
+                post: updatedPost,
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                message: 'updatePost失敗'
+            });
+            console.log(`updatePost失敗,原因:"${err}`);
         });
 }
 
@@ -98,12 +152,22 @@ export function getOnePost(req, res) {
         return;
     }
     Post
-        .findOne({ cuid: req.params.cuid }, {_id:0, __v:0})
+        .findOne({
+            "cuid": req.params.cuid,
+            "isDeleted": false,
+        }, {_id:0, __v:0})
         .then((post) => {
-            // console.log('server getOnePost:', post);
-            res.status(200).json({
-                post: post
-            });
+            if (!post) {
+                res.status(200).json({
+                    result: 0,
+                    message: '此文章已被刪除'
+                });
+                return;
+            } else {
+                res.status(200).json({
+                    post: post
+                });
+            }
         })
         .catch(err => {
             res.status(500);
@@ -117,7 +181,10 @@ export function getOnePost(req, res) {
  */
 export function getPostsByAuthor (req, res) {
     Post
-        .find({"author.cuid": req.params.cuid}, {_id:0, __v:0})
+        .find({
+            "author.cuid": req.params.cuid,
+            "isDeleted": false,
+        }, {_id:0, __v:0})
         .sort({"dateAdded": -1})
         .then((posts) => {
             res.status(200).json({
@@ -174,4 +241,27 @@ export async function getFavoritePosts (req, res) {
         res.status(500).json({message: 'server getFavoritePosts Error'});
         console.error('server/post.service/getFavoritePosts/await Error:', err);
     }
+}
+
+/**
+ * 刪除一個Post
+ * parameter: post.cuid
+ */
+export function deletePost (req, res) {
+    if (!req.params.cuid) {
+        res.status(400).json({message: '無Post.cuid'});
+        return;
+    }
+    Post
+        .updateOne(
+            {"cuid": req.params.cuid}, 
+            {$set: {"isDeleted": true}}
+        )
+        .then(() => {
+            res.status(200).json({message: '刪除成功'});
+        })
+        .catch(err => {
+            res.status(500).json({message: 'server deletePost Error'});
+            console.error('server/post.service/deletePost Error:', err);
+        });
 }

@@ -1,0 +1,25 @@
+.my_class .mce-content-body {
+    background: transparent;
+}
+.ql-container.ql-snow{
+    border: none;
+    font-size: 16px;
+}
+
+.editor_wrapper_edit #charactor_editor.quill .ql-container.ql-snow{
+    height: 480px;
+}
+@media (max-width: 768px) {
+    .editor_wrapper_edit #charactor_editor.quill .ql-container.ql-snow{
+        height: 136px;
+    }
+}
+
+.ql-preview::after{
+    content: '\e801';
+    font-family: fontello;
+}
+
+.ql-snow.ql-toolbar .ql-preview{
+    outline: 0;
+}

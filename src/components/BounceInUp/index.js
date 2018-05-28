@@ -22,6 +22,7 @@ const BounceInUp = ({inCondition, enterMilliseconds, children}) => (
 			<div style={{
                 ...defaultStyles,
 				...transitionStyles[status]}}
+				className="bounceInUp-wrapper"
 			>
 				{children}
 			</div>

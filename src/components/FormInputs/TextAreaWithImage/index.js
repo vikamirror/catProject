@@ -1,13 +1,83 @@
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
+// import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createImagePlugin from 'draft-js-image-plugin';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
 
 import * as imgurAPI from '../../../fetch/imgurAPI';
 import { loadingTrue, loadingFalse } from '../../../redux/isLoading';
 
+import 'draft-js-image-plugin/lib/plugin.css';
+import 'draft-js-linkify-plugin/lib/plugin.css';
 import './textAreaWithImage.css';
+
+const imagePlugin = createImagePlugin();
+const linkifyPlugin = createLinkifyPlugin();
+const plugins = [imagePlugin, linkifyPlugin];
+
+const ImgUploadBtn = ({imgUploadBtnPositionTop, onChangeHandler, isEditing}) => {
+    let opacityValue = isEditing ? 1 : 0;
+    return (
+        <div className="position-control__tooltip" style={{top: imgUploadBtnPositionTop, opacity: opacityValue, transition: 'opacity 0.2s'}}>
+            <div className="tooltip">
+                <div className="img-upload-btn u-push-right">
+                    <button className="btn button-circle circle">
+                        <div className="icon-btn"><i className="icon icon-picture" /></div>
+                    </button>
+                    <input type="file" capture="camera" accept="image/*"
+                        onChange={(imgEvt) => onChangeHandler(imgEvt)}
+                    />
+                </div>
+                <span className="tooltiptext">插入圖片</span>
+            </div>
+        </div>
+    );
+};
+
+const initialState = {
+    "entityMap": {
+        "0": {
+            "type": "IMAGE",
+            "mutability": "IMMUTABLE",
+            "data": {
+                "src": "/testImages/cat02.jpg"
+            }
+        }
+    },
+    "blocks": [{
+        "key": "9gm3s",
+        "text": "輸入說明：您可在此輸入文字, 輸入時右側會出現插入圖片的按鈕",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }, {
+        "key": "ov7r",
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 0
+        }],
+        "data": {}
+    }, {
+        "key": "e23a8",
+        "text": "以上為範例圖片。您可插入圖片, 或貼上網址路徑",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }]
+};
 
 const mapStateToProps = state => ({
     isLoading: state.isLoading,
@@ -21,51 +91,57 @@ class TextAreaWithImage extends Component {
     constructor () {
         super();
         this.state = {
-            inlineControlTop: 0
+            isEditing: false,
+            enableUploadImg: false,
+            imgUploadBtnPositionTop: 8,
+            editorState: EditorState.createEmpty(),
         };
     }
-    componentDidMount () {
-        this.onListenFileInput();
-    }
-    onListenFileInput () {
-        const imgUploadNode = findDOMNode(this.refs.img_upload);
-        imgUploadNode.addEventListener("change", () => {
-            if (imgUploadNode.files && imgUploadNode.files[0]) {
-                // console.log(imgUploadNode.files[0]);
-                this.props.loadingTrue();
-                imgurAPI.uploadImgur(imgUploadNode.files[0])
-                        .then((res) => { 
-                            const domImg = document.createElement("img"); 
-                            domImg.src = res.data.data.link;
-                            findDOMNode(this.refs.div_textAreaWithImage).appendChild(domImg);
-                            this.props.loadingFalse();
-                            setTimeout(() => {
-                                const domBr1 = document.createElement("br");
-                                const domBr2 = document.createElement("br");
-                                findDOMNode(this.refs.div_textAreaWithImage).appendChild(domBr1);
-                                findDOMNode(this.refs.div_textAreaWithImage).appendChild(domBr2);
-                            },1000);
-                        })
-                        .catch(err => {
-                            console.log('imgurAPI.uploadImgur, error: ', err.message);
-                            this.props.loadingFalse();
-                        });
+    changeHandler (editorState) {
+        this.setState({editorState: editorState});
+        if (document.getElementById("draft-wrapper")) {
+            let distanceFromClientTop = document.getElementById("draft-wrapper").getBoundingClientRect().top;
+            // console.log('distanceFromClientTop:', distanceFromClientTop);
+            if (distanceFromClientTop < 56) {
+                this.setState({imgUploadBtnPositionTop: 56 - distanceFromClientTop + 16});
+            } else {
+                this.setState({imgUploadBtnPositionTop: 8});
             }
-        });
+        }
     }
-    onChangeInput () {
-        const textareaHeight = findDOMNode(this.refs.div_textAreaWithImage).clientHeight;
-        // const tooltipTopPosition = textareaNode.childElementCount * 32;
-        this.setState({inlineControlTop: textareaHeight});
+    focusHandler (e) {
+        this.editor.focus();
+        this.setState({isEditing: true});
     }
-    setContent (evt) {
-        const htmlString = this.refs.div_textAreaWithImage.innerHTML;
-        // console.log('htmlString:',htmlString);
-        //const content = htmlString.replace(/<[^>]+>/g, '');
-        // /<img[^\>]+\>/g 只捕捉 img標籤的部分
-        const content = htmlString.replace(/(style="[^>]+)|(class="[^>]+)/g, ''); // 拿掉任何style, class
-        console.log('content:', content);
-        this.props.setContentHandler(content);
+    onBlurHandler() {
+        this.setState({isEditing: false});
+        this.saveContent();
+    }
+    imgUploadHandler (imgEvt) {
+        const imgForUpload = imgEvt.target.files;
+        if (imgForUpload && imgForUpload.length === 1) {
+            this.props.loadingTrue();
+            
+            imgurAPI
+                .uploadImgur(imgForUpload[0])
+                .then((imgurRes) => { 
+                    const imgLink = imgurRes.data.data.link;
+                    const newEditorState =  imagePlugin.addImage(this.state.editorState, imgLink);
+                    this.setState({ editorState: newEditorState });
+                    this.props.loadingFalse();
+                })
+                .catch(err => {
+                    console.log('imgurAPI.uploadImgur, error: ', err.message);
+                    this.props.loadingFalse();
+                });
+        };
+    }
+    saveContent () {
+        const contentState = this.state.editorState.getCurrentContent();
+        const stringifyContent = JSON.stringify(convertToRaw(contentState));
+        
+        // console.log('content:', JSON.stringify({content: content}));
+        this.props.setContentHandler(stringifyContent);
     }
     render () {
         return (
@@ -73,24 +149,19 @@ class TextAreaWithImage extends Component {
                 <div className="u-clearfix">
                     <label className="font-weight-5 u-push-left" htmlFor="img-upload-btn-charactor">{this.props.label}</label>
                 </div>
-                <div
-                    ref="div_textAreaWithImage"
-                    className="textarea edit"
-                    placeholder={this.props.placeholder}
-                    contentEditable="true"
-                    dangerouslySetInnerHTML={{ __html:this.props.defaultContent}}
-                    onInput={ () => this.onChangeInput() }
-                    onBlur={ (evt) => this.setContent(evt) }
-                />
-                <div className="inline-control" style={{top: this.state.inlineControlTop}}>
-                    <div className="tooltip">
-                        <div className="img-upload-btn u-push-right" id="img-upload-btn-charactor">
-                            <button className="btn">
-                                <div className="icon-btn"><i className="icon icon-picture" /></div>
-                            </button>
-                            <input type="file" ref="img_upload" />
-                        </div>
-                        <span className="tooltiptext">插入圖片</span>
+                <div id="draft-wrapper">
+                    <div className="editor" onClick={(e) => this.focusHandler(e)} onBlur={() => this.onBlurHandler()}>
+                        <Editor
+                            editorState={this.state.editorState}
+                            plugins={plugins}
+                            onChange={(editorState) => this.changeHandler(editorState)}
+                            ref={(element) => { this.editor = element; }}
+                        />
+                        <ImgUploadBtn 
+                            imgUploadBtnPositionTop={this.state.imgUploadBtnPositionTop} 
+                            onChangeHandler={(imgEvt) => this.imgUploadHandler(imgEvt)}
+                            isEditing={this.state.isEditing} 
+                        />
                     </div>
                 </div>
             </div>

@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { bindActionCreators } from 'redux';
-// import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import { RadioButton } from '../../FormInputs';
+import { changeGender } from '../../../redux/post';
 
+const mapStateToProps = state => ({
+    post: state.post,
+});
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    changeGender: changeGender,
+}, dispatch));
 class Gender extends Component {
     setGender (evt) {
-        // this.props.inputPost({
-        //     ...this.props.post,
-        //     gender: evt.target.value //只更新gender的部分
-        // });
-        this.props.handleState('gender', evt.target.value);
+        // this.props.handleState('gender', evt.target.value);
+        this.props.changeGender(evt.target.value);
     }
     render () {
         const {isEdit, gender} = this.props;
@@ -53,6 +57,6 @@ class Gender extends Component {
 Gender.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     gender: PropTypes.string.isRequired,
-    handleState: PropTypes.func,
+    changeGender: PropTypes.func.isRequired,
 };
-export default Gender;
+export default connect(mapStateToProps, mapDispatchToProps)(Gender);

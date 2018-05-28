@@ -5,14 +5,16 @@ import { connect } from 'react-redux';
 
 import CitySelect from '../../FormInputs/CitySelect';
 import DistrictSelect from '../../FormInputs/DistrictSelect';
-// import { inputPost } from '../../../redux/post';
-// import OnBlurListener from '../../OnBlurListener';
+import { changeCity, changeDistrict } from '../../../redux/post';
 import getDistricts from '../../../fetch/cityCodes';
 
 const mapStateToProps = state => ({
-    citySelect: state.citySelect,
+    post: state.post,
 });
-const mapDispatchToProps = dispatch => (bindActionCreators({ }, dispatch));
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    changeCity: changeCity,
+    changeDistrict: changeDistrict,
+}, dispatch));
 class CityAndDistrict extends Component {
     constructor () {
         super();
@@ -41,7 +43,8 @@ class CityAndDistrict extends Component {
     onChangeCity (city) {
         if (city !== this.props.city) {
             this.updateDistrictSelectOptions(city);
-            this.props.handleState('city', city);
+            // this.props.handleState('city', city);
+            this.props.changeCity(city);
             setTimeout(() => {
                 this.onChangeDistrict(this.state.districts[0]);
             }, 300);
@@ -49,7 +52,8 @@ class CityAndDistrict extends Component {
     }
     onChangeDistrict (district) {
         if (district !== this.props.district) {
-            this.props.handleState('district', district);
+            // this.props.handleState('district', district);
+            this.props.changeDistrict(district);
         }
     }
     render () {
@@ -101,6 +105,7 @@ CityAndDistrict.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     city: PropTypes.string.isRequired,
     district: PropTypes.string.isRequired,
-    handleState: PropTypes.func,
+    changeCity: PropTypes.func.isRequired,
+    changeDistrict: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CityAndDistrict);

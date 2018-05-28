@@ -5,15 +5,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { showDialog } from '../../../redux/dialog';
-// import { inputPost } from '../../../redux/post';
+import { changeTitle } from '../../../redux/post';
 
-const mapStateToProps = state => ({ 
-    dialog: state.dialog,
+const mapStateToProps = state => ({
+    dialog: state.dialog
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     showDialog: showDialog,
+    changeTitle: changeTitle,
 }, dispatch));
-
 class Title extends Component {
     checkTitle (evt) {
         const inputTitle = evt.target.value;
@@ -40,7 +40,8 @@ class Title extends Component {
             });
         } 
         else {
-            this.props.handleState('title', inputTitle);
+            // this.props.handleState('title', inputTitle);
+            this.props.changeTitle(inputTitle);
         }
     }
     render () {
@@ -64,9 +65,9 @@ class Title extends Component {
 }
 
 Title.proptypes = {
+    handleState: PropTypes.func,
     isEdit: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
-    handleState: PropTypes.func,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Title);

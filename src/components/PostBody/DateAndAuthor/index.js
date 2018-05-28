@@ -8,7 +8,9 @@ import Avatar from '../../Avatar';
 
 import './dateAndAuthor.css';
 
-const DateAndAuthor = ({author, isEdit, dateAdded, lastModify}) => {
+// const mapStateToProps = state => ({ });
+// const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
+const DateAndAuthor = ({isEdit, author, dateAdded, lastModify}) => {
     if (isEdit) {
         return '';
     } else {
@@ -18,8 +20,8 @@ const DateAndAuthor = ({author, isEdit, dateAdded, lastModify}) => {
                 <div className="info">
                     <span className="font-size-18 font-weight-6 name">{author.name}</span>
                     <div className="date font-lightGrey">
-                        <span>發文日期:{formatDateTime(dateAdded)}</span>
-                        <span>{lastModify !== dateAdded ? lastModify : ''}</span>
+                        <span className="u-margin-r-16">發文日期: {formatDateTime(dateAdded)}</span>
+                        <span className="u-margin-r-16">{lastModify !== dateAdded ? `更新日期: ${formatDateTime(lastModify)}` : ''}</span>
                     </div>
                 </div>
             </div>
@@ -29,8 +31,12 @@ const DateAndAuthor = ({author, isEdit, dateAdded, lastModify}) => {
 
 DateAndAuthor.propTypes = {
     isEdit: PropTypes.bool.isRequired,
-    author: PropTypes.object.isRequired,
+    author: PropTypes.shape({
+        avatar: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+    }),
     dateAdded: PropTypes.any,
     lastModify: PropTypes.any
 };
+// export default connect(mapStateToProps, mapDispatchToProps)(DateAndAuthor);
 export default DateAndAuthor;

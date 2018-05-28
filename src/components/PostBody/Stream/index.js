@@ -9,32 +9,43 @@ import { isContainedInArray } from '../../../Utils/variableCheck';
 
 import './stream.css';
 
-const mapStateToProps = state => ({member: state.member});
+const mapStateToProps = state => ({
+    member: state.member,
+    post: state.post,
+});
 const mapDispatchToProps = dispatch => (bindActionCreators({
     addFavoritePost: addFavoritePost,
     removeFavoritePost: removeFavoritePost,
 }, dispatch));
-const Stream = ({member, postCuid, author, addFavoritePost, removeFavoritePost}) => {
-    if (!member.cuid || !postCuid || member.cuid === author.cuid) {
+const Stream = ({member, post, addFavoritePost, removeFavoritePost}) => {
+    if (!member.cuid || !post.cuid) {
         return '';
     }
-    const isFavorite = isContainedInArray(member.favoritePosts, 'postCuid', postCuid);
+    const isFavorite = isContainedInArray(member.favoritePosts, 'postCuid', post.cuid);
+    const isAuthor = member.cuid === post.author.cuid ? true : false;
+    const IsLike = () => (
+        isFavorite ? <UndoLikeButton removeFavoritePost={() => removeFavoritePost(post.cuid)} isShowText={true} />
+                     :
+                     <LikeButton addFavoritePost={() => addFavoritePost(post.cuid)} isShowText={true} />
+    );
     return (
         <div className="stream u-text-right line-height-32">
-        {
-            isFavorite ?
-            <UndoLikeButton removeFavoritePost={() => removeFavoritePost(postCuid)} isShowText={true} />
-            :
-            <LikeButton addFavoritePost={() => addFavoritePost(postCuid)} isShowText={true} />
-        }
+        { isAuthor ? '' : <IsLike /> }
         </div>
     );
 };
 
 Stream.propTypes = {
-    member: PropTypes.object.isRequired,
-    postCuid: PropTypes.string.isRequired,
-    author: PropTypes.object.isRequired,
+    member: PropTypes.shape({
+        cuid: PropTypes.string,
+        favoritePosts: PropTypes.array,
+    }),
+    post: PropTypes.shape({
+        cuid: PropTypes.string,
+        author: PropTypes.shape({
+            cuid: PropTypes.string,
+        }),
+    }),
     addFavoritePost: PropTypes.func.isRequired,
     removeFavoritePost: PropTypes.func.isRequired,
 };

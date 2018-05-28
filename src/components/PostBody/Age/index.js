@@ -5,18 +5,22 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { showDialog } from '../../../redux/dialog';
+import { changeAge } from '../../../redux/post';
 
 const mapStateToProps = state => ({ 
     dialog: state.dialog,
+    post: state.post,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     showDialog: showDialog,
+    changeAge: changeAge,
 }, dispatch));
 class Age extends Component {
     setAge (e) {
         const inputAge = e.target.value;
         if (inputAge) {
-            this.props.handleState('age', inputAge);
+            // this.props.handleState('age', inputAge);
+            this.props.changeAge(inputAge);
         } else {
             this.props.showDialog({
                 type: 'warning',
@@ -62,6 +66,6 @@ class Age extends Component {
 Age.propTypes = {
     isEdit: PropTypes.bool.isRequired,
     age: PropTypes.string.isRequired,
-    handleState: PropTypes.func,
+    changeAge: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Age);

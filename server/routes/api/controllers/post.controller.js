@@ -14,6 +14,9 @@ router.use((req, res, next) => {
    next();
 });
 
+// 會員更新自己的一篇文章
+router.put('/post', authToken, PostService.updatePost);
+
 // 會員發新文章
 router.post('/post', authToken, PostService.createPost);
 
@@ -28,6 +31,9 @@ router.get('/posts/:cuid', authToken, PostService.getPostsByAuthor);
 
 // 取得該會員喜歡的所有文章
 router.get('/favoritePosts', authToken, PostService.getFavoritePosts);
+
+// 會員自己刪除一篇文章
+router.delete('/post/:cuid', authToken, PostService.deletePost);
 
 export default router;
 

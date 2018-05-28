@@ -1,58 +1,94 @@
 import React, {Component} from 'react';
 import Helmet from 'react-helmet';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
+// import { ConnectedRouter } from 'react-router-redux'; // server/client都可使用
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import LazyLoad from 'react-lazy-load';
 
 import PostCover from './PostCover';
-import Post from './Post';
-// import { fetchPosts } from '../../../../redux/postList';
+import * as sockets from '../../../../sockets/post';
+import { addPostList, updatePostList, deletePostList } from '../../../../redux/postList';
 
 import './home.css';
 
 const mapStateToProps = state => ({ postList: state.postList });
-const mapDispatchToProps = dispatch => (bindActionCreators({ }, dispatch));
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    addPostList: addPostList,
+    updatePostList: updatePostList,
+    deletePostList: deletePostList,
+}, dispatch));
 class Home extends Component {
-    handleModalClose () {
-        this.props.routing.location.push('/');
+    componentDidMount () {
+        this.toAddPostListListener();
+        this.toUpdatePostListListener();
+        this.toDeletePostListListener();
+    }
+    toAddPostListListener () {
+        const addPostListBroadcastHandler = (newPost) => {
+            this.props.addPostList(newPost);
+        };
+        sockets.addPostListBroadcastListener(addPostListBroadcastHandler);
+    }
+    toUpdatePostListListener () {
+        const updatePostListBroadcastHandler = (updatedPost) => {
+            this.props.updatePostList(updatedPost);
+        }
+        sockets.updatePostListBroadcastListener(updatePostListBroadcastHandler);
+    }
+    toDeletePostListListener () {
+        const deletePostListBroadcastHandler = (postCuid) => {
+            this.props.deletePostList(postCuid);
+        }
+        sockets.deletePostListBroadcastListener(deletePostListBroadcastHandler);
     }
     render () {
         return (
-            <Router>
-                <div>
-                    <div>
-                        <Helmet>
-                            <title>Home</title>
-                        </Helmet>
-                        <div className="u-margin-header">
-                            <div className="container home-container">
-                                <article className="articles">
-                                {
-                                    this.props.postList.map((post, index) => (
-                                        <PostCover
-                                            key={index}
-                                            cuid={post.cuid}
-                                            cover={post.cover}
-                                            title={post.title}
-                                            avatar={post.author.avatar}
-                                            introduction={post.charactor} 
-                                        />
-                                    ))
-                                }
-                                </article>
-                            </div>     
-                        </div>
-                    </div>
-                    <Route exact path={`/post/:cuid`} component={Post} />
+            <div>
+                <Helmet>
+                    <title>Home</title>
+                </Helmet>
+                <div className="u-margin-header">
+                    <div className="container home-container">
+                        <article className="articles">
+                            {
+                                this.props.postList.map((post, index) => (
+                                    <LazyLoad key={index}>
+                                        <Link
+                                            to={{
+                                                pathname: `/post/${post.cuid}`,
+                                                // this is the trick!
+                                                state: {
+                                                    isShowPostModal: true,
+                                                    modalPath: "/post"
+                                                }
+                                            }}
+                                        >
+                                            <PostCover
+                                                cuid={post.cuid}
+                                                cover={post.cover}
+                                                title={post.title}
+                                                avatar={post.author.avatar}
+                                                introduction={post.charactor} 
+                                            />
+                                        </Link>
+                                    </LazyLoad>
+                                ))
+                            }
+                        </article>
+                    </div>     
                 </div>
-            </Router>
+            </div>
         );
     }
 }
 
 Home.propTypes = {
     postList: PropTypes.array.isRequired,
+    addPostList: PropTypes.func.isRequired,
+    updatePostList: PropTypes.func.isRequired,
+    deletePostList: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

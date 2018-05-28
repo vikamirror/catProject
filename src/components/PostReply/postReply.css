@@ -2,8 +2,8 @@
 * postReply-wrapper.u-expandMargin
 * -------------------------------- */
 .postReply-wrapper.u-expandMargin{
-    margin-left: -46px !important;
-    margin-right: -46px !important;
+    margin-left: -30px !important;
+    margin-right: -30px !important;
 }
 @media (max-width: 768px) {
     .postReply-wrapper.u-expandMargin{

@@ -6,3 +6,20 @@
         padding-left: 8px;
     }
 }
+
+/* ---------------------------------------
+* requirements_wrapper checkbox左右padding
+* ----------------------------------------*/
+@media (max-width: 768px){
+    #requirements_wrapper .group-input{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+/* ------------------------------------
+* #requirements_wrapper #remark_editor
+* -------------------------------------*/
+#requirements_wrapper #remark_editor{
+    margin-top: 24px;
+}

@@ -1,0 +1,129 @@
+/* ---------------
+* draft-js plugin
+* ---------------- */
+.editor {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    cursor: text;
+    padding: 16px;
+    border-radius: 1px;
+    /* margin-bottom: 2em; */
+    /* -webkit-box-shadow: inset 2px 1px 8px -2px #efefef; */
+    /* box-shadow: inset 0px 1px 8px -3px #ABABAB; */
+    background: #fefefe;
+    line-height: 24px;
+    color: #484848;
+}
+.editor.readOnly{
+    border: none;
+}
+
+.editor :global(.public-DraftEditor-content) {
+    min-height: 96px;
+}
+.editor.readOnly :global(.public-DraftEditor-content){
+    min-height: 0;
+}
+
+.options {
+    margin-bottom: 20px;
+}
+
+/* ---------------
+* img標籤
+* ---------------- */
+.editor img{
+    max-width: 95%;
+    display: block;
+    margin: 0 auto;
+}
+
+
+/* ------------------------
+* position-control__tooltip
+* ------------------------- */
+.position-control__tooltip{
+    position: absolute;
+    top: 8px;
+    right: -16px;
+}
+
+/* --------------
+* img-upload-btn
+* -------------- */
+
+/* 隱藏原生的 input[type=file] */
+.img-upload-btn input[type=file]{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+::-webkit-img-upload-btn{
+    cursor:pointer;
+}
+
+
+/* 複寫global的btn */
+.img-upload-btn .btn{
+    background-color: inherit;
+    height: auto;
+    width: 100%;
+    font-size: 16px;
+    min-width: 32px;
+    padding-right: 0;
+    padding-left: 0;
+    overflow: initial;
+}
+
+/* circle:內圈 */
+.btn.circle{
+    display: block;
+    width: 40px;
+    height: 40px;  
+    line-height: 40px;
+    background: #4F8196;
+    border: none;
+    border-radius: 900px;
+    color: #e4ecfa;
+    margin: auto;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.5s;
+}
+.btn.circle:hover{
+    background: #4F8196;
+    padding: -2px;
+    opacity: 1;
+}
+/* circle:外圈 */
+.btn.circle::before{
+    content: "";
+    border: 2px solid #468cdc;
+    border-radius: 40px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.15), 0 0 15px rgba(0, 255, 204, 0.15) inset;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    margin-left: -27px;
+    margin-top: -27px;    
+    opacity: 1;
+    transform: scale(1);
+    transition: all 300ms;
+}
+.btn.circle:hover::before{
+    transform: scale(1.05);
+}
+/* icon-btn */
+.img-upload-btn .icon-btn{
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    line-height: 36px;
+}

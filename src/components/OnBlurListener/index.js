@@ -14,7 +14,7 @@ class OnBlurListener extends Component {
     render () {
         const {activeFocus, children, className} = this.props;
         return (
-            <div className={`u-div-outline-0 ${className}`}
+            <div className={`u-div-outline-0 ${className || ''}`}
                  tabIndex="1"
                  onClick={() => activeFocus()}
                  onBlur={e => this.onBlurComponent(e)}>

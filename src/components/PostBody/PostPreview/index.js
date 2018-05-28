@@ -9,16 +9,16 @@ import Charactor from '../Charactor';
 
 import './postPreview.css';
 
-const PostPreview = ({post}) => {
+const PostPreview = ({post, currentPath}) => {
     return (
         <div className="mypost postWrapper">
             <Title 
-                isEdit={false} 
                 title={post.title}
+                isEdit={false}
             />
             <hr className="hr-line-style2" />
-            <DateAndAuthor 
-                isEdit={false}
+            <DateAndAuthor
+                isEdit={false} 
                 author={post.author}
                 dateAdded={post.dateAdded}
                 lastModify={post.lastModify} 
@@ -35,8 +35,19 @@ const PostPreview = ({post}) => {
                 />
             </div>
             <div className="clickPost">
-                <Link to={`/post/${post.cuid}`} className="link font-lightGrey">檢視更多</Link>
-            </div>           
+                <Link
+                    to={{
+                        pathname: `${currentPath}/${post.cuid}`,
+                        state: {
+                            isShowPostModal: true,
+                            modalPath: `${currentPath}`
+                        },
+                    }}
+                    className="link font-lightGrey"
+                >
+                    檢視更多
+                </Link>
+            </div>
         </div>
     );
 };

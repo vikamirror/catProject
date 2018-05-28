@@ -3,17 +3,19 @@ import { findDOMNode } from 'react-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import BounceInUp from '../../../components/BounceInUp';
 import { convertFromStringToDom } from '../../../Utils/stringFormat';
 import { closeDialog } from '../../../redux/dialog';
+import { baseUrl } from '../../../Utils/stringFormat';
 
 import './dialog.css';
 
 const Icon = ({type}) => {
     switch (type) {
         case 'question':
-            return <div className="u-margin-b-8"><img src="./images/question.png" alt="" /></div>;
+            return <div className="u-margin-b-8"><img src={`${baseUrl}/images/question.png`} alt="" /></div>;
         case 'warning':
-            return <div className="u-margin-b-8"><img src="./images/alert.png" alt="" /></div>;
+            return <div className="u-margin-b-8"><img src={`${baseUrl}/images/alert.png`} alt="" /></div>;
         default:
             return '';
     }
@@ -29,13 +31,19 @@ class Dialog extends Component {
         this.state = {
             inputValue: '',
             // receivedHtmlString: ''
+            shouldBounceInUp: false,
         };
     }
-    componentDidUpdate () {
+    componentDidUpdate (prevProps, prevState) {
         if (this.props.dialog.htmlString) {
             if (!findDOMNode(this.refs.ref_htmlString).firstChild) {
                 findDOMNode(this.refs.ref_htmlString).appendChild(convertFromStringToDom(this.props.dialog.htmlString));
             }
+        }
+        if (prevProps.dialog.isShow !== this.props.dialog.isShow) {
+            setTimeout(() => {
+                this.setState({shouldBounceInUp: this.props.dialog.isShow});
+            }, 100);
         }
     }
     handleState (state, evt) {
@@ -72,35 +80,37 @@ class Dialog extends Component {
         } = this.props.dialog;
         const modalVerticalAlignStyle = modalVerticalAlign === 'middle' ? 'u-vertical-center' : '';
         if (!isShow) {
-            return ''
-        };
-        return (
-            <div className="u-wrapper-fixed-w100-h100 z-index-100 u-div-outline-0" id="dialog_wrapper">
-                <div className={`modal u-div-center u-text-center form ${modalVerticalAlignStyle}`}>
-                    <div className="font-size-18 u-margin-b-8">{title}</div>
-                    <Icon type={type} />
-                    <div ref="ref_htmlString"></div>
-                    {
-                        type === 'textarea' ?
-                        <textarea 
-                            className="textarea"
-                            placeholder={inputPlaceholder}
-                            value={this.state.inputValue}
-                            onChange={(evt) => this.handleState('inputValue', evt)}>
-                        </textarea> : ''
-                    }
-                    <div className="btn-group u-margin-t-8" style={{textAlign: buttonsAlign}}>
+            return '';
+        }
+        return (         
+            <div className="u-wrapper-fixed-w100-h100 z-index-100 u-div-outline-0" id="dialog-wrapper"> 
+                <BounceInUp inCondition={this.state.shouldBounceInUp} enterMilliseconds={300}>     
+                    <div className={`modal u-div-center u-text-center form ${modalVerticalAlignStyle}`}>
+                        <div className="font-size-18 u-margin-b-8">{title}</div>
+                        <Icon type={type} />
+                        <div ref="ref_htmlString"></div>
                         {
-                            showCancelButton ?
-                            <div className="btn btn-sm btn-cancel" onClick={() => this.cancelBtn()}>{cancelButtonText}</div> : ''
+                            type === 'textarea' ?
+                            <textarea 
+                                className="textarea"
+                                placeholder={inputPlaceholder}
+                                value={this.state.inputValue}
+                                onChange={(evt) => this.handleState('inputValue', evt)}>
+                            </textarea> : ''
                         }
-                        {
-                            showConfirmButton ?
-                            <div className="btn btn-sm btn-secondary" onClick={() => this.confirmBtn()}>{confirmButtonText}</div> : ''
-                        }
+                        <div className="btn-group u-margin-t-8" style={{textAlign: buttonsAlign}}>
+                            {
+                                showCancelButton ?
+                                <div className="btn btn-sm btn-cancel" onClick={() => this.cancelBtn()}>{cancelButtonText}</div> : ''
+                            }
+                            {
+                                showConfirmButton ?
+                                <div className="btn btn-sm btn-secondary" onClick={() => this.confirmBtn()}>{confirmButtonText}</div> : ''
+                            }
+                        </div>
                     </div>
-                </div>
-            </div>
+                </BounceInUp>  
+            </div> 
         );
     }
 }

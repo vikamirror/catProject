@@ -2,6 +2,12 @@ import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 
+const requirementsSchema = new mongoose.Schema({
+    name: {type: String, required: true},
+    desc: {type: String, required: true},
+    value: {type: Boolean, required: true}
+}, { _id : false });
+
 const PostSchema = new mongoose.Schema({
     cuid: {type: String, required: true, unique: true},
     title: {type: String, required: true},
@@ -13,13 +19,7 @@ const PostSchema = new mongoose.Schema({
     age: {type: String, required: true},
     gender: {type: String, required: true},
     isSpay: {type: Boolean, required: true},
-    requirements: [
-        {
-            name: {type: String, required: true},
-            desc: {type: String, required: true},
-            value: {type: Boolean, required: true},
-        }
-    ],
+    requirements: [requirementsSchema],
     remark: {type: String, required: true},
     contact: {type: String, required: true},
     contactInfo: {type: String, required: true},
