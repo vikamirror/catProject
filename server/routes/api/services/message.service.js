@@ -12,18 +12,36 @@ import sanitizeHtml from 'sanitize-html';
  * @returns {res.status(200).send({message: '成功訊息'})}
  */
 export function postMessage (req, res) {
+    if (!req.body.postCuid ||
+        !req.body.member.cuid ||
+        !req.body.member.name ||
+        !req.body.member.avatar ||
+        !req.body.tag.name ||
+        !req.body.tag.memberCuid ||
+        !req.body.message) {
+        res.status(400).json({
+            message: 'client端有一必須欄位為undefined或空值'
+        });
+        return;
+    }
     const newMessage = new Message(req.body);
-    newMessage.message =  sanitizeHtml(newMessage.message);
+    newMessage.message = sanitizeHtml(newMessage.message);
     // 取代_id的亂數
     newMessage.cuid = cuid();
-    console.log('newMessage:',newMessage);
+    // console.log('newMessage:',newMessage);
     newMessage
         .save()
         .then(() => {
             res.status(200).json({
                 message: '新增message成功',
-                cuid: newMessage.cuid,
-                dateAdded: newMessage.dateAdded
+                newMessage: {
+                    cuid: newMessage.cuid,
+                    dateAdded: newMessage.dateAdded,
+                    member: newMessage.member,
+                    message: newMessage.message,
+                    postCuid: newMessage.postCuid,
+                    tag: newMessage.tag,
+                }
             });
         })
         .catch(err => {

@@ -17,10 +17,11 @@
 }
 @media (max-width: 768px){
     .member-info{
-        padding: 4px 8px;
         margin: 8px;
+        padding: 4px 8px;
     }
 }
+
 /* 頭像 */
 .member-info .avatar{
     width: 32px;

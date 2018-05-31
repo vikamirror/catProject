@@ -10,7 +10,10 @@ const MessageSchema = new mongoose.Schema({
         name: {type: String, required: true},
         avatar: {type: String, required: true},
     },
-    tag: {type: String},
+    tag: {
+        name: {type: String, required: true},
+        memberCuid: {type: String, required: true},
+    },
     message: {type: String, required: true},
     dateAdded: {type: Date, default: Date.now, required: true}
 });

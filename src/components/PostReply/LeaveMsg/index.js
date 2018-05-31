@@ -21,7 +21,10 @@ const LeaveMsg = ({member, openMsgDialog, postAuthor}) => (
                     placeholder="請輸入留言......"
                     contentEditable="false"
                     dangerouslySetInnerHTML={{ __html: ''}}
-                    onClick={() => openMsgDialog(`${postAuthor.name}(原po)`)}
+                    onClick={() => openMsgDialog({
+                        name: `${postAuthor.name}(原po)`,
+                        memberCuid: postAuthor.cuid,
+                    })}
                 />
             </div>
         </div>
@@ -29,8 +32,13 @@ const LeaveMsg = ({member, openMsgDialog, postAuthor}) => (
 );
 
 LeaveMsg.propTypes = {
-    member: PropTypes.object.isRequired,
-    postAuthor: PropTypes.object.isRequired,
+    member: PropTypes.shape({
+        avatar: PropTypes.string.isRequired,
+    }),
+    postAuthor: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        cuid: PropTypes.string.isRequired,
+    }),
     openMsgDialog: PropTypes.func.isRequired,
 };
 

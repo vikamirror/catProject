@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Avatar from '../../../../../components/Avatar';
-import { removeImgLinkTag }  from '../../../../../Utils/stringFormat';
+import { removeImgLinkTag, ellipsisTextAfterMaxLength }  from '../../../../../Utils/stringFormat';
 import {addFavoritePost, removeFavoritePost} from '../../../../../redux/member';
 import { LikeButton, UndoLikeButton } from '../../../../../components/Buttons/LikeButton';
 import { isContainedInArray } from '../../../../../Utils/variableCheck';
@@ -11,10 +11,6 @@ import { isContainedInArray } from '../../../../../Utils/variableCheck';
 import QuillEditor from '../../../../../components/QuillEditor';
 
 import './postCover.css';
-
-const ellipsisTextAfterMaxLength = (text, maxLength) => {
-    return text.substring(0, maxLength-1) + '...';
-}
 
 const mapStateToProps = state => ({member: state.member});
 const mapDispatchToProps = dispatch => (bindActionCreators({

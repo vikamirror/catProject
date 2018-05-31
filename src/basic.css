@@ -189,12 +189,12 @@ p{
 * -------------- */
 @font-face {
     font-family: 'fontello';
-    src: url(/font/fontello.eot?97697394);
-    src: url(/font/fontello.eot?97697394#iefix) format('embedded-opentype'),
-         url(/font/fontello.woff2?97697394) format('woff2'),
-         url(/font/fontello.woff?97697394) format('woff'),
-         url(/font/fontello.ttf?97697394) format('truetype'),
-         url(/font/fontello.svg?97697394#fontello) format('svg');
+    src: url(/font/fontello.eot?96388417);
+    src: url(/font/fontello.eot?96388417#iefix) format('embedded-opentype'),
+         url(/font/fontello.woff2?96388417) format('woff2'),
+         url(/font/fontello.woff?96388417) format('woff'),
+         url(/font/fontello.ttf?96388417) format('truetype'),
+         url(/font/fontello.svg?96388417#fontello) format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -267,6 +267,7 @@ p{
 .icon-right-open:before { content: '\e813'; } /* '' */
 .icon-up-open:before { content: '\e814'; } /* '' */
 .icon-check:before { content: '\e815'; } /* '' */
+.icon-bell:before { content: '\e816'; } /* '' */
 .icon-instagram:before { content: '\f16d'; } /* '' */
 .icon-facebook-squared:before { content: '\f308'; } /* '' */
   

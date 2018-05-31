@@ -1,14 +1,18 @@
 .menuItem{
     font-size: 16px;
+    line-height: 24px;
+    padding: 8px 16px;
+}
+.menuItem:hover{
+    background-color: #f8f8ff;
 }
 
 /*-------------------------
  * .btn
  *-------------------------*/
 .menuItem .btn{
-    padding: 8px 16px;
+    padding: 0 0;
     min-width: 100%;
-    line-height: 24px;
     text-align: left;
     height: auto;
 }
@@ -17,8 +21,7 @@
  * .link
  *-------------------------*/
  .menuItem .link{
-    padding: 8px 16px;
-    line-height: 24px;
+    line-height: inherit;
     height: auto;
 }
 
@@ -37,5 +40,6 @@
  *-------------------------*/
 .menuItem.divider{
     padding-top: 1px;
+    padding-bottom: 0;
     border-bottom: 1px solid #e6ecf0;
 }

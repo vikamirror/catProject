@@ -16,4 +16,8 @@ export const convertFromStringToDom = (htmlString) => {
     return d.firstChild;
 }
 
+export const ellipsisTextAfterMaxLength = (text, maxLength) => {
+    return text.substring(0, maxLength-1) + '...';
+}
+
 export const baseUrl = "http://localhost:3000";

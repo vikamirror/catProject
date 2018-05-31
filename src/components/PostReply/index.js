@@ -7,6 +7,7 @@ import LeaveMsg from './LeaveMsg';
 import Message from './Message';
 import { showDialog, closeDialog } from '../../redux/dialog';
 import * as messageAPI from '../../fetch/messageAPI';
+import * as sockets from '../../sockets/message';
 
 import './postReply.css';
 
@@ -23,7 +24,9 @@ class PostReply extends Component {
     constructor() {
         super();
         this.state = {
-            tag: '',
+            // tag: '',
+            taggadMemberName: '',
+            taggedMemberCuid: '',
             messages: [],
             orderByAscend: true
         };
@@ -60,12 +63,16 @@ class PostReply extends Component {
             }
         });
     }
-    openMsgDialog (name) {
-        this.setState({tag: name});
+    openMsgDialog (taggadMember) {
+        // this.setState({tag: name});
+        this.setState({
+            taggadMemberName: taggadMember.name,
+            taggedMemberCuid: taggadMember.memberCuid
+        });
         this.props.showDialog({
             type: 'textarea',
             title: '回覆給',
-            htmlString: `<div class="font-size-16 font-blue u-margin-b-8">@${name}</div>`,
+            htmlString: `<div class="font-size-16 font-blue u-margin-b-8">@${taggadMember.name}</div>`,
             inputPlaceholder: '請輸入留言......',
             showCancelButton: true,
             cancelButtonText: "取消",
@@ -83,7 +90,11 @@ class PostReply extends Component {
                 name: this.props.member.name,
                 avatar: this.props.member.avatar
             },
-            tag: this.state.tag,
+            // tag: this.state.tag,
+            tag: {
+                name: this.state.taggadMemberName,
+                memberCuid: this.state.taggedMemberCuid,
+            },
             message: confirmValue.inputValue,
         };
         // console.log('newMessage:', newMessage);
@@ -91,15 +102,31 @@ class PostReply extends Component {
             .postMessage(newMessage)
             .then((res) => {
                 if (res.status === 200) {
-                    newMessage.cuid = res.data.cuid;
-                    newMessage.dateAdded = res.data.dateAdded;
+                    const messageSent = res.data.newMessage;
+                    this.notifyTaggedMember(messageSent);
+                    // console.log('messageSent', messageSent);
                     this.state.orderByAscend ? 
-                        this.setState({messages: [...this.state.messages, newMessage]}) 
+                        this.setState({messages: [...this.state.messages, messageSent]}) 
                         :
-                        this.setState({messages: [newMessage, ...this.state.messages]});
+                        this.setState({messages: [messageSent, ...this.state.messages]});
                 }
             })
             .catch(err => console.log(err.message));
+    }
+    notifyTaggedMember (messageSent) {
+        const postMessage = {
+            fromMember: {
+                cuid: messageSent.member.cuid,
+                name: messageSent.member.name,
+                avatar: messageSent.member.avatar,
+            },
+            toMember: {
+                cuid: messageSent.tag.memberCuid,
+                name: messageSent.tag.name,
+            },
+            content: messageSent.message
+        };
+        sockets.postMessageEmitter(postMessage);
     }
     render () {
         const {messages, orderByAscend} = this.state;
@@ -129,7 +156,7 @@ class PostReply extends Component {
                         <Message
                             key={index}
                             message={message}
-                            openMsgDialog={(name) => this.openMsgDialog(name)}
+                            openMsgDialog={(taggadMember) => this.openMsgDialog(taggadMember)}
                         />
                     ))
                 }

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 // import SearchBar from './SearchBar';
 import LoginOrRegister from './LoginOrRegister';
 import MemberInfo from './MemberInfo';
+import Notification from './Notification';
 
 import './header.css';
 
@@ -91,12 +92,14 @@ class Header extends Component {
                                 <SearchBarLarge />
                             }
                         </div>
-                        <div className="u-push-right">
+                        <ul className="right-actions u-push-right u-clearfix">
+                            {/* 通知 */}
+                            <Notification />
                             {/* 會員中心 */}
                             <MemberInfo />
                             {/* 登入 登出 */}
                             <LoginOrRegister />
-                        </div>
+                        </ul>
                         {/* 螢幕<768, 按下SearchBarIconBtn後, 彈出的搜尋框 */}
                     </nav>
                     {

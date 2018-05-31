@@ -16,3 +16,8 @@ export const logoutAllTheOtherDevicesListener = (logoutAllTheOtherDevicesHandler
 export const loginEmitter = (memberCuid) => {
     socket.emit('login', memberCuid);
 }
+
+// 會員登出的通知
+export const logoutEmitter = (memberCuid) => {
+    socket.emit('logout', memberCuid);
+}

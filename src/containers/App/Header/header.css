@@ -91,3 +91,7 @@
         margin-bottom: 8px;
     }
 }
+
+.right-actions > li{
+    float: left;
+}

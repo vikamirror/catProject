@@ -10,14 +10,12 @@ const MenuItem = ({itemType, linkTo, clickHandler, hasIcon, itemIcon, itemText, 
     switch (itemType) {
         case "button":
             return (
-                <div>
-                    <li className="menuItem">
-                        <button className="btn btn-text" onClick={() => clickHandler()}>
-                            {hasIcon ? <Icon itemIcon={itemIcon} /> : ''}
-                            {itemText}
-                        </button>
-                    </li>
-                </div>
+                <li className="menuItem">
+                    <button className="btn btn-text" onClick={() => clickHandler()}>
+                        {hasIcon ? <Icon itemIcon={itemIcon} /> : ''}
+                        {itemText}
+                    </button>
+                </li>
             );
         case "link":
             return (
@@ -30,6 +28,13 @@ const MenuItem = ({itemType, linkTo, clickHandler, hasIcon, itemIcon, itemText, 
             );
         case "divider":
             return <li className="menuItem divider"></li>;
+        case "text":
+            return (
+                <li className="menuItem">
+                    {hasIcon ? <Icon itemIcon={itemIcon} /> : ''}
+                    {itemText}
+                </li>
+            );
         default:
             return (
                 <li className="menuItem">
