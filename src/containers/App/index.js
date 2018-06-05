@@ -58,11 +58,11 @@ class App extends Component {
         sockets.loginEmitter(cuid);
     }
     tologoutListener () {
-        const logoutAllTheOtherDevicesHandler = () => {
+        const logoutHandler = () => {
             this.props.logout();
             this.props.history.push('/');
         };
-        sockets.logoutAllTheOtherDevicesListener(logoutAllTheOtherDevicesHandler);
+        sockets.logoutListener(logoutHandler);
     }
     setBackground (pathname) {
         switch (pathname) {

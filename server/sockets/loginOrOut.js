@@ -9,7 +9,7 @@ export default function loginAndOutFactory (socket) {
 
     // 若A帳號登入, 其他裝置的A帳號必須登出
     const logoutAllTheOtherDevicesHandler = (cuid) => {
-        socket.broadcast.to(cuid).emit('logoutAllTheOtherDevices');
+        socket.broadcast.to(cuid).emit('logout');
     };
     
     // A帳號登出

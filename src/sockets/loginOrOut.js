@@ -6,9 +6,9 @@ export const logoutAllTheOtherDevicesEmitter = (memberCuid) => {
 };
 
 // 收到該帳號要登出的廣播
-export const logoutAllTheOtherDevicesListener = (logoutAllTheOtherDevicesHandler) => {
-    socket.on('logoutAllTheOtherDevices', () => {
-        logoutAllTheOtherDevicesHandler();
+export const logoutListener = (logoutHandler) => {
+    socket.on('logout', () => {
+        logoutHandler();
     });
 }
 
