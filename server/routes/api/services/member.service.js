@@ -22,10 +22,16 @@ export function getMember(req, res) {
                 favoritePosts: 1,
                 cuid: 1})
             .then(data => {
-                res.status(200).json({
-                    validToken: true,
-                    member: data[0]
-                });
+                if (data[0]) {
+                    res.status(200).json({
+                        validToken: true,
+                        member: data[0]
+                    });
+                } else {
+                    res.status(400).json({
+                        validToken: false
+                    });
+                }
             })
             .catch((err) => {
                 res.status(500).json({
@@ -140,7 +146,7 @@ export function loginWithFacebook(req, res) {
                 }
                 // 取代_id的亂數
                 newMember.cuid = cuid();
-                console.log('newMember', newMember);
+                // console.log('newMember', newMember);
                 newMember.save()
                          .then(() => {
                             /**

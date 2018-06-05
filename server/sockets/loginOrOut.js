@@ -1,5 +1,5 @@
 export default function loginAndOutFactory (socket) {
-    
+
     // A帳號登入
     const loginHandler = (cuid) => {
         console.log(`會員${cuid}登入`);
@@ -17,12 +17,15 @@ export default function loginAndOutFactory (socket) {
         console.log(`會員${cuid}登出`);
         socket.broadcast.to(cuid).emit('logoutAllTheOtherDevices'); // 其他裝置的A帳號登出
         socket.leave(cuid); // 現有的裝置也登出
+        socket.member = null;
     };
 
     // A帳號斷線
     const disconnectHandler = () => {
         if (socket.member) {
-            console.log(socket.member + '斷線');
+            console.log(`會員${socket.member}斷線`);
+            socket.leave(socket.member);
+            socket.member = null;
         }
     };
  

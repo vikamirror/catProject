@@ -1,15 +1,10 @@
-import socketioJwt from 'socketio-jwt';
-
 import loginAndOutFactory from './loginOrOut';
 import PostFactory from './post';
 import messageFactory from './message';
 
-const socketsOfLoginAndOut = (io) => {
-    io.use(socketioJwt.authorize({
-        secret:
-    }));
+const ioConnection = (io) => {
+
     io.on('connection', (socket) => {
-        // console.log('已有client連線');
 
         const {
             loginHandler,
@@ -35,9 +30,11 @@ const socketsOfLoginAndOut = (io) => {
 
         const {
             postMessageNotifyHandler,
-        } = messageFactory(socket);
+            unsentNotifiesHandler
+        } = messageFactory(socket, io);
         
         socket.on('notifyNewPostMessage', postMessageNotifyHandler);
+        socket.on('hasUnsentNotifies', unsentNotifiesHandler);
 
         socket.on('error', (err) => {
             console.error('received error from client:', err);
@@ -45,5 +42,5 @@ const socketsOfLoginAndOut = (io) => {
     });
 };
 
-export default socketsOfLoginAndOut;
+export default ioConnection;
 

@@ -49,18 +49,19 @@ export function fetchMember() {
     return (dispatch) => {
         memberAPI.getMember()
                  .then((res) => {
-                    if (res.data.validToken) {
+                    if (res.status === 200) {
                         dispatch({
                             type: LOGIN_TRUE,
                             member: res.data.member,
                         });
-                    } else {
-                        dispatch({
-                            type: LOGIN_FALSE,
-                        }); 
                     }
                  }) 
-                 .catch(err => console.log('fetchMember Error:', err));
+                 .catch(err => {
+                    dispatch({
+                        type: LOGIN_FALSE,
+                    });
+                    console.log('fetchMember Error:', err);
+                 });
     };
 }
 
@@ -91,7 +92,12 @@ export default (state = initialState, action) => {
                 favoritePosts: action.member.favoritePosts,
             };
         case LOGIN_FALSE:
-            return {};
+            return {
+                cuid: '',
+                name: '',
+                avatar: '',
+                favoritePosts: [],
+            };
         case ADD_FAVORITE_POST:
             return {
                 ...state,

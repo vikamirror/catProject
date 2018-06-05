@@ -22,3 +22,10 @@ export function getMemberCached() {
         avatar: avatar
     };
 }
+
+export function getCachedToken () {
+    const token = localStorage.getItem('memberToken');
+    return {
+        token: token
+    };
+}

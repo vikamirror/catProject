@@ -52,8 +52,8 @@ export function postMessage (req, res) {
 
 export function getMessages (req, res) {
     Message
-        .find({postCuid: req.params.postCuid}, {_id:0, __v:0})
-        .sort({lastModify: 1}) // 預設最舊的的排在前面
+        .find({"postCuid": req.params.postCuid}, {"_id": 0, "__v": 0})
+        .sort({"dateAdded": 1}) // 預設最舊的的排在前面
         .then((messages) => {
             res.status(200).json({
                 messages: messages

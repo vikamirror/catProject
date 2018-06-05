@@ -1,4 +1,4 @@
-import { socket } from './index';
+import socket from './index';
 
 // 新增其他client的PostList
 export const addPostListBroadcastEmitter = (newPost) => {
@@ -22,12 +22,12 @@ export const updatePostListBroadcastListener = (updatePostListBroadcastHandler) 
     socket.on('updatePostListBroadcast', (updatedPost) => {
         updatePostListBroadcastHandler(updatedPost);
     });
-}
+};
 
 // 刪除一篇文章, 更新其他client的PostList
 export const deletePostListBroadcastEmitter = (postCuid) => {
     socket.emit('deletePostListBroadcast', postCuid);
-}
+};
 
 // 收到有會員刪除post的廣播
 export const deletePostListBroadcastListener = (deletePostListBroadcastHandler) => {

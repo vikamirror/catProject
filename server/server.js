@@ -17,6 +17,7 @@ import sockets from './sockets';
 
 // import database from './mongoose';
 import database from './mongoose';
+import redis from './redis';
 
 // Create our express app (using the port optionally specified)
 const app = express();
@@ -43,5 +44,7 @@ const PORT = process.env.SERVER_PORT || 3000;
 // app.listen(PORT, () => console.log(`已啟動PORT: ${PORT}!`));
 server.listen(PORT, () => console.log(`已啟動PORT: ${PORT}!`));
 
+// 啟動redis
+redis();
 // 啟動socket
 sockets(io);

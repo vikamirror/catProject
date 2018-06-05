@@ -31,7 +31,7 @@ class MemberInfo extends Component{
     }
     tuggleMenu () {
         this.state.isShowMenu ? 
-        this.setState({isShowMenu:false}) : this.setState({isShowMenu:true});
+            this.setState({isShowMenu:false}) : this.setState({isShowMenu:true});
     }
     closeMenu () {
         this.setState({isShowMenu:false});

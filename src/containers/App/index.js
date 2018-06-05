@@ -8,7 +8,6 @@ import { fetchMember, logout } from '../../redux/member';
 import { fetchPosts } from '../../redux/postList';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
-// import FullPageDialog from './FullPageDialog';
 import Dialog from './Dialog';
 import ScrollWrapper from '../../components/ScrollWrapper';
 import Loading from './Loading';
@@ -48,11 +47,11 @@ class App extends Component {
             this.setBackground(this.props.location.pathname);
         }
         if (this.props.member.cuid && (this.props.member.cuid !== prevProps.member.cuid)) {
-            this.logoutEmitter(this.props.member.cuid);
+            this.notifyOtherDevicesToLogout(this.props.member.cuid);
             this.loginEmitter(this.props.member.cuid);
         }
     }
-    logoutEmitter (cuid) {
+    notifyOtherDevicesToLogout (cuid) {
         sockets.logoutAllTheOtherDevicesEmitter(cuid);
     }
     loginEmitter (cuid) {

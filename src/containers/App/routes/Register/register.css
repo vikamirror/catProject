@@ -9,3 +9,9 @@
     margin-right: 0;
 }
 
+.form_register input[type="password"],
+.form_register input[type="email"],
+.form_register input[type="text"]{
+    padding-left: 36px;
+}
+

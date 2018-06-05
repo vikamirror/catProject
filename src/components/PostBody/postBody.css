@@ -8,14 +8,14 @@
 /* ----------------
 * input type="text"
 * ----------------- */
-.form input[type="text"].edit{
+.article .form input[type="text"].edit{
     padding: 0;
     border: 0;
     line-height: 32px;
 }
 
-.form input[type="text"],
-.form input[type="text"]:focus{
+.article .form input[type="text"],
+.article .form input[type="text"]:focus{
     background-color: inherit;
 }
 

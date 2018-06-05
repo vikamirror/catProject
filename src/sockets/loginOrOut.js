@@ -1,4 +1,4 @@
-import { socket } from './index';
+import socket from './index';
 
 // 通知其他裝置的同一個帳號登出
 export const logoutAllTheOtherDevicesEmitter = (memberCuid) => {
