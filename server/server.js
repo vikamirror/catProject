@@ -12,6 +12,7 @@ import universalLoader from './routes/universal';
 import memberRoutes from './routes/api/controllers/member.controller';
 import postRoutes from './routes/api/controllers/post.controller';
 import messageRoutes from './routes/api/controllers/message.controller';
+import notificationRoutes from './routes/api/controllers/notification.controller';
 
 import sockets from './sockets';
 
@@ -36,6 +37,7 @@ app.use(express.static(path.resolve(__dirname, '../build'))); // 以build為檔�
 app.use('/api', memberRoutes);
 app.use('/api', postRoutes);
 app.use('/api', messageRoutes);
+app.use('/api', notificationRoutes);
 app.use('/', universalLoader); // 從其他頁面進入時
 
 const server = http.createServer(app);

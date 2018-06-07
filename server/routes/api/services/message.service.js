@@ -45,7 +45,7 @@ export function postMessage (req, res) {
             });
         })
         .catch(err => {
-            res.status(500).json({message: `api/services/message postMessage錯誤`});
+            res.status(500).json({message: 'api/services/message postMessage錯誤'});
             console.log(err);
         });
 }

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 
 const MessageSchema = new mongoose.Schema({
-    cuid: {type: String, required: true},
+    cuid: {type: String, required: true,  unique: true},
     postCuid: {type: String, required: true},
     member: {
         cuid: {type: String, required: true},
@@ -15,7 +15,8 @@ const MessageSchema = new mongoose.Schema({
         memberCuid: {type: String, required: true},
     },
     message: {type: String, required: true},
-    dateAdded: {type: Date, default: Date.now, required: true}
+    dateAdded: {type: Date, default: Date.now, required: true},
+    isDeleted: {type: Boolean, default: false, required: true},
 });
 
 export default mongoose.model('Message', MessageSchema);

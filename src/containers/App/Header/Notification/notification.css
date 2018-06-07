@@ -12,7 +12,7 @@
 .notify-wrapper .notification-counter{
     display: inline-block;
     position: absolute;
-    top: -8px;
+    top: -30px;
     right:-6px;
     padding: 2px 4px;
     background-color: rgba(212, 19, 13, 1);
@@ -25,10 +25,6 @@
 .notify-wrapper .notify-dropdown{
     position: absolute;
     top: 48px;
-    right: -70px;
-    width: 320px;
-}
-
-.notify-wrapper .bounceInDown-wrapper{
-   
+    right: -78px;
+    width: 360px;
 }

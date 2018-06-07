@@ -29,12 +29,10 @@ const ioConnection = (io) => {
         socket.on('deletePostListBroadcast', deletePostListBroadcastHandler);
 
         const {
-            postMessageNotifyHandler,
-            unsentNotifiesHandler
+            addNotificationHandler,
         } = messageFactory(socket, io);
         
-        socket.on('notifyNewPostMessage', postMessageNotifyHandler);
-        socket.on('hasUnsentNotifies', unsentNotifiesHandler);
+        socket.on('addNotification', addNotificationHandler);
 
         socket.on('error', (err) => {
             console.error('received error from client:', err);

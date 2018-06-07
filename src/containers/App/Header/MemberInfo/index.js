@@ -97,7 +97,7 @@ class MemberInfo extends Component{
                         <div className="name u-push-right font-grey">
                             {member.name}
                         </div>
-                        <div className={isSmallDevice ? "menu-xs" : "menu"}>   
+                        <div className={isSmallDevice ? "menu-xs" : "menu"}>
                             <DropdownMenu isShowMenu={this.state.isShowMenu}>  
                                 {
                                     items.map((item, index) => (

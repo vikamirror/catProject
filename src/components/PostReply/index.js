@@ -7,7 +7,8 @@ import LeaveMsg from './LeaveMsg';
 import Message from './Message';
 import { showDialog, closeDialog } from '../../redux/dialog';
 import * as messageAPI from '../../fetch/messageAPI';
-import * as sockets from '../../sockets/message';
+import { postNotification } from '../../fetch/notificationAPI';
+import * as sockets from '../../sockets/notification';
 
 import './postReply.css';
 
@@ -24,7 +25,6 @@ class PostReply extends Component {
     constructor() {
         super();
         this.state = {
-            // tag: '',
             taggadMemberName: '',
             taggedMemberCuid: '',
             messages: [],
@@ -90,7 +90,6 @@ class PostReply extends Component {
                 name: this.props.member.name,
                 avatar: this.props.member.avatar
             },
-            // tag: this.state.tag,
             tag: {
                 name: this.state.taggadMemberName,
                 memberCuid: this.state.taggedMemberCuid,
@@ -114,19 +113,33 @@ class PostReply extends Component {
             .catch(err => console.log(err.message));
     }
     notifyTaggedMember (messageSent) {
-        const postMessage = {
-            fromMember: {
-                cuid: messageSent.member.cuid,
+        const notification = {
+            messageTo: messageSent.tag.memberCuid,
+            messageFrom: {
+                memberCuid: messageSent.member.cuid,
                 name: messageSent.member.name,
                 avatar: messageSent.member.avatar,
             },
-            toMember: {
-                cuid: messageSent.tag.memberCuid,
-                name: messageSent.tag.name,
-            },
-            content: messageSent.message
+            message: messageSent.message,
+            link: {
+                pathname: `/post/${messageSent.postCuid}`,
+                state: {
+                    isShowPostModal: true,
+                    modalPath: "/post"
+                }
+            }
         };
-        sockets.postMessageEmitter(postMessage);
+        postNotification(notification)
+            .then(res => {
+                if (res.status === 200) {
+                    const notifyData = {
+                        notification: res.data.notification,
+                        notifyTo: notification.messageTo
+                    };
+                    sockets.addNotificationEmitter(notifyData);
+                }
+            })
+            .catch(err => console.log(err.response.data));
     }
     render () {
         const {messages, orderByAscend} = this.state;

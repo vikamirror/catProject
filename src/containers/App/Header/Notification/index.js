@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import { Transition } from 'react-transition-group';
+import { Transition } from 'react-transition-group';
 
 import DropdownMenu from '../../../../components/DropdownMenu';
 import MenuItem from '../../../../components/DropdownMenu/DropdownMenuItem';
-import { ellipsisTextAfterMaxLength } from '../../../../Utils/stringFormat';
 import OnBlurListener from '../../../../components/OnBlurListener';
-import * as sockets from '../../../../sockets/message';
-// import BounceInDown from '../../../../components/BounceInDown';
+import * as sockets from '../../../../sockets/notification';
+
+import * as notifyAPI from '../../../../fetch/notificationAPI';
 
 import './notification.css'
 
@@ -23,110 +23,143 @@ class Notification extends Component {
         this.state = {
             isShowNotifications: false,
             bounceInDown: false,
-            // notifications: [{
-            //     itemType: "link",
-            //     linkTo: "#",
-            //     hasIcon: false,
-            //     itemText: "three" + "回覆給你的訊息：測試訊息要打多長呢？一個問題，說長不長，說短不短，就好比幹話一般，要說得讓測試人員會心一笑是門學問"
-            // },{
-            //     itemType: "link",
-            //     linkTo: "#",
-            //     hasIcon: false,
-            //     itemText: "one" + "回覆給你的訊息：測試訊息要打多長呢？一個問題，說長不長，說短不短，就好比幹話一般，要說得讓測試人員會心一笑是門學問"
-            // }],
             notifications: [],
-            notificationsCount: 0,
-            couterStyle: {
-                opacity: '1',
-                transform: 'translateY(0%)'
-            }
+            lastLogoutTime: '', // 上次登出時間
+            unSeenNotificationCount: 0, //未讀的消息
+            hasActivateSocket: false, // 已開始監聽
         }
     }
-    componentDidMount () {
-        
-    }
-    componentDidUpdate () {
-        if (this.props.member.cuid) {
-            sockets.hasUnsentNotifiesEmitter();
-            this.onListenReceivedNewMessage();
+    componentDidUpdate (prevProps, prevState) {
+        if (this.props.member.cuid && !this.state.hasActivateSocket) {
+            this.onListenNotification(); // 監聽新的通知
+            this.onListenLastLogoutTime(); // 監聽上次登出時間
+            this.setState({hasActivateSocket: true});
+            this.fetchNotifications(); // 向後端請求歷史通知
         }
     }
-    onListenReceivedNewMessage () {
-        const receivedPostMessageHandler = (newMessage) => {
-            const newNotification = {
-                itemType: "link",
-                linkTo: "#",
-                hasIcon: false,
-                itemText: `${newMessage.fromMember.name} 回覆給你的訊息: ${newMessage.content}`,
-            };
+    // 監聽新的通知
+    onListenNotification () {
+        const receivedNotifyHandler = (notification) => {
+            // console.log('receivedNotifyHandler:', notification);
+            notification.isHighLight = true;
             this.setState({
-                notifications: [newNotification, ...this.state.notifications],
-                notificationsCount: [newNotification, ...this.state.notifications].length,
+                notifications: [notification, ...this.state.notifications],
+                unSeenNotificationCount: this.state.unSeenNotificationCount + 1
             });
+            this.execCounterTransition();
         };
-        sockets.postMessageListener(receivedPostMessageHandler);
+        sockets.notificationListener(receivedNotifyHandler);
     }
+    // 監聽上次登出時間
+    onListenLastLogoutTime () {
+        const receivedLastLogoutTimeHandler = (time) => {
+            this.setState({lastLogoutTime: time});
+        }
+        sockets.lastLogoutTimeListener(receivedLastLogoutTimeHandler);
+    }
+    // 向後端請求歷史通知
+    fetchNotifications () {
+        notifyAPI
+            .getNotifications()
+            .then(res => {
+                const notifies = res.data.notifications;
+                this.highLightNotifications(notifies);
+            })
+            .catch( err => console.error(err.response.data) );
+    }
+    // 將未讀的通知加亮
+    highLightNotifications (notifies) {
+        let unSeenCount = 0; // 未讀的數量
+        notifies.map((notify, index) => {
+            if (Date.parse(notify.dateAdded) > Date.parse(this.state.lastLogoutTime)) {
+                notify.isHighLight = true;
+                unSeenCount++;
+                return notify;
+            } else {
+                notify.isHighLight = false;
+                return notify;
+            }
+        });
+        this.setState({
+            notifications: notifies,
+            unSeenNotificationCount: unSeenCount
+        });
+        this.execCounterTransition();
+    }
+    // 開關下拉式選單
     toggleDropdownMenu () {
         this.state.isShowNotifications ? 
             this.closeDropdownMenu() : this.openDropdownMenu();
     }
+    // 打開下拉式選單
     openDropdownMenu () {
         this.setState({
-            isShowNotifications: true, // 打開下拉式選單
+            isShowNotifications: true,
         });
     }
+    // 關閉下拉式選單
     closeDropdownMenu () {
         this.setState({
-            isShowNotifications: false, // 關閉下拉式選單
-            // notifications: [], // 通知的陣列歸零
-            notificationsCount: 0, // 通知的數字歸零
+            isShowNotifications: false, 
+            unSeenNotificationCount: 0, // 未讀的數字歸零
         });
+        this.removeHighLights();
     }
-    // addOneNotification () {
-    //     this.setState({couterStyle: {
-    //         ...this.state.couterStyle,
-    //         opacity: '0',
-    //         transform: 'translateY(-20%)'
-    //     }});
-    //     this.setState({notifications: [{
-    //         itemType: "link",
-    //         linkTo: "#",
-    //         hasIcon: false,
-    //         itemText: "test" + "回覆給你的訊息：測試訊息要打多長呢？一個問題，說長不長，說短不短，就好比幹話一般，要說得讓測試人員會心一笑是門學問"
-    //     }, ...this.state.notifications]});
-    //     this.execCounterTransition();
-    // }
-    // execCounterTransition () {
-
-    //     setTimeout(() => {
-    //         this.setState({couterStyle: {
-    //             ...this.state.couterStyle,
-    //             opacity: '1',
-    //             transform: 'translateY(0%)'
-    //         }});
-    //     }, 500);
-    // }
+    // 關閉下拉式選單後, 拿掉加亮的效果
+    removeHighLights () {
+        const notifiesClearHighLight = [...this.state.notifications].map((notify, index) => {
+            if (notify.isHighLight) {
+                return {
+                    ...notify,
+                    isHighLight: false
+                };
+            } else {
+                return notify;
+            }
+        });
+        this.setState({notifications: notifiesClearHighLight});
+    }
+    // 啟動計數器的動畫
+    execCounterTransition () {
+        this.setState({bounceInDown: true});
+        setTimeout(() => {
+            this.setState({bounceInDown: false});
+        }, 200);
+    }
     render () {
         if (!this.props.member.cuid) {
             return '';
         }
-        const { notificationsCount, notifications, couterStyle } = this.state;
+        const { notifications, unSeenNotificationCount, bounceInDown } = this.state;
+        const defaultStyles = {
+            transition: 'all 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000)',
+            opacity: unSeenNotificationCount ? '1' : '0',
+            transform: 'translateY(0%)'
+        };
+        const transitionStyles = {
+            entering: { opacity: '0', transform: 'translateY(-10%)'},
+            entered: { opacity: '1', transform: 'translateY(0%)'},
+        }
         const Aux = props => props.children;
         return (
             <li className="notify-wrapper">
+                {/* <button className="btn btn-sm" onClick={() => this.addOneNotification()}>+1</button> */}
                 <OnBlurListener
                     activeFocus={() => this.toggleDropdownMenu()} 
                     inactiveFocus={() => this.closeDropdownMenu()}
                 >
-                    <span className="icon-btn"><i className="icon icon-bell" /></span>
+                    <span className="icon-btn"><i className="icon icon-bell" /></span> 
+                    <Transition in={bounceInDown} timeout={300}>
                     {
-                        notificationsCount > 0 ?
-                        <span className="notification-counter" style={couterStyle}>            
-                            {notifications.length}
-                        </span> 
-                        : 
-                        null
-                    }   
+                        (status) => (
+                            <div style={{...defaultStyles, ...transitionStyles[status]}}>
+                                <span className="notification-counter">
+                                    {unSeenNotificationCount}
+                                </span>
+                            </div>
+                        )
+                    }
+                    </Transition>
                     <div className="notify-dropdown">
                         <DropdownMenu isShowMenu={this.state.isShowNotifications}>
                             {
@@ -134,11 +167,12 @@ class Notification extends Component {
                                     notifications.map((notify, index) => (
                                         <Aux key={index}>
                                             <MenuItem
-                                                itemType={notify.itemType}
-                                                linkTo={notify.linkTo || null}
-                                                hasIcon={notify.hasIcon}
-                                                itemIcon={notify.itemIcon || null}
-                                                itemText={ellipsisTextAfterMaxLength(notify.itemText, 36) || null}
+                                                itemType="notification"
+                                                linkTo={notify.link}
+                                                boldText={notify.messageFrom.name}
+                                                itemText={notify.message}
+                                                date={notify.dateAdded}
+                                                isHighLight={notify.isHighLight}
                                             />
                                             <MenuItem
                                                 itemType="divider"
