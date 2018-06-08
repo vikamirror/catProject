@@ -10,6 +10,7 @@
 		"cuid": "^2.1.0",
 		"dotenv": "^5.0.0",
 		"express": "4.16.2",
+		"http-proxy-middleware": "^0.18.0",
 		"ignore-styles": "5.0.1",
 		"immutability-helper": "^2.7.0",
 		"jsonwebtoken": "^8.1.1",
@@ -45,6 +46,14 @@
 		"server": "NODE_ENV=development node server/index.js",
 		"deploy": "NODE_ENV=production node server/index.js"
 	},
-	"proxy": "http://localhost:3009/",
-	"homepage": "/"
+	"proxy": {
+		"/api": {
+			"target": "http://localhost:3009",
+			"ws": true
+		},
+		"/socket.io": {
+			"target": "http://localhost:3009",
+			"ws": true
+		}
+	}
 }

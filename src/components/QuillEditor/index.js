@@ -159,6 +159,7 @@ class QuillEditor extends Component {
                             // onBlur={() => this.onBlurEditor()}
                             placeholder={this.props.placeholder}
                             modules={modules}
+                            bounds=".ql-container"
                         />
                     </div>
                 );

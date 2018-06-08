@@ -26,7 +26,7 @@ const PostEditFooter = ({onClickClose, onClickSubmit}) => (
         <hr className="hr-line-style2" />
         <div className="u-clearfix">
             <div className="btn-group u-push-right">     
-                <div className="btn btn-sm btn-cancel" onClick={() => onClickClose()}>關閉</div>
+                <div className="btn btn-sm btn-cancel" onClick={(e) => onClickClose(e)}>關閉</div>
                 <div className="btn btn-sm btn-primary" onClick={() => onClickSubmit()}>送出</div>
             </div>
         </div>
@@ -88,7 +88,7 @@ class PostWrapper extends Component {
                                     {
                                         isEdit ? 
                                         <PostEditFooter 
-                                            onClickClose={() => this.handleClose()}
+                                            onClickClose={(e) => this.handleClose(e)}
                                             onClickSubmit={() => onClickSubmit()} 
                                         /> 
                                         : 

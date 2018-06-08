@@ -38,47 +38,6 @@ const ImgUploadBtn = ({imgUploadBtnPositionTop, onChangeHandler, isEditing}) => 
     );
 };
 
-const initialState = {
-    "entityMap": {
-        "0": {
-            "type": "IMAGE",
-            "mutability": "IMMUTABLE",
-            "data": {
-                "src": "/testImages/cat02.jpg"
-            }
-        }
-    },
-    "blocks": [{
-        "key": "9gm3s",
-        "text": "輸入說明：您可在此輸入文字, 輸入時右側會出現插入圖片的按鈕",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }, {
-        "key": "ov7r",
-        "text": " ",
-        "type": "atomic",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [{
-            "offset": 0,
-            "length": 1,
-            "key": 0
-        }],
-        "data": {}
-    }, {
-        "key": "e23a8",
-        "text": "以上為範例圖片。您可插入圖片, 或貼上網址路徑",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }]
-};
-
 const mapStateToProps = state => ({
     isLoading: state.isLoading,
 });
