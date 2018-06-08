@@ -660,9 +660,10 @@ span{display: inline-block;}
     margin-right: -16px !important;
 }
 
+.u-margin-r-4{ margin-right: 4px !important; }
 .u-margin-t-8{ margin-top: 8px !important; }  
 .u-margin-b-8{ margin-bottom: 8px !important; }  
-.u-margin-r-4{ margin-right: 4px !important; }
+.u-margin-r-8{ margin-right: 8px !important; }  
 .u-mt-24{ margin-top: 24px !important; }
 .u-mt-16{ margin-top: 16px !important; }
 .u-mb-16{ margin-bottom: 16px !important; }

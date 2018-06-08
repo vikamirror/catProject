@@ -52,9 +52,11 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
                 <div className="stream u-push-right">
                 {
                     isFavorite ?
-                    <UndoLikeButton removeFavoritePost={() => removeFavoritePost(cuid)} isShowText={false} />
+                    // <UndoLikeButton removeFavoritePost={() => removeFavoritePost(cuid)} isShowText={false} />
+                    <span className="icon-btn font-size-16 font-lightcoral"><i className="icon icon-heart" /></span>
                     :
-                    <LikeButton addFavoritePost={() => addFavoritePost(cuid)} isShowText={false} />
+                    <span className="icon-btn font-size-16"><i className="icon icon-heart-empty" /></span>
+                    // <LikeButton addFavoritePost={() => addFavoritePost(cuid)} isShowText={false} />
                 }
                 </div>
             </div>
