@@ -21,13 +21,13 @@ router.put('/post', authToken, PostService.updatePost);
 router.post('/post', authToken, PostService.createPost);
 
 // 取得所有文章
-router.get('/posts', PostService.getPosts);
+router.get('/posts/:pageNum', PostService.getPosts);
 
 // 由post.cuid取得一篇文章
 router.get('/post/:cuid', PostService.getOnePost);
 
-// 由member.cuid取得該member的所有文章
-router.get('/posts/:cuid', authToken, PostService.getPostsByAuthor);
+// 取得一個member的所有文章
+router.get('/myPosts', authToken, PostService.getPostsByAuthor);
 
 // 取得該會員喜歡的所有文章
 router.get('/favoritePosts', authToken, PostService.getFavoritePosts);

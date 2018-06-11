@@ -63,8 +63,9 @@
 .group-info .icon-btn{
     height: auto;
     font-size: 12px;
-    line-height: 30px;
+    line-height: 32px;
     color: #4F8196;
+    width: 32px;
 }
 .group-info.text{
     display: inline-block;

@@ -24,7 +24,7 @@ class QuillEditor extends Component {
             this.ReactQuill = require('react-quill');
         }
         this.state = {
-            // content: '',
+            // isAttachedQuillRefs: false,
             previewBtnHasCreated: false,
             customImgBtnHasCreated: false,
             showPreview: false,
@@ -44,18 +44,21 @@ class QuillEditor extends Component {
     componentDidMount () {
         this.fetchContent(this.props.content);
     }
-    componentWillReceiveProps (nextProps) {
-        if (nextProps.content !== this.props.content) {
-            this.fetchContent(nextProps.content);
+    // componentWillReceiveProps (nextProps) {
+    //     if (nextProps.content !== this.props.content) {
+    //         this.fetchContent(nextProps.content);
+    //     }
+    // }
+    componentDidUpdate (prevProps, prevState) {
+        if (prevProps.content !== this.props.content) {
+            this.fetchContent(this.props.content);
         }
+        if (this.props.isEdit) {
+            this.attachQuillRefs();
+        };
     }
     fetchContent (html) {
         this.setState({content: html});
-    }
-    componentDidUpdate () {
-        if (this.props.isEdit) {
-            this.attachQuillRefs();
-        }
     }
     attachQuillRefs () {
         if (!this.reactQuillRef) return;
@@ -67,6 +70,7 @@ class QuillEditor extends Component {
         if (!this.state.customImgBtnHasCreated) {
             this.createCustomImageBtn();
         }
+        // this.setState({isAttachedQuillRefs: true});
     }
     createPreviewBtn () {
         const toolbar = this.quillRef.getModule('toolbar');
@@ -74,7 +78,6 @@ class QuillEditor extends Component {
         const targetEditor = document.querySelector(`#${this.props.id}`);
         const previewBtn = targetEditor.querySelector('.ql-preview');
         this.setState({previewBtnHasCreated: true});
-
         previewBtn.addEventListener('click', () => this.handlePreview(targetEditor, previewBtn));
     }
     handlePreview (targetEditor, previewBtn) {

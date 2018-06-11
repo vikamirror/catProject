@@ -5,6 +5,8 @@ const ADD_POST_LIST = 'ADD_POST_LIST';
 const UPDATE_POST_LIST = 'UPDATE_POST_LIST';
 const DELETE_POST_LIST = 'DELETE_POST_LIST';
 
+let pageNum = 1; // 每頁跟後端fetch30個post
+
 export function deletePostList (cuid) {
     return (dispatch) => {
         dispatch({
@@ -35,9 +37,10 @@ export function addPostList (newPost) {
 export function fetchPosts () {
     return (dispatch) => {
         postAPI
-            .getPosts()
+            .getPosts(pageNum)
             .then((res) => {
                 if (res.status === 200) {
+                    pageNum++;
                     dispatch({
                         type: FETCH_POSTS,
                         posts: res.data.posts,

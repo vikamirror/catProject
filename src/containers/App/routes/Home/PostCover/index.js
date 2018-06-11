@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Avatar from '../../../../../components/Avatar';
 import { removeImgLinkTag, ellipsisTextAfterMaxLength }  from '../../../../../Utils/stringFormat';
 import {addFavoritePost, removeFavoritePost} from '../../../../../redux/member';
-import { LikeButton, UndoLikeButton } from '../../../../../components/Buttons/LikeButton';
 import { isContainedInArray } from '../../../../../Utils/variableCheck';
 // import DraftEditor from '../../../../../components/FormInputs/DraftEditor';
 import QuillEditor from '../../../../../components/QuillEditor';
@@ -52,11 +51,9 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
                 <div className="stream u-push-right">
                 {
                     isFavorite ?
-                    // <UndoLikeButton removeFavoritePost={() => removeFavoritePost(cuid)} isShowText={false} />
                     <span className="icon-btn font-size-16 font-lightcoral"><i className="icon icon-heart" /></span>
                     :
                     <span className="icon-btn font-size-16"><i className="icon icon-heart-empty" /></span>
-                    // <LikeButton addFavoritePost={() => addFavoritePost(cuid)} isShowText={false} />
                 }
                 </div>
             </div>

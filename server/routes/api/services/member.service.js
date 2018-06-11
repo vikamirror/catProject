@@ -269,11 +269,10 @@ export function addFavoritePost (req, res) {
     }
     const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     const postCuid = sanitizeHtml(req.body.postCuid);
+    const query = {"cuid": cuid};
+    const options = {$push: {"favoritePosts": {"postCuid": postCuid} }};
     Member
-        .update(
-            {"cuid": cuid}, 
-            {$push: {"favoritePosts": {"postCuid": postCuid}}}
-        )
+        .update(query, options)
         .then(() => res.status(200).json({message: '收藏成功'}))
         .catch((err) => {
             res.status(500).json({
@@ -294,11 +293,10 @@ export function removeFavoritePost (req, res) {
         return;
     }
     const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const query = {"cuid": cuid};
+    const options = {$pull: {"favoritePosts": {"postCuid": req.params.postCuid} }};
     Member
-        .update(
-            {"cuid": cuid}, 
-            {$pull: {"favoritePosts": {"postCuid": req.params.postCuid}}}
-        )
+        .update(query, options)
         .then(() => res.status(200).json({message: '已從收藏中刪除'}))
         .catch((err) => {
             res.status(500).json({

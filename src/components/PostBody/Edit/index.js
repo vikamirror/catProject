@@ -41,9 +41,9 @@ Edit.propTypes = {
     }),
     post: PropTypes.shape({
         author: PropTypes.shape({
-            cuid: PropTypes.string.isRequired
+            cuid: PropTypes.string
         }),
-        cuid: PropTypes.string.isRequired,
+        cuid: PropTypes.string
     }),
     isEdit: PropTypes.bool.isRequired,
     backUpAndEdit: PropTypes.func.isRequired,

@@ -21,7 +21,10 @@ const DateAndAuthor = ({isEdit, author, dateAdded, lastModify}) => {
                     <span className="font-size-18 font-weight-6 name">{author.name}</span>
                     <div className="date font-lightGrey">
                         <span className="u-margin-r-16">發文日期: {formatDateTime(dateAdded)}</span>
-                        <span className="u-margin-r-16">{lastModify !== dateAdded ? `更新日期: ${formatDateTime(lastModify)}` : ''}</span>
+                        {
+                            lastModify !== dateAdded ?
+                                <span className="u-margin-r-16">{`更新日期: ${formatDateTime(lastModify)}`}</span> : ''
+                        }
                     </div>
                 </div>
             </div>

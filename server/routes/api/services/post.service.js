@@ -70,10 +70,23 @@ export function createPost(req, res) {
 }
 
 export function getPosts(req, res) {
+    if (!req.params.pageNum) {
+        res.status(400).json({
+            message: '缺少param:頁次'
+        });
+        return;
+    }
+    let pageNumber =  req.params.pageNum;
+    const postsPerPage = 30;
+    const conditions = {"isDeleted": false};
+    const projection = {_id:0, __v:0}; // 不需要的欄位
     Post
-        .find({"isDeleted": false}, {_id:0, __v:0}) // 不需要的欄位
+        .find(conditions, projection)
         .sort({lastModify: -1}) // 最近更新文章的排在前面
+        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * postsPerPage ) : 0 )
+        .limit(postsPerPage)
         .then((posts) => {
+            // console.log('posts', posts);
             res.status(200).json({
                 posts: posts
             });
@@ -180,11 +193,14 @@ export function getOnePost(req, res) {
  * parameter: member.cuid
  */
 export function getPostsByAuthor (req, res) {
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const conditions = {
+        "author.cuid": cuid,
+        "isDeleted": false,
+    };
+    const projection = {_id:0, __v:0};
     Post
-        .find({
-            "author.cuid": req.params.cuid,
-            "isDeleted": false,
-        }, {_id:0, __v:0})
+        .find(conditions, projection)
         .sort({"dateAdded": -1})
         .then((posts) => {
             res.status(200).json({
@@ -206,20 +222,22 @@ export async function getFavoritePosts (req, res) {
         //     { $unwind: "$favoritePosts" }, // 將favoritePosts展開成能排序的documents, 欄位名稱一定要加$字號
         //     { $sort: {'favoritePosts.dateAdded': -1} }, // 依照日期遞減排序, 最新的日期在前面
         // ];
-        const data = await Member.findOne({"cuid" : cuid}, {"_id": 0, "favoritePosts": 1}).exec();
+        const conditions = {"cuid" : cuid};
+        const projection = {"_id": 0, "favoritePosts": 1};
+        const data = await Member.findOne(conditions, projection).exec();
         let cuidList = [];
         if (data.favoritePosts.length > 0) {
-            cuidList = data.favoritePosts
-                            .sort((a, b) => {
-                                if (a.dateAdded < b.dateAdded) return -1;
-                                if (a.dateAdded > b.dateAdded) return 1;
-                                return 0;
-                            })
-                            .map(item => item.postCuid);
-        }
+            cuidList = data.favoritePosts.reverse().map(item => item.postCuid);
+                            // .sort((a, b) => {
+                            //     if (a.dateAdded < b.dateAdded) return -1;
+                            //     if (a.dateAdded > b.dateAdded) return 1;
+                            //     return 0;
+                            // })
+                            // .map(item => item.postCuid);
+        };
         const pipeline = [
             // 找到與陣列中postCuid相符的所有文章
-            { "$match": { "cuid": { "$in": cuidList } }},
+            { "$match": { "cuid": { "$in": cuidList }, "isDeleted": false }},
             // 每個文章都增加一個欄位_order, 以cuidList中, cuid的順序遞增 
             { "$addFields": { "_order" : {"$indexOfArray" : [cuidList, "$cuid"]}}},
             // 排序, 以_order欄位遞增排序
@@ -228,7 +246,6 @@ export async function getFavoritePosts (req, res) {
         Post
             .aggregate(pipeline)
             .then((posts) => {
-                // console.log('aggregate posts:', posts);
                 res.status(200).json({
                     posts: posts
                 });

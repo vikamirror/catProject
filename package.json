@@ -55,5 +55,6 @@
 			"target": "http://localhost:3009",
 			"ws": true
 		}
-	}
+	},
+	"homepage" : "http://localhost:3000"
 }

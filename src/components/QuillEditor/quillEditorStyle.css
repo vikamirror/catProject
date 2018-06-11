@@ -8,10 +8,25 @@
 
 .editor_wrapper_edit #charactor_editor.quill .ql-container.ql-snow{
     height: 480px;
+    /* max-height: 480px;
+    overflow-y: scroll; */
 }
 @media (max-width: 768px) {
     .editor_wrapper_edit #charactor_editor.quill .ql-container.ql-snow{
         height: 136px;
+        /* max-height: 136px;
+        overflow-y: scroll; */
+    }
+}
+
+.editor_wrapper_edit #remark_editor.quill .ql-container.ql-snow{
+    /* max-height: 480px;
+    overflow-y: scroll; */
+}
+@media (max-width: 768px) {
+    .editor_wrapper_edit #remark_editor.quill .ql-container.ql-snow{
+        /* max-height: 136px;
+        overflow-y: scroll; */
     }
 }
 

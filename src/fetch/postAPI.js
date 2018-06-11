@@ -29,8 +29,8 @@ export function getFavoritePosts () {
 }
 
 // 由member.cuid取得該member的所有文章
-export function getPostsByAuthor(cuid) {
-    return axios.get(`/api/posts/${cuid}?${+Date.now()}`, authHeader());
+export function getPostsByAuthor () {
+    return axios.get(`/api/myPosts?${+Date.now()}`, authHeader());
 }
 
 // 由post.cuid取得一篇文章
@@ -39,8 +39,8 @@ export function getOnePost(cuid) {
 }
 
 // 取得所有post
-export function getPosts() {
-    return axios.get(`/api/posts?${+Date.now()}`);
+export function getPosts(pageNum) {
+    return axios.get(`/api/posts/${pageNum}?${+Date.now()}`);
 }
 
 // 新增post

@@ -2,10 +2,12 @@ import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 
+// const Schema = mongoose.Schema;
+
 const favoritePostsSchema = new mongoose.Schema({
-    postCuid: {type: String, required: true},
-    dateAdded: {type: 'Date', default: Date.now, required: true}
-}, { _id : false });
+    postCuid: { type: String, required: true },
+    dateAdded: { type: Date, default: Date.now, required: true },
+}, { _id : false});
 
 const MemberSchema = new mongoose.Schema({
     email: { type: 'String' },
@@ -17,6 +19,10 @@ const MemberSchema = new mongoose.Schema({
     avatar: { type: 'String' },
     cuid: { type: 'String', required: true, unique: true },
     favoritePosts: [favoritePostsSchema],
+    // favoritePosts: [
+    //     { type: Schema.Types.ObjectId, ref: 'Post',required: true },
+    //     { timestamps: { createdAt: 'dateAdded' } }
+    // ],
     dateAdded: { type: 'Date', default: Date.now, required: true },
 });
 

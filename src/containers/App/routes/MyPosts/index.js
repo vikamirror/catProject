@@ -40,7 +40,7 @@ class MyPosts extends Component{
             return;
         }
         this.setState({shouldRender: true});
-        this.props.fetchMyPosts(this.props.member.cuid);
+        this.props.fetchMyPosts();
     }
     render () {
         if (!this.state.shouldRender) {

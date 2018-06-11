@@ -14,10 +14,10 @@ export function deleteMyPost (cuid) {
     }; 
 }
 
-export function fetchMyPosts (cuid) {
+export function fetchMyPosts () {
     return (dispatch) => {
         postAPI
-            .getPostsByAuthor(cuid)
+            .getPostsByAuthor()
             .then((res) => {
                 if (res.status === 200) {
                     dispatch({
