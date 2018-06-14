@@ -2,81 +2,38 @@ import createHistory from 'history/createMemoryHistory'; // 不是 createBrowser
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
+import axios from 'axios';
 
 import rootReducer from '../src/redux';
-// import { getPosts } from '../src/fetch/postAPI';
+import initState from '../src/redux/initialState';
+
+const domain = `http://${process.env.HOST}:${process.env.SERVER_PORT}`;
+
+const prepInitPostList = () => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(`${domain}/api/posts/1`)
+            .then((postsRes) => {
+                resolve(postsRes.data.posts);
+            })
+            .catch(err => reject(err));
+    });
+}
 
 // Create a store and history based on a path
-const createServerStore = (path = '/', preparedState) => {
+const createServerStore = async (path = '/') => {
+    console.log('createServerStore');
     // We don't have a DOM, so let's create some fake history and push the current path
     // const history = createHistory({ initialEntries: [path] });
     const history = createHistory({ initialEntries: [path] });
-
-    const initialState = {
-        member: {
-            cuid: '',
-            name: '',
-            avatar: '',
-            favoritePosts: [],
-        },
-        dialog: {
-            isShow: false,
-            type: undefined,
-            title: '',
-            htmlString: '',
-            inputPlaceholder: '',
-            showCancelButton: false,
-            cancelButtonText: '取消',
-            showConfirmButton: true,
-            confirmButtonText: '確定',
-            onClickCancelButton: undefined,
-            onClickConfirmButton: undefined,
-            buttonsAlign: 'center',
-            modalVerticalAlign: 'middle',
-        },
-        isSmallDevice: false,
-        isLoading: false, 
-        post: {
-            cuid: undefined,
-            title: '',
-            cover: '',
-            story: '',
-            charactor: '',
-            city: '台北市',
-            district: '松山區',
-            age: '',
-            gender: '0',
-            isSpay: false,
-            requirements: [
-                {name:'isAdult', desc:'須年滿20歲', value:false},
-                {name:'housemateAgreement', desc:'須經家人或室友同意' ,value:false},
-                {name:'financiallyIndependent', desc: '須具備經濟能力，包括每年施打預防針、貓咪生病時的醫藥費負擔', value:false},
-                {name:'newHandFriendly', desc: '不排斥養貓新手，但須有正確的飼養觀念', value:false},
-                {name:'noAbuse', desc: '不可關籠以及鏈貓，不可有任何虐待貓咪的行為', value:false},
-                {name:'noWildRelease', desc: '不能以『野放』的方式養貓，不可讓貓咪單獨外出，外出時請將貓裝入外出籠以保安全', value:false},
-                {name:'noticeOfSpay', desc: '須有結紮觀念', value:false},
-                {name:'accommodationPeriod', desc: '須同意一週的試養期，若貓咪無法適應，請交還原主', value:false},
-                {name:'regularReview', desc: '須接受定期追蹤', value:false},
-                {name:'letterOfGuarantee', desc: '須同意簽認養切結書', value:false}
-            ],
-            remark: '',
-            contact: '',
-            contactInfo: '',
-            dateAdded: '',
-            lastModify: '',
-            author: {
-                name: '',
-                avatar: '',
-                cuid: ''
-            },
-            isFetched: false, // 是否拿到後端的post了, 是true的話PostWrapper才會顯示
-            isEdit: false, // 是否是編輯模式
-        },
-        postList: [],
-    };
     
-    initialState.postList = preparedState.postList;
-    // console.log('initialState.postList:', initialState.postList);
+    const initialState = initState;
+    
+    const postList = await prepInitPostList();
+    if (Array.isArray(postList)) {
+        initialState.postList = postList;
+    }
+
     const middleware = [thunk, routerMiddleware(history)];
     const enhancers = [];
     const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers);

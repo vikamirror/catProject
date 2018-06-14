@@ -42,7 +42,8 @@ class NewPost extends Component {
             this.props.history.push("/");
         }
     }
-    handleSubmit () {
+    handleSubmit (e) {
+        e.stopPropagation();
         const newPost = {
             title: this.props.post.title,
             cover: this.props.post.cover,
@@ -71,7 +72,8 @@ class NewPost extends Component {
             })
             .catch(err => console.error(err.response.data));
 
-        this.props.history.push("/myPosts");
+        // this.props.history.push("/myPosts");
+        this.props.history.goBack(); // 為了避免發生ScrollWrapper找不到post-wrapper-id的狀況
     }
     render () {
         const {
@@ -90,7 +92,7 @@ class NewPost extends Component {
             contactInfo
         } = this.props.post;
         return (
-            <PostWrapper onClickSubmit={() => this.handleSubmit()}>
+            <PostWrapper onClickSubmit={(e) => this.handleSubmit(e)}>
                 <Title 
                     isEdit={isEdit} 
                     title={title}

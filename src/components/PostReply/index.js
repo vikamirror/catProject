@@ -31,10 +31,15 @@ class PostReply extends Component {
             orderByAscend: true
         };
     }
-    componentWillReceiveProps (nextProps) {
-        // 我怕componentDidMount的時候redux prop尚未更新
-        if (nextProps.post.cuid && (nextProps.post.cuid !== this.props.post.cuid)) {
-            this.fetchMessages(nextProps.post.cuid);
+    // componentWillReceiveProps (nextProps) {
+    //     // 我怕componentDidMount的時候redux prop尚未更新
+    //     if (nextProps.post.cuid && (nextProps.post.cuid !== this.props.post.cuid)) {
+    //         this.fetchMessages(nextProps.post.cuid);
+    //     }
+    // }
+    componentDidUpdate (prevProps) {
+        if (this.props.post.cuid && (prevProps.post.cuid !== this.props.post.cuid)) {
+            this.fetchMessages(this.props.post.cuid);
         }
     }
     // componentDidMount () {

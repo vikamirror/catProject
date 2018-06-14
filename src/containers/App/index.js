@@ -36,6 +36,7 @@ class App extends Component {
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
+        // console.log('window.__PRELOADED_STATE__', window.__PRELOADED_STATE__);
         if (!window.__PRELOADED_STATE__) {
             this.props.fetchPosts();
         }
@@ -46,7 +47,7 @@ class App extends Component {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             this.setBackground(this.props.location.pathname);
         }
-        if (this.props.member.cuid && (this.props.member.cuid !== prevProps.member.cuid)) {
+        if (this.props.member.cuid && (prevProps.member.cuid !== this.props.member.cuid)) {
             this.notifyOtherDevicesToLogout(this.props.member.cuid);
             this.loginEmitter(this.props.member.cuid);
         }

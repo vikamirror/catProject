@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 export default class ScrollWrapper extends Component {
     componentDidMount () {
-        if (this.props.onWindowScroll) {
+        if (this.props.onWindowScroll && this.props.wrapperId) {
             // window.addEventListener("scroll", evt => this.handleScroll(evt));
             // 因為html, body的overflow: hidden, 因此能scroll的只有id=root跟id=app
             document.getElementById(this.props.wrapperId).addEventListener("scroll", evt => this.handleScroll(evt));
         }
     }
     componentWillUnmount () {
-        if (this.props.onWindowScroll) {
+        if (this.props.onWindowScroll && this.props.wrapperId) {
             // window.removeEventListener("scroll", evt => this.handleScroll(evt));
             document.getElementById(this.props.wrapperId).removeEventListener("scroll", evt => this.handleScroll(evt));
         }

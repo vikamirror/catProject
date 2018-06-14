@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { Route } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import axios from 'axios';
 
 import createServerStore from '../serverStore';
 import App from '../../src/containers/App';
@@ -18,24 +17,6 @@ const prepHTML = (data, { html, head, body, initState }) => {
     data = data.replace('<div id="root">', `<div id="root">${body}`);
     data = data.replace('INIT_STATE', `${JSON.stringify(initState)}`);
     return data;
-};
-
-const prepInitState = async () => {
-    const domain = `http://${process.env.HOST}:${process.env.SERVER_PORT}`;
-    const getPostList = () => {
-        return new Promise((resolve, reject) => {
-            axios
-                .get(`${domain}/api/posts`)
-                .then((postsRes) => {
-                    resolve(postsRes.data.posts);
-                })
-                .catch(err => reject(err));
-        });  
-    }
-    const postList = await getPostList();
-    return {
-        postList: postList,
-    };
 };
 
 const universalLoader = (req, res) => {
@@ -51,9 +32,8 @@ const universalLoader = (req, res) => {
             return res.status(404).end();
         }
 
-        const preparedState = await prepInitState();
         // Create a store and sense of history based on the current path
-        const { store, history } = createServerStore(req.path, preparedState);
+        const { store, history } = await createServerStore(req.path);
 
         // Render App in React
         const routeMarkup = renderToString(

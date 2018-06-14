@@ -20,6 +20,7 @@ import sanitizeHtml from 'sanitize-html';
  * @returns {res.status(200).send({message: '成功訊息'})}
  */
 export function createPost(req, res) {
+    console.log('createPost', req.body);
     if (!req.body.title || 
         !req.body.cover ||
         !req.body.charactor ||
@@ -27,7 +28,7 @@ export function createPost(req, res) {
         !req.body.district ||
         !req.body.age ||
         !req.body.gender ||
-        !req.body.remark ||
+        // !req.body.remark ||
         !req.body.contact ||
         !req.body.contactInfo) {
             res.status(400).json({

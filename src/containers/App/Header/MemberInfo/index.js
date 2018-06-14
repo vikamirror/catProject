@@ -72,7 +72,7 @@ class MemberInfo extends Component{
             itemText: "我的關注"
         },{
             itemType: "link",
-            linkTo: "#",
+            linkTo: "/myAccount",
             hasIcon: true,
             itemIcon: "icon-user",
             itemText: "帳號設定"

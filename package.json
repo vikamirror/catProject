@@ -52,8 +52,12 @@
 			"ws": true
 		},
 		"/socket.io": {
-			"target": "http://localhost:3009",
+			"target": "ws://localhost:3009/",
 			"ws": true
+		},
+		"/sockjs-node": {
+			"target": "wss://localhost:3009/",
+			"wss": true
 		}
 	},
 	"homepage" : "http://localhost:3000"

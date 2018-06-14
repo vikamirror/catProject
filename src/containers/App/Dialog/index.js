@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import BounceInUp from '../../../components/BounceInUp';
 import { convertFromStringToDom } from '../../../Utils/stringFormat';
-import { closeDialog } from '../../../redux/dialog';
+import dialog, { closeDialog } from '../../../redux/dialog';
 import { baseUrl } from '../../../Utils/stringFormat';
+import QuillEditor from '../../../components/QuillEditor';
 
 import './dialog.css';
 
@@ -19,12 +21,12 @@ const Icon = ({type}) => {
         default:
             return '';
     }
-}
+};
 
 const mapStateToProps = state => ({ dialog: state.dialog });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     closeDialog: closeDialog
- }, dispatch));
+}, dispatch));
 class Dialog extends Component {
     constructor () {
         super();
@@ -46,8 +48,8 @@ class Dialog extends Component {
             }, 100);
         }
     }
-    handleState (state, evt) {
-        this.setState({[state]: evt.target.value});
+    handleState (state, content) {
+        this.setState({[state]: content});
     }
     confirmBtn () {
         if (this.props.dialog.onClickConfirmButton) {
@@ -78,12 +80,17 @@ class Dialog extends Component {
             buttonsAlign,
             modalVerticalAlign,
         } = this.props.dialog;
+        const {
+            content,
+            enableUploadImg,
+            changeContentHandler,
+        } = this.props.dialog.textEditor;
         const modalVerticalAlignStyle = modalVerticalAlign === 'middle' ? 'u-vertical-center' : '';
         if (!isShow) {
             return '';
         }
         return (         
-            <div className="u-wrapper-fixed-w100-h100 z-index-100 u-div-outline-0" id="dialog-wrapper"> 
+            <div className="u-wrapper-fixed-w100-h100 z-index-99 u-div-outline-0" id="dialog-wrapper"> 
                 <BounceInUp inCondition={this.state.shouldBounceInUp} enterMilliseconds={300}>     
                     <div className={`modal u-div-center u-text-center form ${modalVerticalAlignStyle}`}>
                         <div className="font-size-18 u-margin-b-8">{title}</div>
@@ -95,8 +102,17 @@ class Dialog extends Component {
                                 className="textarea"
                                 placeholder={inputPlaceholder}
                                 value={this.state.inputValue}
-                                onChange={(evt) => this.handleState('inputValue', evt)}>
+                                onChange={(evt) => this.handleState('inputValue', evt.target.value)}>
                             </textarea> : ''
+                        }
+                        {
+                            type === 'textEditor' ?
+                            <QuillEditor
+                                content={content}
+                                enableUploadImg={enableUploadImg}
+                                placeholder={inputPlaceholder}
+                                changeContentHandler={content => this.handleState('inputValue', content)}
+                            /> : ''
                         }
                         <div className="btn-group u-margin-t-8" style={{textAlign: buttonsAlign}}>
                             {
@@ -115,4 +131,19 @@ class Dialog extends Component {
     }
 }
 
+Dialog.propTypes = {
+    dialog: PropTypes.shape({
+        isShow: PropTypes.bool.isRequired,
+        type: PropTypes.string,
+        title: PropTypes.string.isRequired,
+        inputPlaceholder: PropTypes.string,
+        showCancelButton: PropTypes.bool.isRequired,
+        cancelButtonText: PropTypes.string.isRequired,
+        showConfirmButton: PropTypes.bool.isRequired,
+        confirmButtonText: PropTypes.string.isRequired,
+        buttonsAlign: PropTypes.string.isRequired,
+        modalVerticalAlign: PropTypes.string,
+    }),
+    closeDialog: PropTypes.func.isRequired,
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Dialog);

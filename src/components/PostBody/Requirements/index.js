@@ -7,15 +7,20 @@ import { connect } from 'react-redux';
 // import { removeHTMLTag } from '../../../Utils/stringFormat';
 import { CheckBox } from '../../FormInputs';
 import { changeRequirements, changeRemark } from '../../../redux/post';
+import { showTextEditorDialog } from '../../../redux/dialog';
 // import DraftEditor from '../../FormInputs/DraftEditor';
-import QuillEditor from '../../QuillEditor';
+import ReadOnlyEditor from '../../QuillEditor/QuillEditorReadOnly';
 
 import './requirements.css';
 
-const mapStateToProps = state => ({ });
+const mapStateToProps = state => ({
+    post: state.post,
+    dialog: state.dialog,
+});
 const mapDispatchToProps = dispatch => (bindActionCreators({
     changeRequirements: changeRequirements,
     changeRemark: changeRemark,
+    showTextEditorDialog: showTextEditorDialog,
 }, dispatch));
 class Requirements extends Component {
     setRequirementCheck (index, bool) {
@@ -35,11 +40,32 @@ class Requirements extends Component {
         // this.props.handleState('requirements', copyRequirements);
         this.props.changeRequirements(index, bool);
     }
-    saveRemark (content) {
-        this.props.changeRemark(content);
+    saveRemark (confirmValue) {
+        if (confirmValue.inputValue) {
+            this.props.changeRemark(confirmValue.inputValue);
+        }
     }
     render () {
-        const {isEdit, requirements, remark} = this.props;
+        const {
+            isEdit,
+            requirements,
+            remark,
+            showTextEditorDialog,
+        } = this.props;
+        const textEditorConfig = {
+            title: "其它認養條件",
+            inputPlaceholder: "其它認養條件...",
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            showConfirmButton: true,
+            confirmButtonText: "完成",
+            onClickConfirmButton: (confirmValue) => this.saveRemark(confirmValue),
+            modalVerticalAlign: "top",
+            textEditor: {
+                content: remark,
+                enableUploadImg: false
+            },
+        };
         if (isEdit) {
             return (
                 <div id="requirements_wrapper">
@@ -62,7 +88,7 @@ class Requirements extends Component {
                     </div>
                     <div className="row">
                         <div className="col-xs-12 group-input">
-                            <QuillEditor
+                            {/* <QuillEditor
                                 id="remark_editor"
                                 content={remark}
                                 contentMaxHeight="auto"
@@ -70,7 +96,13 @@ class Requirements extends Component {
                                 enableUploadImg={false}
                                 placeholder="其它認養條件..."
                                 saveEditorContent={(content) => this.saveRemark(content)}
-                            />
+                            /> */}
+                            <div tabIndex="0" onClick={() => showTextEditorDialog(textEditorConfig)} className="u-div-outline-0">
+                                <ReadOnlyEditor
+                                    content={remark}
+                                    placeholder="其它認養條件..."
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -98,12 +130,18 @@ class Requirements extends Component {
                     </div>
                     <div className="row">
                         <div className="col-xs-12 group-info">
-                            <QuillEditor
+                            {/* <QuillEditor
                                 content={remark}
                                 isEdit={isEdit}
                                 enableUploadImg={false}
                                 placeholder="其它認養條件..."
-                            />
+                            /> */}
+                            <div className="editor_wrapper_readOnly">
+                                <ReadOnlyEditor
+                                    content={remark}
+                                    placeholder="其它認養條件..."
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

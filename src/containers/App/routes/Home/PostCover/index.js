@@ -7,7 +7,7 @@ import { removeImgLinkTag, ellipsisTextAfterMaxLength }  from '../../../../../Ut
 import {addFavoritePost, removeFavoritePost} from '../../../../../redux/member';
 import { isContainedInArray } from '../../../../../Utils/variableCheck';
 // import DraftEditor from '../../../../../components/FormInputs/DraftEditor';
-import QuillEditor from '../../../../../components/QuillEditor';
+import ReadOnlyEditor from '../../../../../components/QuillEditor/QuillEditorReadOnly';
 
 import './postCover.css';
 
@@ -35,11 +35,9 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
                     isEdit={false}
                     enableUploadImg={false}
                 /> */}
-                <QuillEditor
+                <ReadOnlyEditor
                     content={intro}
-                    // contentMaxHeight="480px"
-                    isEdit={false}
-                    enableUploadImg={false}
+                    placeholder="貓咪的故事......"
                 />
             </div>
             <hr className="hr-line-style1" />

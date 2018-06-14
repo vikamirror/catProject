@@ -1,6 +1,7 @@
 .modal{
     background: #fefefe;
-    width: 512px;
+    /* width: 512px; */
+    width: 624px;
     max-width: 100%;
     padding: 16px;
     border-radius: 4px;

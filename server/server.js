@@ -42,15 +42,9 @@ app.use('/api', notificationRoutes);
 app.use('/', universalLoader); // 從其他頁面進入時
 
 const server = http.createServer(app);
-const io = socket_io(server);
+const io = socket_io(server, {destroyUpgrade: false});
 
 const PORT = process.env.SERVER_PORT;
-
-// const wsProxy = proxy(
-//     `http://localhost:${process.env.DEV_CLIENT_PORT}`,
-//     { ws: true, changeOrigin: true }
-// );
-// app.use(wsProxy);
 
 // app.listen(PORT, () => console.log(`已啟動PORT: ${PORT}!`));
 server.listen(PORT, () => console.log(`已啟動PORT: ${PORT}!`));

@@ -20,7 +20,7 @@ const PostSchema = new mongoose.Schema({
     gender: {type: String, required: true},
     isSpay: {type: Boolean, required: true},
     requirements: [requirementsSchema],
-    remark: {type: String, required: true},
+    remark: {type: String},
     contact: {type: String, required: true},
     contactInfo: {type: String, required: true},
     author: {

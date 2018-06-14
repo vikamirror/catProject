@@ -27,7 +27,7 @@ const PostEditFooter = ({onClickClose, onClickSubmit}) => (
         <div className="u-clearfix">
             <div className="btn-group u-push-right">     
                 <div className="btn btn-sm btn-cancel" onClick={(e) => onClickClose(e)}>關閉</div>
-                <div className="btn btn-sm btn-primary" onClick={() => onClickSubmit()}>送出</div>
+                <div className="btn btn-sm btn-primary" onClick={(e) => onClickSubmit(e)}>送出</div>
             </div>
         </div>
     </div>
@@ -71,8 +71,8 @@ class PostWrapper extends Component {
         const {isSmallDevice, onClickSubmit} = this.props;
         const {isFetched, isEdit} = this.props.post;
         const shadowHeader = this.state.isScroll ? "shadow-header" : "";
-        return (  
-            <div className="u-wrapper-fixed-w100-h100 u-post-wrapper-scroll z-index-99" id="post-wrapper-id">
+        return (
+            <div className="u-wrapper-fixed-w100-h100 u-post-wrapper-scroll z-index-98" id="post-wrapper-id">
                 <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)} wrapperId="post-wrapper-id">
                     <div className={`close-header ${shadowHeader} z-index-1`}>
                         <CloseButton
@@ -89,7 +89,7 @@ class PostWrapper extends Component {
                                         isEdit ? 
                                         <PostEditFooter 
                                             onClickClose={(e) => this.handleClose(e)}
-                                            onClickSubmit={() => onClickSubmit()} 
+                                            onClickSubmit={(e) => onClickSubmit(e)} 
                                         /> 
                                         : 
                                         ''

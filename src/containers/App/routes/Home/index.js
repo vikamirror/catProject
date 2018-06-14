@@ -47,7 +47,7 @@ class Home extends Component {
         return (
             <div>
                 <Helmet>
-                    <title>Home</title>
+                    <title>Cat Crush</title>
                 </Helmet>
                 <div className="u-margin-header">
                     <div className="container home-container">

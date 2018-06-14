@@ -6,35 +6,20 @@
     font-size: 16px;
 }
 
-.editor_wrapper_edit #charactor_editor.quill .ql-container.ql-snow{
-    height: 480px;
-    /* max-height: 480px;
-    overflow-y: scroll; */
+.editor_wrapper_edit .quill .ql-container.ql-snow{
+    min-height: 136px;
+    max-height: 480px;
+    overflow-y: scroll;
 }
-@media (max-width: 768px) {
-    .editor_wrapper_edit #charactor_editor.quill .ql-container.ql-snow{
-        height: 136px;
-        /* max-height: 136px;
-        overflow-y: scroll; */
+@media (max-width: 1024px) {
+    .editor_wrapper_edit .quill .ql-container.ql-snow{
+        /* height: 136px; */
+        max-height: 400px;
     }
 }
-
-.editor_wrapper_edit #remark_editor.quill .ql-container.ql-snow{
-    /* max-height: 480px;
-    overflow-y: scroll; */
-}
-@media (max-width: 768px) {
-    .editor_wrapper_edit #remark_editor.quill .ql-container.ql-snow{
-        /* max-height: 136px;
-        overflow-y: scroll; */
+@media (max-width: 414px) { /* iphone 6,7,8 */
+    .editor_wrapper_edit .quill .ql-container.ql-snow{
+        /* height: 136px; */
+        max-height: 136px;
     }
-}
-
-.ql-preview::after{
-    content: '\e801';
-    font-family: fontello;
-}
-
-.ql-snow.ql-toolbar .ql-preview{
-    outline: 0;
 }

@@ -69,7 +69,7 @@ class Header extends Component {
     render() {
         const header_id = this.props.shoudHeaderColored ? "header-colored" : "";
         return (
-            <header className="header z-index-98" id={header_id}>
+            <header className="header z-index-97" id={header_id}>
                 <div className="container">
                     <nav className="nav u-clearfix">
                         {/* Logo */}

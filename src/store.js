@@ -5,11 +5,12 @@ import logger from 'redux-logger';
 import { routerMiddleware } from 'react-router-redux';
 
 import rootReducer from './redux';
+import initialStateForClient from './redux/initialState';
 
 export const history = createHistory();
 
 // const initialState = {};
-const initialState = window.__PRELOADED_STATE__;
+const initialState = window.__PRELOADED_STATE__ || initialStateForClient;
 
 const middleware = [thunk, logger, routerMiddleware(history)];
 // const enhancers = [];

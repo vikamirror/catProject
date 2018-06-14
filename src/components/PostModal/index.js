@@ -144,9 +144,9 @@ class PostModal extends Component {
                 element.scrollTop = element.scrollTop + perTick;
                 if (element.scrollTop === to) return;
                 scrollTo(element, to, miliseconds - 10);
-            }, 10);
+            }, 20);
         };
-        scrollTo(targetWrapper, -600, 200);
+        scrollTo(targetWrapper, -600, 100);
     }
     render () {
         const {
