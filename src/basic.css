@@ -336,6 +336,11 @@ ul {
     transition: all 0.3s;
 }
 
+.btn:disabled{
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .btn.btn-sm{
     /* btn外觀 */
     height: 32px;
@@ -564,7 +569,8 @@ span{display: inline-block;}
 
 .search-form-field.icon-search::before,
 .form-field-email.icon-mail::before,
-.form-field-password.icon-key::before{
+.form-field-password.icon-key::before,
+.form-field-name.icon-user::before{
     position: absolute;
     top: 50%;
     left: 8px;
@@ -670,6 +676,7 @@ span{display: inline-block;}
 .u-margin-b-16{ margin-bottom: 16px !important; }
 .u-margin-r-16{ margin-right: 16px !important; }
 .u-margin-l-16{ margin-left: 16px !important; }
+.u-margin-b-24{ margin-bottom: 24px !important;}
 .u-margin-b-32{ margin-bottom: 32px !important;}
 .u-margin-t-40{ margin-top: 40px !important; }
 .u-margin-b-40{ margin-bottom: 40px !important; }
@@ -681,7 +688,7 @@ span{display: inline-block;}
 
 .u-margin-footer{ margin-bottom: 64px; }
 @media (max-width: 768px) {
-    .u-margin-header{ margin-bottom: 56px; }
+    .u-margin-footer{ margin-bottom: 56px; }
 }
 
 @media (max-width: 800px) {

@@ -42,6 +42,32 @@ export function getMember(req, res) {
     }
 }
 
+export function getMemberEmail (req, res) {
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const conditions = {"cuid": cuid};
+    const projection = {
+        "_id": 0,
+        "email": 1
+    };
+    if (cuid) {
+        Member
+            .findOne(conditions,projection)
+            .then(data => {
+                if (data) {
+                    res.status(200).json({
+                        email: data.email
+                    });
+                }
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: 'api/services/getMember server錯誤'
+                });
+                console.error(`api/services/getMember server錯誤: ${err}`);
+            });
+    }
+}
+
 /**
  * 會員註冊
  * @param {email, password, name}
@@ -306,6 +332,67 @@ export function removeFavoritePost (req, res) {
         });
 }
 
+export function updateMember (req, res) {
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const conditions = {"cuid": cuid};
+    const updateOptions = {};
+    if (req.body.avatar) {
+        const avatar = sanitizeHtml(req.body.avatar);
+        updateOptions.avatar = avatar;
+    }
+    if (req.body.name) {
+        const name = sanitizeHtml(req.body.name);
+        updateOptions.name = name;
+    }
+    if (req.body.email) {
+        const email = sanitizeHtml(req.body.email);
+        updateOptions.email = email;
+    }
+    console.log('updateOptions', updateOptions);
+    Member
+        .updateOne(conditions, {$set: updateOptions})
+        .then(() => {
+            res.status(200).json({message: '編輯成功'});
+        })
+        .catch(err => {
+            res.status(500).json({message: 'server updateMember Error'});
+            console.error('api/services/member.service/updateMember Error:', err);
+        });
+}
+
+export async function updatePassword (req, res) {
+    if (!req.body.newPassword || !req.body.oldPassword) {
+        res.status(400).json({message: 'newPassword或oldPassword為空值或undefined'});
+        return;
+    }
+    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const member = {"cuid": cuid};
+    const projection = {
+        "_id": 0,
+        "password": 1
+    };
+    const memberData = await Member.findOne(member, projection).exec();
+    const currentPassword = memberData.password;
+    const md5  = crypto.createHash('md5');
+
+    const oldPassword = md5.update(sanitizeHtml(req.body.oldPassword)).digest('hex');
+
+    if (currentPassword !== oldPassword) {
+        res.status(400).json({message: '舊密碼不正確'});
+        return;
+    } else {
+        const newPassword = crypto.createHash('md5').update(sanitizeHtml(req.body.newPassword)).digest('hex');
+        Member
+            .updateOne(member, {$set: {"password": newPassword}})
+            .then(() => {
+                res.status(200).json({message: '密碼更新成功'});
+            })
+            .catch(err => {
+                res.status(500).json({message: 'server updatePassword Error'});
+                console.error('api/services/member.service/updatePassword Error:', err);
+            });
+    }
+}
 
 
 

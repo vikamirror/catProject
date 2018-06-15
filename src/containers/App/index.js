@@ -44,9 +44,9 @@ class App extends Component {
         this.tologoutListener();
     }
     componentDidUpdate (prevProps, prevState) {
-        if (this.props.location.pathname !== prevProps.location.pathname) {
-            this.setBackground(this.props.location.pathname);
-        }
+        // if (this.props.location.pathname !== prevProps.location.pathname) {
+        //     this.setBackground(this.props.location.pathname);
+        // }
         if (this.props.member.cuid && (prevProps.member.cuid !== this.props.member.cuid)) {
             this.notifyOtherDevicesToLogout(this.props.member.cuid);
             this.loginEmitter(this.props.member.cuid);

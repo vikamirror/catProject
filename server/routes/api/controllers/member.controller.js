@@ -18,6 +18,15 @@ router.use((req, res, next) => {
 // 取得會員資料
 router.get('/getMember', authToken, MemberService.getMember);
 
+// 取得會員email
+router.get('/getMemberEmail', authToken, MemberService.getMemberEmail);
+
+// 修改會員資料
+router.put('/member', authToken, MemberService.updateMember);
+
+// 修改會員密碼
+router.put('/password', authToken, MemberService.updatePassword);
+
 // 會員註冊
 router.post('/register', MemberService.register);
 

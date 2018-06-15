@@ -148,7 +148,7 @@ class Notification extends Component {
                     activeFocus={() => this.toggleDropdownMenu()} 
                     inactiveFocus={() => this.closeDropdownMenu()}
                 >
-                    <span className="icon-btn"><i className="icon icon-bell" /></span> 
+                    <span className="icon-btn"><i className="icon icon-mail" /></span> 
                     <Transition in={bounceInDown} timeout={300}>
                     {
                         (status) => (

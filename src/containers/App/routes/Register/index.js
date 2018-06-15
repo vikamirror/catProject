@@ -82,7 +82,7 @@ class Register extends Component {
     }
     requestRegister() {
 		if (this.state.emailCheck === false
-			|| this.state.emailCheck === false
+			|| this.state.passwordCheck === false
 			|| this.state.nameCheck === false) {
 			this.setState({ errorMsg: 'Oops,有資料未填寫完整喔' });
 			return;

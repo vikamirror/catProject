@@ -1,6 +1,18 @@
 import axios from 'axios';
 import { authHeader } from './authHeader';
 
+export function updatePassword (passwords) {
+    return axios.put('/api/password', passwords, authHeader());
+}
+
+export function updateMember (memberInfo) {
+    return axios.put('/api/member', memberInfo, authHeader());
+}
+
+export function getMemberEmail () {
+    return axios.get(`/api/getMemberEmail?${+Date.now()}`, authHeader());
+}
+
 export function removeFavoritePost (postCuid) {
     return axios.delete(`/api/favoritePost/${postCuid}`, authHeader());
 }

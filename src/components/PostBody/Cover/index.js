@@ -57,7 +57,12 @@ class Cover extends Component {
                         </div>
                         <div className="re-upload">
                             重新選擇封面
-                            <input type="file" onChange={(evt) => this.onChangeFileUpload(evt)} />
+                            <input 
+                                type="file"
+                                capture="camera"
+                                accept="image/*"
+                                onChange={(evt) => this.onChangeFileUpload(evt)} 
+                            />
                         </div>
                     </div>
                     :
@@ -66,7 +71,12 @@ class Cover extends Component {
                             <div className="icon-btn"><i className="icon icon-picture" /></div>
                             上傳封面
                         </button>
-                        <input type="file" onChange={(evt) => this.onChangeFileUpload(evt)} />
+                        <input 
+                            type="file"
+                            capture="camera"
+                            accept="image/*"
+                            onChange={(evt) => this.onChangeFileUpload(evt)}
+                        />
                     </div>
                 }
                 </div>

@@ -5,6 +5,52 @@ const LOGIN_TRUE = 'LOGIN_TRUE';
 const LOGIN_FALSE = 'LOGIN_FALSE';
 const ADD_FAVORITE_POST = 'ADD_FAVORITE_POST';
 const DELETE_FAVORITE_POST = 'DELETE_FAVORITE_POST';
+const CHANGE_AVATAR = 'CHANGE_AVATAR';
+const CHANGE_NAME = 'CHANGE_NAME';
+
+export function updateMember (memberInfo, updateResult) {
+    const infoForUpdate = {
+        name: memberInfo.name,
+        email: memberInfo.email,
+    };
+    return (dispatch) => {
+        memberAPI
+            .updateMember(infoForUpdate)
+            .then(res => {
+                updateResult(res.status);
+                if (res.status === 200) {
+                    dispatch({
+                        type: CHANGE_NAME,
+                        name: memberInfo.name,
+                    });
+                }
+            })
+            .catch(err => {
+                err.response ? console.error(err.response.data) : console.error('removeFavoritePost unhandled error:', err.message);
+            });
+    };
+}
+
+export function changeAvatar (avatarURL) {
+    const memberInfo = {
+        avatar: avatarURL,
+    };
+    return (dispatch) => {
+        memberAPI
+            .updateMember(memberInfo)
+            .then(res => {
+                if (res.status === 200) {
+                    dispatch({
+                        type: CHANGE_AVATAR,
+                        avatar: avatarURL
+                    });
+                }
+            })
+            .catch(err => {
+                err.response ? console.error(err.response.data) : console.error('removeFavoritePost unhandled error:', err.message);
+            });
+    };
+}
 
 export function removeFavoritePost (postCuid) {
     return (dispatch) => {
@@ -108,6 +154,16 @@ export default (state = initialState, action) => {
                 ...state,
                 favoritePosts: state.favoritePosts.filter((post, index) => post.postCuid !== action.postCuid)
             };
+        case CHANGE_AVATAR:
+            return {
+                ...state,
+                avatar: action.avatar,
+            };
+        case CHANGE_NAME:
+            return {
+                ...state,
+                name: action.name
+            }
         default:
             return state;
     }

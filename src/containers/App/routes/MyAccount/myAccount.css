@@ -1,0 +1,78 @@
+.myAccount-wrapper .u-margin-header{
+    margin-top: 104px !important;
+}
+@media (max-width: 768px) {
+    .myAccount-wrapper .u-margin-header{
+        margin-top: 72px !important;
+    }
+}
+
+.account-board{
+    background-color: #fefefe;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    max-width: 624px;
+    width: 100%;
+}
+
+.account-board li {
+    padding: 16px 24px;
+    cursor: pointer;
+    border-top: 2px solid transparent;
+    transition: all 0.2s;
+}
+.account-board li:hover {
+    border-top: 2px solid #6c6c6c;
+    background: #e0e0e0
+}
+.account-board li.active {
+    border-top: 2px solid #5f9ea0;
+}
+
+.account-board .avatar {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto;
+}
+
+.account-board .btn.file-upload {
+    overflow: hidden;
+    cursor:pointer;
+}
+.account-board input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.account-board label {
+    margin-right: 0;
+}
+
+.account-board input[type="password"],
+.account-board input[type="email"],
+.account-board input[type="text"]{
+    padding-left: 36px;
+}
+
+.form-field-email.icon-mail::before, 
+.form-field-password.icon-key::before,
+.form-field-name.icon-user::before {
+    left: 24px;
+}
+
+.account-board .form-password{
+    padding-top: 74px;
+    padding-bottom: 74px;
+}
+
+.account-board .error-msg {
+    width: 264px;
+    max-width: 90%;
+}
+
+.account-board .error-msg div:first-child{
+    margin-bottom: 24px;
+}
