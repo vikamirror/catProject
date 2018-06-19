@@ -1,4 +1,5 @@
 import Member from '../models/member';
+import Post from '../models/post';
 import cuid from 'cuid';
 import sanitizeHtml from 'sanitize-html';
 import crypto from 'crypto'; // nodejs內建
@@ -14,30 +15,34 @@ import sendMail from '../middlewares/sendEmail';
 export function getMember(req, res) {
     const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     if (cuid) {
+        const conditions = {"cuid": cuid};
+        const projection = {
+            _id: 0,
+            name: 1,
+            avatar: 1,
+            favoritePosts: 1,
+            cuid: 1
+        };
+        const populateField = 'favoritePosts';
+        const selectedFields = "cuid -_id"; // -減號: 剔除_id
         Member
-            .find({cuid: cuid}, {
-                _id: 0, //只有_id預設是“顯示”的, 因此只有_id要設為0
-                name: 1,
-                avatar: 1,
-                favoritePosts: 1,
-                cuid: 1})
-            .then(data => {
-                if (data[0]) {
+            .find(conditions, projection)
+            .populate(populateField, selectedFields)
+            .exec((err, member) => {
+                if (err) {
+                    res.status(500).json({
+                        message: 'api/services/getMember server錯誤'
+                    });
+                    console.error(`api/services/getMember server錯誤: ${err}`);
+                    return;
+                }
+                if (member[0]) {
+                    // console.log('member[0]', member[0]);
                     res.status(200).json({
                         validToken: true,
-                        member: data[0]
+                        member: member[0]
                     });
-                } else {
-                    res.status(400).json({
-                        validToken: false
-                    });
-                }
-            })
-            .catch((err) => {
-                res.status(500).json({
-                    message: 'api/services/getMember server錯誤'
-                });
-                console.error(`api/services/getMember server錯誤: ${err}`);
+                };
             });
     }
 }
@@ -152,86 +157,102 @@ export function register(req, res) {
  * @param {facebookID, name, email, avatar, accessToken}
  */
 export function loginWithFacebook(req, res) {
+    if (!req.body.facebookID) {
+        res.status(400).json({message: 'facebookID為空值或undefined'});
+        return;
+    }
+    const facebookID = sanitizeHtml(req.body.facebookID);
+    const conditions = {"facebookID": facebookID};
+    const projection = {
+        "_id": 0,
+        "name": 1,
+        "avatar": 1,
+        "cuid": 1,
+        "email": 1,
+    };
     Member
-        .find({facebookID: req.body.facebookID})
-        .then((data) => { // 先檢查他的FB id是否已被註冊成user.account
-            if (data[0] === undefined) { // 若此FB id尚未註冊, 新增一個會員
-                const newMember = new Member(req.body);
-                // 避免XSS攻擊
-                newMember.facebookID = sanitizeHtml(newMember.facebookID);
-                newMember.name = sanitizeHtml(newMember.name);
-                let shouldFillEmail;
-                if (sanitizeHtml(newMember.email)) {
-                    newMember.email = sanitizeHtml(newMember.email);
+        .find(conditions, projection)
+        .exec((err, members) => {
+            if (err) {
+                res.status(500).json({
+                    message: '伺服器錯誤, 請洽客服'
+                });
+                console.error(`api/member.services/loginWithFacebook server錯誤: ${err}`);
+                return;
+            }
+            if (members[0] === undefined) { // 若此FB id尚未註冊, 新增一個會員
+                const newMember = {
+                    facebookID: sanitizeHtml(req.body.facebookID),
+                    name: sanitizeHtml(req.body.name),
+                    cuid: cuid()
+                };
+
+                let shouldFillEmail = true;
+                if (sanitizeHtml(req.body.email)) {
+                    newMember.email = sanitizeHtml(req.body.email);
                     shouldFillEmail = false;
-                } else {
-                    shouldFillEmail = true;
-                }
-                if (sanitizeHtml(newMember.avatar)) {
+                };
+                if (sanitizeHtml(req.body.avatar)) {
                     newMember.avatar = `http://graph.facebook.com/${newMember.facebookID}/picture?type=small`;
-                }
-                // 取代_id的亂數
-                newMember.cuid = cuid();
-                // console.log('newMember', newMember);
-                newMember.save()
-                         .then(() => {
-                            /**
-                             * jwt token
-                             */
-                            const jwtpayload = { cuid: newMember.cuid };
-                            const jwtToken = jwt.sign({
-                                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存1天
-                                    data: {
-                                        member: jwtpayload,
-                                    },
-                            }, process.env.JWT_SECRET);
-                            res.status(200).json({
-                                memberToken: jwtToken,
-                                member: {
-                                    cuid: newMember.cuid,
-                                    name: newMember.name,
-                                    avatar: newMember.avatar,
-                                    favoritePosts: newMember.favoritePosts,
-                                },
-                                shouldFillEmail: shouldFillEmail // 是否提醒會員填寫email
-                            });
-                         })
-                         .catch((err) => {
-                            console.log('api loginWithFacebook member新增錯誤:', err);
-                            res.status(500).json({
-                                message: `api loginWithFacebook member新增錯誤: ${err}`
-                            });
-                         })
+                };
+
+                const member = new Member(newMember);
+                member.save((err) => {
+                    if (err) {   
+                        res.status(500).json({
+                            message: "伺服器member新增錯誤, 請洽客服"
+                        });
+                        console.error('api loginWithFacebook member新增錯誤:', err);
+                        return;
+                    };
+                    /**
+                     * jwt token
+                     */
+                    const jwtpayload = { cuid: member.cuid };
+                    const jwtToken = jwt.sign({
+                        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存1天
+                        data: {
+                            member: jwtpayload,
+                        },
+                    }, process.env.JWT_SECRET);
+                    res.status(200).json({
+                        memberToken: jwtToken,
+                        member: {
+                            cuid: member.cuid,
+                            name: member.name,
+                            avatar: member.avatar,
+                        },
+                        shouldFillEmail: shouldFillEmail // 是否提醒會員填寫email
+                    });
+                });
             } else {
                 // 若此FB id已被註冊, 直接登入
-                
                 // 若會員尚未填寫信箱, 提醒會員填寫
-                let shouldFillEmail = data[0].email === "undefined" ? true : false;
+                let shouldFillEmail = true;
+                if (members[0].email) {
+                    shouldFillEmail = false;
+                };
                 console.log('shouldFillEmail: ', shouldFillEmail);
                 /**
                  * jwt token
                  */
-                const jwtpayload = { cuid: data[0].cuid };
+                const jwtpayload = { cuid: members[0].cuid };
                 const jwtToken = jwt.sign({
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存一天
+                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存1天
                     data: {
-                        user: jwtpayload
-                    }
+                        member: jwtpayload,
+                    },
                 }, process.env.JWT_SECRET);
                 res.status(200).json({
                     memberToken: jwtToken,
                     member: {
-                        cuid: data[0].cuid,
-                        name: data[0].name,
-                        avatar: data[0].avatar,
-                        favoritePosts: data[0].favoritePosts,
+                        cuid: members[0].cuid,
+                        name: members[0].name,
+                        avatar: members[0].avatar,
                     },
-                    shouldFillEmail: shouldFillEmail
+                    shouldFillEmail: shouldFillEmail // 是否提醒會員填寫email
                 });
-            };
-        })
-        .catch(err => {
-            console.error('service loginWithFacebook err:', err);
+            }
         });
 }
 
@@ -241,45 +262,59 @@ export function loginWithFacebook(req, res) {
  * @param {email, password}
  */
 export function login(req, res) {
+    if (!req.body.email || !req.body.password) {
+        res.status(400).json({message: '信箱或密碼為空值或undefined'});
+        return;
+    }
+    const email = sanitizeHtml(req.body.email);
+    const conditions = {"email": email};
+    const projection = {
+        "_id": 0,
+        "name": 1,
+        "avatar": 1,
+        "cuid": 1,
+        "password": 1,
+    };
     Member
-        .find({ email: req.body.email })
-        .then((data) => {
-            if(data[0] === undefined) {
-                res.status(401).end('Oops,該信箱不存在');
+        .find(conditions, projection)
+        .exec((err, members) => {
+            if (err) {
+                res.status(500).json({
+                    message: 'api/services/login server錯誤'
+                });
+                console.error(`api/services/login server錯誤: ${err}`);
+                return;
+            }
+            if (members[0] === undefined) {
+                res.status(400).end('Oops,該信箱不存在');
                 return;
             }
             const md5  = crypto.createHash('md5');
-            if(data[0].password === md5.update(req.body.password).digest('hex')) {
-                /**
-                 * jwt token
-                 */
-                const jwtpayload = { cuid: data[0].cuid };
-                const jwtToken = jwt.sign({
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存一天
-                    data: {
-                        user: jwtpayload
-                    }
-                }, process.env.JWT_SECRET);
-                res.status(200).json({
-                    memberToken: jwtToken,
-                    member: {
-                        cuid: data[0].cuid,
-                        name: data[0].name,
-                        avatar: data[0].avatar,
-                        favoritePosts: data[0].favoritePosts,
-                    },
-                });
-            } else {
-                res.status(400).json({
+            const password = sanitizeHtml(req.body.password);
+            if (members[0].password !== md5.update(password).digest('hex')) {
+                res.status(403).json({
                     message: 'Oops,密碼不正確'
                 });
+                return;
             }
-        })
-        .catch((err) => {
-            res.status(500).json({
-                message: 'api/services/login server錯誤'
+            /**
+             * jwt token
+             */
+            const jwtpayload = { cuid: members[0].cuid };
+            const jwtToken = jwt.sign({
+                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存一天
+                data: {
+                    user: jwtpayload
+                }
+            }, process.env.JWT_SECRET);
+            res.status(200).json({
+                memberToken: jwtToken,
+                member: {
+                    cuid: members[0].cuid,
+                    name: members[0].name,
+                    avatar: members[0].avatar,
+                },
             });
-            console.error(`api/services/login server錯誤: ${err}`);
         });
 };
 
@@ -292,20 +327,22 @@ export function addFavoritePost (req, res) {
     if (!req.body.postCuid) {
         res.status(400).json({message: 'postCuid為空值或undefined'});
         return;
-    }
-    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    };
+    const memberCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     const postCuid = sanitizeHtml(req.body.postCuid);
-    const query = {"cuid": cuid};
-    const options = {$push: {"favoritePosts": {"postCuid": postCuid} }};
-    Member
-        .update(query, options)
-        .then(() => res.status(200).json({message: '收藏成功'}))
-        .catch((err) => {
-            res.status(500).json({
-                message: 'api/services/addFavoritePost server錯誤'
+    Post.findOne({"cuid": postCuid}, (err, post) => {
+        const conditions = {"cuid": memberCuid};
+        const options = {$push: {"favoritePosts": post._id}};
+        Member
+            .update(conditions, options)
+            .then(() => res.status(200).json({message: '收藏成功'}))
+            .catch((err) => {
+                res.status(500).json({
+                    message: 'api/services/addFavoritePost server錯誤'
+                });
+                console.error('api/services/addFavoritePost server錯誤:', err);
             });
-            console.error('api/services/addFavoritePost server錯誤:', err);
-        });
+    });
 }
 
 /**
@@ -318,18 +355,21 @@ export function removeFavoritePost (req, res) {
         res.status(400).json({message: 'postCuid為空值或undefined'});
         return;
     }
-    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
-    const query = {"cuid": cuid};
-    const options = {$pull: {"favoritePosts": {"postCuid": req.params.postCuid} }};
-    Member
-        .update(query, options)
-        .then(() => res.status(200).json({message: '已從收藏中刪除'}))
-        .catch((err) => {
-            res.status(500).json({
-                message: 'api/services/removeFavoritePost server錯誤'
+    const memberCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const postCuid = sanitizeHtml(req.params.postCuid);
+    Post.findOne({"cuid": postCuid}, (err, post) => {
+        const conditions = {"cuid": memberCuid};
+        const options = {$pull: {"favoritePosts": post._id}};
+        Member
+            .update(conditions, options)
+            .then(() => res.status(200).json({message: '已從收藏中刪除'}))
+            .catch((err) => {
+                res.status(500).json({
+                    message: 'api/services/removeFavoritePost server錯誤'
+                });
+                console.error('api/services/removeFavoritePost server錯誤:', err);
             });
-            console.error('api/services/removeFavoritePost server錯誤:', err);
-        });
+    });
 }
 
 export function updateMember (req, res) {
@@ -393,7 +433,6 @@ export async function updatePassword (req, res) {
             });
     }
 }
-
 
 
 

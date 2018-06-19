@@ -57,9 +57,9 @@
     padding-left: 36px;
 }
 
-.form-field-email.icon-mail::before, 
-.form-field-password.icon-key::before,
-.form-field-name.icon-user::before {
+.account-board .form-field-email.icon-mail::before, 
+.account-board .form-field-password.icon-key::before,
+.account-board .form-field-name.icon-user::before {
     left: 24px;
 }
 

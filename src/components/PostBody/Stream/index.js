@@ -21,7 +21,7 @@ const Stream = ({member, post, addFavoritePost, removeFavoritePost}) => {
     if (!member.cuid || !post.cuid) {
         return '';
     }
-    const isFavorite = isContainedInArray(member.favoritePosts, 'postCuid', post.cuid);
+    const isFavorite = isContainedInArray(member.favoritePosts, 'cuid', post.cuid);
     const isAuthor = member.cuid === post.author.cuid ? true : false;
     const IsLike = () => (
         isFavorite ? <UndoLikeButton removeFavoritePost={() => removeFavoritePost(post.cuid)} isShowText={true} />

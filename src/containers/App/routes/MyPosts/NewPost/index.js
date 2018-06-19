@@ -65,6 +65,7 @@ class NewPost extends Component {
             .then((res) => {
                 if (res.status === 200) {
                     const addedPost = res.data.post;
+                    // console.log('addedPost', addedPost);
                     this.props.addMyPost(addedPost);
                     this.props.addPostList(addedPost);
                     sockets.addPostListBroadcastEmitter(addedPost);

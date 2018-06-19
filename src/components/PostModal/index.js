@@ -52,6 +52,7 @@ class PostModal extends Component {
             .getOnePost(this.props.match.params.cuid)
             .then((res) => {
                 if (res.status === 200) {
+                    // console.log('res.data.post', res.data.post);
                     if (!res.data.post) {
                         this.postNotFound();
                     } else {

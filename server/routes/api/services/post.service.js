@@ -3,6 +3,8 @@ import Member from '../models/member';
 import cuid from 'cuid';
 import sanitizeHtml from 'sanitize-html';
 
+import { postWrapper } from '../responseWrapper/post.wrapper';
+
 /**
  * 會員發新文章
  * 參數:x-www-form-urlencoded:
@@ -19,8 +21,7 @@ import sanitizeHtml from 'sanitize-html';
  * Post.contactInfo
  * @returns {res.status(200).send({message: '成功訊息'})}
  */
-export function createPost(req, res) {
-    console.log('createPost', req.body);
+export function createPost (req, res) {
     if (!req.body.title || 
         !req.body.cover ||
         !req.body.charactor ||
@@ -36,38 +37,45 @@ export function createPost(req, res) {
             });
         return;
     }
-    const newPost = new Post(req.body);
-    // sanitizeHtml:避免XSS攻擊
-    newPost.title = sanitizeHtml(newPost.title);
-    newPost.cover = sanitizeHtml(newPost.cover);
-    // newPost.story = sanitizeHtml(newPost.story, {
-    //     allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
-    // });
-    newPost.charactor = sanitizeHtml(newPost.charactor, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
-    });
-    newPost.city = sanitizeHtml(newPost.city);
-    newPost.district = sanitizeHtml(newPost.district);
-    newPost.age = sanitizeHtml(newPost.age);
-    newPost.gender = sanitizeHtml(newPost.gender);
-    newPost.remark = sanitizeHtml(newPost.remark);
-    newPost.contact = sanitizeHtml(newPost.contact);
-    newPost.contactInfo = sanitizeHtml(newPost.contactInfo);
-    // 取代_id的亂數
-    newPost.cuid = cuid();
-    // console.log('newPost:',newPost);
-    newPost
-        .save()
-        .then(() => {
+    const authorCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    Member.findOne({"cuid": authorCuid}, (err, member) => {
+        if (err) {
+            res.status(500).json({message: `api/services/post createPost錯誤`});
+            console.error(`api/services/post createPost Member.findOne錯誤: ${err}`);
+            return;
+        }
+        const newPost = new Post({
+            cuid: cuid(), // 取代_id的亂數
+            title: sanitizeHtml(req.body.title),
+            cover: sanitizeHtml(req.body.cover),
+            charactor: sanitizeHtml(req.body.charactor, {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
+            }),
+            city: sanitizeHtml(req.body.city),
+            district: sanitizeHtml(req.body.district),
+            age: sanitizeHtml(req.body.age),
+            gender: sanitizeHtml(req.body.gender),
+            isSpay: req.body.isSpay,
+            requirements: req.body.requirements,
+            remark: sanitizeHtml(req.body.remark),
+            contact: sanitizeHtml(req.body.contact),
+            contactInfo: sanitizeHtml(req.body.contactInfo),
+            author: member._id
+        });
+        newPost.save((err) => {
+            if (err) {
+                res.status(500).json({message: `api/services/post createPost錯誤`});
+                console.error(`api/services/post createPost newPost.save錯誤: ${err}`);
+                return;
+            };
+            const resPost = postWrapper(newPost, member);
+            // console.log('responsePost', resPost);
             res.status(200).json({
                 message: '新增成功',
-                post: newPost
+                post: resPost
             });
-        })
-        .catch(err => {
-            res.status(500).json({message: `api/services/post createPost錯誤`});
-            console.log(err);
         });
+    });
 }
 
 export function getPosts(req, res) {
@@ -77,24 +85,30 @@ export function getPosts(req, res) {
         });
         return;
     }
-    let pageNumber =  req.params.pageNum;
-    const postsPerPage = 30;
+    
     const conditions = {"isDeleted": false};
     const projection = {_id:0, __v:0}; // 不需要的欄位
+    const populateField = 'author';
+    const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
+    const pageNumber =  req.params.pageNum;
+    const postsPerPage = 30;
+
     Post
         .find(conditions, projection)
+        .populate({path: populateField, select: selectedFields})
         .sort({lastModify: -1}) // 最近更新文章的排在前面
         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * postsPerPage ) : 0 )
         .limit(postsPerPage)
-        .then((posts) => {
+        .exec((err, posts) => {
             // console.log('posts', posts);
+            if (err) {
+                res.status(500).json({message: `api/services/post getPosts`});
+                console.error(`api/services/post getPosts newPost.find: ${err}`);
+                return;
+            };
             res.status(200).json({
                 posts: posts
             });
-        })
-        .catch(err => {
-            res.status(500);
-            console.log(err);
         });
 }
 
@@ -164,28 +178,28 @@ export function getOnePost(req, res) {
             message: '無附帶cuid'
         });
         return;
-    }
+    };
+
+    const conditions = {
+        "cuid": req.params.cuid,
+        "isDeleted": false,
+    };
+    const projection = {_id:0, __v:0}; // 不要的欄位
+    const populateField = 'author';
+    const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
+
     Post
-        .findOne({
-            "cuid": req.params.cuid,
-            "isDeleted": false,
-        }, {_id:0, __v:0})
-        .then((post) => {
-            if (!post) {
-                res.status(200).json({
-                    result: 0,
-                    message: '此文章已被刪除'
-                });
+        .findOne(conditions, projection)
+        .populate({path: populateField, select: selectedFields})
+        .exec((err, post) => {
+            if (err) {
+                res.status(500).json({message: `api/services/post getOnePost`});
+                console.error(`api/services/post getOnePost Post.findOne: ${err}`);
                 return;
-            } else {
-                res.status(200).json({
-                    post: post
-                });
             }
-        })
-        .catch(err => {
-            res.status(500);
-            console.log(err);
+            res.status(200).json({
+                post: post
+            });
         });
 }
 
@@ -194,26 +208,61 @@ export function getOnePost(req, res) {
  * parameter: member.cuid
  */
 export function getPostsByAuthor (req, res) {
-    const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
-    const conditions = {
-        "author.cuid": cuid,
-        "isDeleted": false,
-    };
-    const projection = {_id:0, __v:0};
-    Post
-        .find(conditions, projection)
-        .sort({"dateAdded": -1})
-        .then((posts) => {
-            res.status(200).json({
-                posts: posts
+    const authorCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    Member.findOne({"cuid": authorCuid}, (err, member) => {
+        const conditions = {
+            "author": member._id,
+            "isDeleted": false,
+        };
+        const projection = {_id:0, __v:0};
+        const populateField = 'author';
+        const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
+        Post
+            .find(conditions, projection)
+            .populate({path: populateField, select: selectedFields})
+            .sort({"dateAdded": -1})
+            .then((posts) => {
+                res.status(200).json({
+                    posts: posts
+                });
+            })
+            .catch(err => {
+                res.status(500);
+                console.log(err);
             });
-        })
-        .catch(err => {
-            res.status(500);
-            console.log(err);
-        });
+    });
 }
 
+export function getFavoritePosts (req, res) {
+    const memberCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
+    const conditions = {"cuid" : memberCuid};
+    const projection = {"_id": 0, "favoritePosts": 1};
+
+    Member
+        .findOne(conditions, projection)
+        .populate(
+            {
+                path: "favoritePosts",
+                select: "-_id -__v", // -減號: 剔除_id, __v
+                populate: {
+                    path: "author", 
+                    select: "cuid name avatar -_id",
+                }
+            }
+        )
+        .exec((err, member) => {
+            if (err) {
+                res.status(500).json({message: 'server getFavoritePosts Error'});
+                console.error('server/post.service/getFavoritePosts/findOne, Error:', err);
+                return;
+            }
+            // console.log('result', member);
+            res.status(200).json({
+                posts: member.favoritePosts.reverse(), // 最後加入的在最前面
+            });
+        });
+}
+/*
 export async function getFavoritePosts (req, res) {
     const cuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     try {
@@ -260,6 +309,7 @@ export async function getFavoritePosts (req, res) {
         console.error('server/post.service/getFavoritePosts/await Error:', err);
     }
 }
+*/
 
 /**
  * 刪除一個Post

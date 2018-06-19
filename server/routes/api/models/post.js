@@ -23,10 +23,15 @@ const PostSchema = new mongoose.Schema({
     remark: {type: String},
     contact: {type: String, required: true},
     contactInfo: {type: String, required: true},
+    // author: {
+    //     name: {type: String, required: true},
+    //     avatar: {type: String, required: true},
+    //     cuid: {type: String, required: true}
+    // },
     author: {
-        name: {type: String, required: true},
-        avatar: {type: String, required: true},
-        cuid: {type: String, required: true}
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Member',
+        required: true,
     },
     isDeleted: {type: Boolean, default: false, required: true},
     dateAdded: {type: Date, default: Date.now, required: true},

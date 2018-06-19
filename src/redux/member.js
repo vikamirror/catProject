@@ -60,7 +60,7 @@ export function removeFavoritePost (postCuid) {
                 if (res.status === 200) {
                     dispatch({
                         type: DELETE_FAVORITE_POST,
-                        postCuid: postCuid
+                        cuid: postCuid
                     });
                 }
             })
@@ -79,9 +79,12 @@ export function addFavoritePost (postCuid) {
                     dispatch({
                         type: ADD_FAVORITE_POST,
                         post: {
-                            postCuid: postCuid,
-                            dateAdded: new Date().toISOString()
-                        }
+                            cuid: postCuid
+                        },
+                        // post: {
+                        //     postCuid: postCuid,
+                        //     dateAdded: new Date().toISOString()
+                        // }
                     });
                 }
             })
@@ -89,27 +92,28 @@ export function addFavoritePost (postCuid) {
                 err.response ? console.error(err.response.data) : console.error('addFavoritePost unhandled error:', err.message);
             });
     };
-}
+};
 
 export function fetchMember() {
     return (dispatch) => {
-        memberAPI.getMember()
-                 .then((res) => {
-                    if (res.status === 200) {
-                        dispatch({
-                            type: LOGIN_TRUE,
-                            member: res.data.member,
-                        });
-                    }
-                 }) 
-                 .catch(err => {
+        memberAPI
+            .getMember()
+            .then((res) => {
+                if (res.status === 200) {
                     dispatch({
-                        type: LOGIN_FALSE,
+                        type: LOGIN_TRUE,
+                        member: res.data.member,
                     });
-                    console.log('fetchMember Error:', err);
-                 });
+                }
+            }) 
+            .catch(err => {
+                dispatch({
+                    type: LOGIN_FALSE,
+                });
+                console.log('fetchMember Error:', err);
+            });
     };
-}
+};
 
 export function logout() {
     return (dispatch) => {
@@ -152,7 +156,8 @@ export default (state = initialState, action) => {
         case DELETE_FAVORITE_POST:
             return {
                 ...state,
-                favoritePosts: state.favoritePosts.filter((post, index) => post.postCuid !== action.postCuid)
+                // favoritePosts: state.favoritePosts.filter((postCuid, index) => postCuid !== action.postCuid)
+                favoritePosts: state.favoritePosts.filter((post, index) => post.cuid !== action.cuid)
             };
         case CHANGE_AVATAR:
             return {

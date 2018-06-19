@@ -79,8 +79,8 @@ class Login extends Component {
                     }
                  })
                  .catch((err) => {
-					console.log('Login requestLogin, err:',err.response.data);
-					this.setState({ errorMsg: `Oops, ${err.response.data}`});
+					console.log('Login requestLogin, err:', err.response.data);
+					this.setState({ errorMsg: `Oops, ${err.response.data.message}`});
 					this.props.loadingFalse();
 				 });  
 	}

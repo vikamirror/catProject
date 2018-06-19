@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import ScrollWrapper from '../ScrollWrapper';
 import BounceInUp from '../BounceInUp';
 import { rollBackPost, clearPost } from '../../redux/post';
+import { loadingTrue, loadingFalse } from '../../redux/isLoading';
 
 import './postWrapper.css';
 
@@ -36,22 +37,31 @@ const PostEditFooter = ({onClickClose, onClickSubmit}) => (
 const mapStateToProps = state => ({ 
     isSmallDevice: state.isSmallDevice,
     post: state.post,
+    isLoading: state.isLoading,
     // routing: state.routing,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     rollBackPost: rollBackPost,
     clearPost: clearPost,
+    loadingTrue: loadingTrue,
+    loadingFalse: loadingFalse,
 }, dispatch));
 class PostWrapper extends Component {
     constructor () {
         super();
         this.state = {
-            bounceInUp: false,
             isScroll: false,
         }
     }
     componentDidMount () {
-        this.setState({bounceInUp: true});
+        if (!this.props.post.isFetched) {
+            this.props.loadingTrue();
+        };
+    }
+    componentDidUpdate (prevProps) {
+        if (this.props.post.isFetched && (prevProps.post.isFetched !== this.props.post.isFetched)) {
+            this.props.loadingFalse();
+        };
     }
     handleScroll (isScroll) {
         isScroll ? this.setState({isScroll: true}) : this.setState({isScroll: false});

@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
 }, dispatch));
 function PostCover({cuid, cover ,title, avatar, introduction, match, member, addFavoritePost, removeFavoritePost}) {
     const intro =  ellipsisTextAfterMaxLength(removeImgLinkTag(introduction), 80);
-    let isFavorite = member.cuid ? isContainedInArray(member.favoritePosts, 'postCuid', cuid) : false;
+    let isFavorite = member.cuid ? isContainedInArray(member.favoritePosts, 'cuid', cuid) : false;
     return (
         <section className="postCover">
             <div className="imageBox u-padding-b-16">
