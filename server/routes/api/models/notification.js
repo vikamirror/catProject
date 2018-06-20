@@ -6,10 +6,15 @@ const schemaOptions = { _id: false, capped: {size: 1024, max: 50} };
 
 const NotifyItemSchema = new mongoose.Schema({
     cuid: {type: String, required: true, unique: true},
+    // messageFrom: {
+    //     memberCuid: {type: String, required: true},
+    //     name: {type: String, required: true},
+    //     avatar: {type: String, required: true},
+    // },
     messageFrom: {
-        memberCuid: {type: String, required: true},
-        name: {type: String, required: true},
-        avatar: {type: String, required: true},
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Member',
+        required: true,
     },
     message: {type: String, required: true},
     link: {

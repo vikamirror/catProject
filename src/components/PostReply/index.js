@@ -90,16 +90,13 @@ class PostReply extends Component {
     sendMsg (confirmValue) {
         const newMessage = {
             postCuid: this.props.post.cuid,
-            member: {
-                cuid: this.props.member.cuid,
-                name: this.props.member.name,
-                avatar: this.props.member.avatar
-            },
-            tag: {
-                name: this.state.taggadMemberName,
-                memberCuid: this.state.taggedMemberCuid,
-            },
+            taggedMember: this.state.taggedMemberCuid,
             message: confirmValue.inputValue,
+            // member: this.props.member.cuid,
+            // tag: {
+            //     name: this.state.taggadMemberName,
+            //     memberCuid: this.state.taggedMemberCuid,
+            // },
         };
         // console.log('newMessage:', newMessage);
         messageAPI
@@ -119,12 +116,13 @@ class PostReply extends Component {
     }
     notifyTaggedMember (messageSent) {
         const notification = {
-            messageTo: messageSent.tag.memberCuid,
-            messageFrom: {
-                memberCuid: messageSent.member.cuid,
-                name: messageSent.member.name,
-                avatar: messageSent.member.avatar,
-            },
+            messageTo: messageSent.tag.cuid,
+            // messageFrom: {
+            //     memberCuid: messageSent.member.cuid,
+            //     name: messageSent.member.name,
+            //     avatar: messageSent.member.avatar,
+            // },
+            messageFrom: messageSent.member.cuid,
             message: messageSent.message,
             link: {
                 pathname: `/post/${messageSent.postCuid}`,
@@ -137,6 +135,7 @@ class PostReply extends Component {
         postNotification(notification)
             .then(res => {
                 if (res.status === 200) {
+                    console.log('res.data.notification', res.data.notification);
                     const notifyData = {
                         notification: res.data.notification,
                         notifyTo: notification.messageTo

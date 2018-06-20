@@ -2,24 +2,34 @@ import sanitizeHtml from 'sanitize-html';
 import cuid from 'cuid';
 
 import Notification from '../models/notification';
+import Member from '../models/member';
 
 // client端新增一個notification
-export function postNotification (req, res) {
+export async function postNotification (req, res) {
     if (!req.body.messageTo ||
         !req.body.messageFrom ||
         !req.body.message) {
         res.status(400).json({
-            message: '缺少必要欄位'
+            message: '缺少messageTo, messageFrom或message'
         });
         return;
     }
+    const messageFrom_cuid = sanitizeHtml(req.body.messageFrom);
+    const messageFrom = await Member.findOne({"cuid": messageFrom_cuid}).exec();
+    const messageFrom_id = messageFrom._id;
+
     const notificationItem = {
         cuid: cuid(),
-        messageFrom: req.body.messageFrom,
+        messageFrom: messageFrom_id,
         message: sanitizeHtml(req.body.message),
-        link: req.body.link
-    }
-    const query = {"memberCuid": req.body.messageTo};
+    };
+    if (req.body.link) {
+        notificationItem.link = req.body.link;
+    };
+
+    const messageTo = sanitizeHtml(req.body.messageTo);
+
+    const query = {"memberCuid": messageTo};
     const update = {$push: {"notifications": notificationItem}};
     const options = {
         upsert: true, // insert or update
@@ -29,6 +39,9 @@ export function postNotification (req, res) {
 
     Notification.findOneAndUpdate(query, update, options, (error, result) => {
         if (error) {
+            res.status(500).json({
+                message: "新增訊息通知, 伺服器錯誤"
+            });
             console.error('notification.service.js/postNotification/findOneAndUpdate error:', error);
             return;
         }
@@ -46,7 +59,17 @@ export function postNotification (req, res) {
                 // 回傳需有dateAdded及cuid
                 if (latestNotify) {
                     res.status(200).json({
-                        notification: latestNotify
+                        notification: {
+                            cuid: latestNotify.cuid,
+                            messageFrom: {
+                                memberCuid: messageFrom.cuid,
+                                name: messageFrom.name,
+                                avatar: messageFrom.avatar,
+                            },
+                            message: latestNotify.message,
+                            link: latestNotify.link,
+                            dateAdded: latestNotify.dateAdded
+                        }
                     });
                 }
             })
@@ -59,25 +82,33 @@ export function postNotification (req, res) {
 export function getNotifications (req, res) {
     const memberCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     const query = {"memberCuid": memberCuid};
-    const projection = "notifications";
-    Notification.findOne(query, projection, (error, result) => {
-        if (error) {
-            console.error('notification.service.js/getNotifications/findOne error:', error);
-            res.status(500).json({
-                message: 'getNotifications server端錯誤'
-            });
-            return;
-        }
-        if (!result) {
-            // 該會員尚無notification
+    const projection = {"notifications": 1, "_id": 0};
+
+    Notification
+        .findOne(query, projection)
+        .populate({
+            path: "notifications.messageFrom",
+            select: "cuid name avatar -_id",
+        })
+        .exec((err, result) => {
+            if (err) {
+                res.status(500).json({
+                    message: 'getNotifications server端錯誤'
+                });
+                console.error('notification.service.js/getNotifications/findOne error:', err);
+                return;
+            }
+            // console.log('result', result);
+            if (!result) {
+                // 該會員尚無notification
+                res.status(200).json({
+                    notifications: [],
+                });
+                return;
+            }
+            const notifications = result.notifications.reverse(); // 依照新增順序遞減
             res.status(200).json({
-                notifications: [],
+                notifications: notifications,
             });
-            return;
-        }
-        const notifications = result.notifications.reverse(); // 依照新增順序遞減
-        res.status(200).json({
-            notifications: notifications,
         });
-    });
 };

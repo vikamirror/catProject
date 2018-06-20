@@ -43,11 +43,11 @@ Message.propTypes = {
         member: PropTypes.shape({
             avatar: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
+            cuid: PropTypes.string.isRequired,
         }),
         dateAdded: PropTypes.string.isRequired,
         tag: PropTypes.shape({
             name: PropTypes.string.isRequired,
-            memberCuid: PropTypes.string.isRequired,
         }),
         message: PropTypes.string.isRequired,
     }),
