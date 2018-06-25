@@ -49,9 +49,9 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
                 <div className="stream u-push-right">
                 {
                     isFavorite ?
-                    <span className="icon-btn font-size-16 font-lightcoral"><i className="icon icon-heart" /></span>
+                    <span className="icon-btn font-size-16 line-height-32 font-lightcoral"><i className="icon icon-heart" /></span>
                     :
-                    <span className="icon-btn font-size-16"><i className="icon icon-heart-empty" /></span>
+                    <span className="icon-btn font-size-16 line-height-32"><i className="icon icon-heart-empty" /></span>
                 }
                 </div>
             </div>

@@ -79,19 +79,21 @@ export function createPost (req, res) {
 }
 
 export function getPosts(req, res) {
-    if (!req.params.pageNum) {
+    if (!req.query.page) {
         res.status(400).json({
-            message: '缺少param:頁次'
+            message: 'url缺少query:page'
         });
         return;
-    }
+    };
     
-    const conditions = {"isDeleted": false};
+    const conditions = {
+        "isDeleted": false
+    };
     const projection = {_id:0, __v:0}; // 不需要的欄位
     const populateField = 'author';
     const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
-    const pageNumber =  req.params.pageNum;
-    const postsPerPage = 30;
+    const pageNumber =  req.query.page;
+    const postsPerPage = 50;
 
     Post
         .find(conditions, projection)
@@ -106,6 +108,57 @@ export function getPosts(req, res) {
                 console.error(`api/services/post getPosts newPost.find: ${err}`);
                 return;
             };
+            res.status(200).json({
+                posts: posts
+            });
+        });
+};
+
+export function searchPosts (req, res) {
+    if (!req.query.page || !req.query.query) {
+        res.status(400).json({
+            message: 'url缺少page或query'
+        });
+        return;
+    };
+  
+    const queryString = sanitizeHtml(req.query.query);
+    const regex = new RegExp(queryString,'g');
+
+    const projection = {"_id": 0, "__v": 0}; // 不需要的欄位
+    const populateField = "author";
+    const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
+    const pageNumber =  req.query.page;
+    const postsPerPage = 50;
+
+    // select * from POST
+    // WHERE "isDeleted" = false 
+    // AND ("title" = regex OR "charactor" = regex)
+
+    Post
+        .find({
+            $and: [
+                { "isDeleted": false },
+                { $or: [
+                    {"title": regex},
+                    {"charactor": regex},
+                    {"city": regex},
+                    {"district": regex},
+                ] },
+            ]
+        }, projection)
+        .populate({path: populateField, select: selectedFields})
+        .sort({lastModify: -1}) // 最近更新文章的排在前面
+        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * postsPerPage ) : 0 )
+        .limit(postsPerPage)
+        .exec((err, posts) => {
+            // console.log('posts', posts);
+            if (err) {
+                res.status(500).json({message: `api/services/post getPosts`});
+                console.error(`api/services/post getPosts newPost.find: ${err}`);
+                return;
+            };
+            console.log('searchPosts', posts);
             res.status(200).json({
                 posts: posts
             });

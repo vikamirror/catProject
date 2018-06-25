@@ -4,8 +4,24 @@ const FETCH_POSTS = 'FETCH_POSTS';
 const ADD_POST_LIST = 'ADD_POST_LIST';
 const UPDATE_POST_LIST = 'UPDATE_POST_LIST';
 const DELETE_POST_LIST = 'DELETE_POST_LIST';
+const SEARCHED_POSTS = 'SEARCHED_POSTS';
 
-let pageNum = 1; // 每頁跟後端fetch30個post
+const INCREASE_PAGENUM = 'INCREASE_PAGENUM';
+const RESET_PAGENUM = 'RESET_PAGENUM';
+
+let pageNum = 1;
+const pageNumberSetter = (action) => {
+    switch (action.type) {
+        case INCREASE_PAGENUM:
+            pageNum = pageNum + 1;
+            break;
+        case RESET_PAGENUM:
+            pageNum = 1;
+            break;
+        default:
+            return pageNum;
+    }
+}
 
 export function deletePostList (cuid) {
     return (dispatch) => {
@@ -40,16 +56,40 @@ export function fetchPosts () {
             .getPosts(pageNum)
             .then((res) => {
                 if (res.status === 200) {
-                    pageNum++;
                     dispatch({
                         type: FETCH_POSTS,
                         posts: res.data.posts,
+                    });
+                    pageNumberSetter({
+                        type: INCREASE_PAGENUM
                     });
                 }
             })
             .catch(err => console.log('fetchMember Error:', err.message));
     };
-}
+};
+
+export function searchPosts (query) {
+    pageNumberSetter({
+        type: RESET_PAGENUM
+    });
+    return (dispatch) => {
+        postAPI
+            .searchPosts(pageNum, query)
+            .then((res) => {
+                if (res.status === 200) {
+                    dispatch({
+                        type: FETCH_POSTS,
+                        posts: res.data.posts
+                    });
+                    pageNumberSetter({
+                        type: INCREASE_PAGENUM
+                    });
+                };
+            })
+            .catch(err => console.log('searchPosts Error:', err.message));
+    };
+};
 
 const initialState = [];
 
@@ -88,8 +128,8 @@ export default (state = initialState, action) => {
                 }
             });
         case DELETE_POST_LIST:
-            return state.filter(post => post.cuid !== action.postCuid); 
+            return state.filter(post => post.cuid !== action.postCuid);
         default:
             return state;
     }
-}
+};

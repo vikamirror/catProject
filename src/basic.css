@@ -598,18 +598,18 @@ span{display: inline-block;}
 
 /* for Chrome/Safari/Opera (Chrome issue #623345) */
 ::-webkit-input-placeholder{
-    color: #a9a9a9;
+    color: #e0e0e0;
     opacity: 1; /* Firefox */
     font-family: 'Noto Sans TC', Helvetica, sans-serif, arial, 'Lora';
 }
 /* for IE. */
 :-ms-input-placeholder{
-    color: #a9a9a9;
+    color: #e0e0e0;
     font-family: 'Noto Sans TC', Helvetica, sans-serif, arial, 'Lora';
 }
 /* for Edge */
 ::-ms-input-placeholder{
-    color: #a9a9a9;
+    color: #e0e0e0;
     font-family: 'Noto Sans TC', Helvetica, sans-serif, arial, 'Lora';
 }
 

@@ -1,43 +1,77 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { searchPosts } from '../../../../redux/postList';
 
 import './searchBar.css';
 
-export default class SearchBar extends Component{
+export const SearchBarIconBtn = ({showMiniSearchBar, toggleMiniSearchBar}) => (
+    <div className="u-push-left">
+        <div className="searchBar__xs__icon">
+            <div
+                className={showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}
+                onClick={() => toggleMiniSearchBar()}
+            >
+                <i className="icon icon-search" />
+            </div>
+        </div>
+    </div>
+);
+SearchBarIconBtn.propTypes = {
+    showMiniSearchBar: PropTypes.bool.isRequired,
+    toggleMiniSearchBar: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    searchPosts: searchPosts
+}, dispatch));
+class SearchBar extends Component {
     constructor () {
-        super();
+        super ();
         this.state = {
-            showMiniSearchBar: false,
-		};
+            inputValue: ''
+        };
     }
-    toggleMiniSearchBar () {
-		this.state.showMiniSearchBar
-		? this.setState({ showMiniSearchBar: false })
-		: this.setState({ showMiniSearchBar: true });
+    inputHandler (value) {
+        this.setState({inputValue: value});
+    }
+    pressEnter (evt) {
+        if (evt.keyCode === 13) {
+            this.reqSearch();
+            evt.preventDefault();
+        }
+    }
+    reqSearch () {
+        const query = this.state.inputValue;
+        this.props.searchPosts(query);
     }
     render () {
         return (
-            <div className="searchBar_box">
-                {/* 螢幕<768px */}
-                <div className="u-push-left u-xs-visible u-sm-hidden">
-                    <div className="searchBar__xs__icon">
-                        <div
-                            className={this.state.showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}
-                            onClick={() => this.toggleMiniSearchBar()}
+            <div className="u-clearPadding">
+                <div className="searchBar">
+                    <div className="form search-form-field icon-search">
+                        <input
+                            type="text"
+                            value={this.state.inputValue}
+                            onChange={(evt) => this.inputHandler(evt.target.value)}
+                            onKeyUp={(evt) => this.pressEnter(evt)}
+                        />
+                        <button 
+                            className="btn clear"
+                            onClick={() => this.inputHandler('')}
                         >
-                            <i className="icon icon-search" />
-                        </div>
-                    </div>
-                </div>
-                {/* 螢幕>768px */}
-                <div className="col-sm-5 col-md-5 u-xs-hidden u-clearPadding">
-                    <div className="searchBar">
-                        <form className="form search-form-field icon-search">
-                            <input type="text" />
-                        </form>
+                            <span></span>
+                            <span></span>
+                        </button>
                     </div>
                 </div>
             </div>
         );
     }
-}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+

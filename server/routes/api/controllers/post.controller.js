@@ -21,7 +21,10 @@ router.put('/post', authToken, PostService.updatePost);
 router.post('/post', authToken, PostService.createPost);
 
 // 取得所有文章
-router.get('/posts/:pageNum', PostService.getPosts);
+router.get('/posts', PostService.getPosts);
+
+// 搜尋文章
+router.get('/search', PostService.searchPosts);
 
 // 由post.cuid取得一篇文章
 router.get('/post/:cuid', PostService.getOnePost);

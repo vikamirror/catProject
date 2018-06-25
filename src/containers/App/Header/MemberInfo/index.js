@@ -9,6 +9,7 @@ import DropdownMenu from '../../../../components/DropdownMenu';
 import MenuItem from '../../../../components/DropdownMenu/DropdownMenuItem';
 import OnBlurListener from '../../../../components/OnBlurListener';
 import { logout } from '../../../../redux/member';
+import { resetMyPost } from '../../../../redux/myPosts';
 import * as sockets from '../../../../sockets/loginOrOut';
 
 import './memberInfo.css';
@@ -20,6 +21,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => (bindActionCreators({ 
     showDialog: showDialog,
     logout: logout,
+    resetMyPost: resetMyPost
 }, dispatch));
 
 class MemberInfo extends Component{
@@ -54,6 +56,7 @@ class MemberInfo extends Component{
             sockets.logoutAllTheOtherDevicesEmitter(this.props.member.cuid);
             sockets.logoutEmitter(this.props.member.cuid);
             this.props.logout();
+            this.props.resetMyPost();
         }
     }
     render() {

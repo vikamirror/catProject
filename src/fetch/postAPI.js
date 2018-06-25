@@ -38,9 +38,14 @@ export function getOnePost(cuid) {
     return axios.get(`/api/post/${cuid}?${+Date.now()}`);
 }
 
-// 取得所有post
+// 取得posts
 export function getPosts(pageNum) {
-    return axios.get(`/api/posts/${pageNum}?${+Date.now()}`);
+    return axios.get(`/api/posts?page=${pageNum}`);
+}
+
+// 搜尋posts
+export function searchPosts(pageNum, query) {
+    return axios.get(`/api/search?query=${query}&page=${pageNum}`);
 }
 
 // 新增post

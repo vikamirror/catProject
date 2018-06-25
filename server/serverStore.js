@@ -12,7 +12,7 @@ const domain = `http://${process.env.HOST}:${process.env.SERVER_PORT}`;
 const prepInitPostList = () => {
     return new Promise((resolve, reject) => {
         axios
-            .get(`${domain}/api/posts/1`)
+            .get(`${domain}/api/posts?page=1`)
             .then((postsRes) => {
                 resolve(postsRes.data.posts);
             })

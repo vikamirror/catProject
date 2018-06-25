@@ -12,7 +12,7 @@
     background-color: none;
 }
 .member-info:hover{
-    background-color: #dadada;
+    background-color: #e0e0e0;;
     transition: all 0.3s;
 }
 @media (max-width: 768px){

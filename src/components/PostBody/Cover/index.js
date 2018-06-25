@@ -27,6 +27,7 @@ class Cover extends Component {
             this.props.loadingTrue();
             imgurAPI.uploadImgur(evt.target.files[0])
                     .then((imgurRes) => {
+                        console.log('imgurRes', imgurRes);
                         // this.setState({cover: imgurRes.data.data.link});  
                         // this.props.setStateHandler('inputCover', imgurRes.data.data.link);
                         // const newPost = {

@@ -4,6 +4,15 @@ const FETCH_MY_POSTS = 'FETCH_MY_POSTS';
 const ADD_MY_POST = 'ADD_MY_POST';
 const UPDATE_MY_POST = 'UPDATE_MY_POST';
 const DELETE_MY_POST = 'DELETE_MY_POST';
+const RESET_MY_POST = 'RESET_MY_POST';
+
+export function resetMyPost () {
+    return (dispatch) => { 
+        dispatch({
+            type: RESET_MY_POST,
+        });
+    };
+}
 
 export function deleteMyPost (cuid) {
     return (dispatch) => { 
@@ -86,6 +95,8 @@ export default (state = initialState, action) => {
             });
         case DELETE_MY_POST:
             return state.filter(post => post.cuid !== action.postCuid);
+        case RESET_MY_POST:
+            return [];
         default:
             return state;
     }

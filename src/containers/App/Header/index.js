@@ -5,48 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 // import SearchBar from './SearchBar';
+import SearchBar, { SearchBarIconBtn } from './SearchBar';
 import LoginOrRegister from './LoginOrRegister';
 import MemberInfo from './MemberInfo';
 import Notification from './Notification';
 
 import './header.css';
-
-const SearchBarIconBtn = ({showMiniSearchBar, toggleMiniSearchBar}) => (
-    <div className="u-push-left">
-        <div className="searchBar__xs__icon">
-            <div
-                className={showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}
-                onClick={() => toggleMiniSearchBar()}
-            >
-                <i className="icon icon-search" />
-            </div>
-        </div>
-    </div>
-);
-SearchBarIconBtn.propTypes = {
-    showMiniSearchBar: PropTypes.bool.isRequired,
-    toggleMiniSearchBar: PropTypes.func.isRequired
-};
-
-const SearchBarLarge = () => (
-    <div className="col-sm-5 col-md-5 u-clearPadding">
-        <div className="searchBar">
-            <form className="form search-form-field icon-search">
-                <input type="text"  />
-            </form>
-        </div>
-    </div>
-);
-
-const SearchBarSmall = () => (
-    <div className="col-sm-5 col-md-5 u-clearPadding">
-        <div className="searchBar">
-            <form className="form search-form-field icon-search">
-                <input type="text" autoFocus />
-            </form>
-        </div>
-    </div>
-);
 
 const mapStateToProps = state => ({
     isSmallDevice: state.isSmallDevice,
@@ -81,7 +45,7 @@ class Header extends Component {
                             </div>
                         </div>
                         {/* 搜尋欄 */}
-                        <div className="searchBar_box">
+                        <div className="searchBar_box u-push-left">
                             {
                                 this.props.isSmallDevice ?
                                 <SearchBarIconBtn 
@@ -89,7 +53,7 @@ class Header extends Component {
                                     toggleMiniSearchBar={() => this.toggleMiniSearchBar()} 
                                  />
                                 :
-                                <SearchBarLarge />
+                                <SearchBar />
                             }
                         </div>
                         <ul className="right-actions u-push-right u-clearfix">
@@ -104,7 +68,7 @@ class Header extends Component {
                     </nav>
                     {
                         this.state.showMiniSearchBar ?
-                        <SearchBarSmall />
+                        <SearchBar />
                         :
                         ''
                     }
