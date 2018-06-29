@@ -4,24 +4,23 @@ const FETCH_POSTS = 'FETCH_POSTS';
 const ADD_POST_LIST = 'ADD_POST_LIST';
 const UPDATE_POST_LIST = 'UPDATE_POST_LIST';
 const DELETE_POST_LIST = 'DELETE_POST_LIST';
-const SEARCHED_POSTS = 'SEARCHED_POSTS';
 
-const INCREASE_PAGENUM = 'INCREASE_PAGENUM';
-const RESET_PAGENUM = 'RESET_PAGENUM';
+// const INCREASE_PAGENUM = 'INCREASE_PAGENUM';
+// const RESET_PAGENUM = 'RESET_PAGENUM';
 
-let pageNum = 1;
-const pageNumberSetter = (action) => {
-    switch (action.type) {
-        case INCREASE_PAGENUM:
-            pageNum = pageNum + 1;
-            break;
-        case RESET_PAGENUM:
-            pageNum = 1;
-            break;
-        default:
-            return pageNum;
-    }
-}
+// let pageNum = 1;
+// const pageNumberSetter = (action) => {
+//     switch (action.type) {
+//         case INCREASE_PAGENUM:
+//             pageNum = pageNum + 1;
+//             break;
+//         case RESET_PAGENUM:
+//             pageNum = 1;
+//             break;
+//         default:
+//             return pageNum;
+//     }
+// };
 
 export function deletePostList (cuid) {
     return (dispatch) => {
@@ -50,53 +49,53 @@ export function addPostList (newPost) {
     };
 }
 
-export function fetchPosts () {
+export function fetchPosts (loadedIds) {
     return (dispatch) => {
         postAPI
-            .getPosts(pageNum)
+            .getPosts(loadedIds)
             .then((res) => {
                 if (res.status === 200) {
                     dispatch({
                         type: FETCH_POSTS,
                         posts: res.data.posts,
                     });
-                    pageNumberSetter({
-                        type: INCREASE_PAGENUM
-                    });
-                }
+                };
             })
-            .catch(err => console.log('fetchMember Error:', err.message));
+            .catch(err => {
+                console.error('fetchMember Error:', err.message)
+                console.error('fetchMember Error:', err);
+            });
     };
 };
 
-export function searchPosts (query) {
-    pageNumberSetter({
-        type: RESET_PAGENUM
-    });
-    return (dispatch) => {
-        postAPI
-            .searchPosts(pageNum, query)
-            .then((res) => {
-                if (res.status === 200) {
-                    dispatch({
-                        type: FETCH_POSTS,
-                        posts: res.data.posts
-                    });
-                    pageNumberSetter({
-                        type: INCREASE_PAGENUM
-                    });
-                };
-            })
-            .catch(err => console.log('searchPosts Error:', err.message));
-    };
-};
+// export function searchPosts (query) {
+//     pageNumberSetter({
+//         type: RESET_PAGENUM
+//     });
+//     return (dispatch) => {
+//         postAPI
+//             .searchPosts(pageNum, query)
+//             .then((res) => {
+//                 if (res.status === 200) {
+//                     dispatch({
+//                         type: FETCH_POSTS,
+//                         posts: res.data.posts
+//                     });
+//                     pageNumberSetter({
+//                         type: INCREASE_PAGENUM
+//                     });
+//                 };
+//             })
+//             .catch(err => console.log('searchPosts Error:', err.message));
+//     };
+// };
 
 const initialState = [];
 
 export default (state = initialState, action) => {
     switch(action.type) {
         case FETCH_POSTS:
-            return [...action.posts];
+            return [...state, ...action.posts];
         case ADD_POST_LIST:
             return [action.post, ...state];      
         case UPDATE_POST_LIST:

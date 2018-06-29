@@ -28,14 +28,14 @@
  * ---------------------------- */
 .header .searchBar .form input[type="text"]{
     padding-left: 36px;
-    margin-top: 14px;
-    margin-bottom: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 768px){
     .header .searchBar .form input[type="text"]{
-        margin-top: 6px;
-        margin-bottom: 8px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }
 
@@ -48,7 +48,7 @@
     right: 8px;
     height: 24px;
     min-width: 24px;
-    margin-top: 20px;
+    margin-top: 16px;
     background-color: transparent;
     border-radius: 50%;
 }

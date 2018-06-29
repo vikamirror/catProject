@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import BounceInUp from '../../../components/BounceInUp';
 import { convertFromStringToDom } from '../../../Utils/stringFormat';
-import dialog, { closeDialog } from '../../../redux/dialog';
+import { closeDialog } from '../../../redux/dialog';
 import { baseUrl } from '../../../Utils/stringFormat';
 import QuillEditor from '../../../components/QuillEditor';
 
@@ -32,7 +32,6 @@ class Dialog extends Component {
         super();
         this.state = {
             inputValue: '',
-            // receivedHtmlString: ''
             shouldBounceInUp: false,
         };
     }
@@ -83,7 +82,6 @@ class Dialog extends Component {
         const {
             content,
             enableUploadImg,
-            changeContentHandler,
         } = this.props.dialog.textEditor;
         const modalVerticalAlignStyle = modalVerticalAlign === 'middle' ? 'u-vertical-center' : '';
         if (!isShow) {

@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-import { searchPosts } from '../../../../redux/postList';
+import { requestSearch } from '../../../../redux/searchPosts';
+import { showInitialHeader } from '../../../../redux/header';
 
 import './searchBar.css';
 
-export const SearchBarIconBtn = ({showMiniSearchBar, toggleMiniSearchBar}) => (
+export const SearchBarIconBtn = ({toggleMiniSearchBar}) => (
     <div className="u-push-left">
         <div className="searchBar__xs__icon">
             <div
-                className={showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}
+                className="icon-btn" /*{showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}*/
                 onClick={() => toggleMiniSearchBar()}
             >
                 <i className="icon icon-search" />
@@ -20,13 +22,16 @@ export const SearchBarIconBtn = ({showMiniSearchBar, toggleMiniSearchBar}) => (
     </div>
 );
 SearchBarIconBtn.propTypes = {
-    showMiniSearchBar: PropTypes.bool.isRequired,
     toggleMiniSearchBar: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    isSmallDevice: state.isSmallDevice,
+    searchPosts: state.searchPosts,
+});
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    searchPosts: searchPosts
+    requestSearch: requestSearch,
+    showInitialHeader: showInitialHeader,
 }, dispatch));
 class SearchBar extends Component {
     constructor () {
@@ -46,7 +51,15 @@ class SearchBar extends Component {
     }
     reqSearch () {
         const query = this.state.inputValue;
-        this.props.searchPosts(query);
+        const loadedIds = this.props.searchPosts.loadedIds;
+        this.props.requestSearch(query, loadedIds);
+        this.props.history.push(`/search/${query}`);
+    }
+    clearSearch () {
+        this.setState({inputValue: ''});
+        if (this.props.isSmallDevice) {
+            this.props.showInitialHeader();
+        };
     }
     render () {
         return (
@@ -61,7 +74,7 @@ class SearchBar extends Component {
                         />
                         <button 
                             className="btn clear"
-                            onClick={() => this.inputHandler('')}
+                            onClick={() => this.clearSearch()}
                         >
                             <span></span>
                             <span></span>
@@ -73,5 +86,5 @@ class SearchBar extends Component {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchBar));
 

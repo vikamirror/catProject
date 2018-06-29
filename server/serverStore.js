@@ -12,13 +12,13 @@ const domain = `http://${process.env.HOST}:${process.env.SERVER_PORT}`;
 const prepInitPostList = () => {
     return new Promise((resolve, reject) => {
         axios
-            .get(`${domain}/api/posts?page=1`)
+            .post(`${domain}/api/posts`, {loadedIds: []})
             .then((postsRes) => {
                 resolve(postsRes.data.posts);
             })
             .catch(err => reject(err));
     });
-}
+};
 
 // Create a store and history based on a path
 const createServerStore = async (path = '/') => {

@@ -179,7 +179,7 @@ class PostModal extends Component {
                         isEdit={isEdit}
                         title={title} 
                     />
-                    <hr className="hr-line-style2" />
+                    <hr className="hr-line-style1" />
                     <DateAndAuthor
                         isEdit={isEdit} 
                         author={author}

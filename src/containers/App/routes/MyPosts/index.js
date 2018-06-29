@@ -49,8 +49,8 @@ class MyPosts extends Component{
         return (
             <div className="myPosts-wrapper">
                 <div className="u-margin-header u-padding-b-40">
-                    <div className="u-padding-t-16">
-                        <div className="fake-new-post form u-margin-t-40 u-margin-b-40">
+                    <div className="container">
+                        <div className="fake-new-post form u-margin-b-40">
                             <div className="postWrapper">
                                 <Link to={{
                                     pathname: "/myPosts/newPost",
@@ -60,7 +60,7 @@ class MyPosts extends Component{
                                         isEdit={false}
                                         title="新文章"
                                     />
-                                    <hr className="hr-line-style2" />
+                                    <hr className="hr-line-style1" />
                                     {/* <DateAndAuthor 
                                         isEdit={false}
                                         author={this.props.member}

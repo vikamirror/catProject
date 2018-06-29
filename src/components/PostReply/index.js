@@ -135,7 +135,7 @@ class PostReply extends Component {
         postNotification(notification)
             .then(res => {
                 if (res.status === 200) {
-                    console.log('res.data.notification', res.data.notification);
+                    // console.log('res.data.notification', res.data.notification);
                     const notifyData = {
                         notification: res.data.notification,
                         notifyTo: notification.messageTo

@@ -1,0 +1,8 @@
+.discover-wrapper{
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.discover-wrapper .tabs li{
+    display: inline-block;
+}

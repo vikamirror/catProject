@@ -6,21 +6,25 @@ import member from './member';
 import dialog from './dialog';
 import isSmallDevice from './isSmallDevice';
 import isLoading from './isLoading';
+import header from './header';
 import post from './post';
 import postList from './postList';
 import myPosts from './myPosts';
+import notification from './notification';
+import searchPosts from './searchPosts';
 // import routerLocation from './routerLocation';
 
 export default combineReducers({
     routing: routerReducer,
     member,
-    // fullPageDialog,
     dialog,
     isSmallDevice,
-    // citySelect,
     isLoading,
+    header,
     post,
     myPosts,
     postList,
+    notification,
+    searchPosts,
     // routerLocation
 });

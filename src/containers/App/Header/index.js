@@ -4,18 +4,21 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// import SearchBar from './SearchBar';
 import SearchBar, { SearchBarIconBtn } from './SearchBar';
 import LoginOrRegister from './LoginOrRegister';
 import MemberInfo from './MemberInfo';
 import Notification from './Notification';
+import { showSearchHeader, initial_header } from '../../../redux/header';
 
 import './header.css';
 
 const mapStateToProps = state => ({
     isSmallDevice: state.isSmallDevice,
+    header: state.header,
 });
-const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    showSearchHeader: showSearchHeader
+}, dispatch));
 
 class Header extends Component {
     constructor () {
@@ -24,13 +27,13 @@ class Header extends Component {
             showMiniSearchBar: false,
 		};
     }
-    toggleMiniSearchBar () {
-		this.state.showMiniSearchBar ? 
-        this.setState({ showMiniSearchBar: false })
-        : 
-        this.setState({ showMiniSearchBar: true });
+    showSmallDeviceSearchHeader () {
+        this.props.showSearchHeader();
     }
     render() {
+        if (this.props.header !== initial_header) {
+            return '';
+        };
         const header_id = this.props.shoudHeaderColored ? "header-colored" : "";
         return (
             <header className="header z-index-97" id={header_id}>
@@ -38,7 +41,7 @@ class Header extends Component {
                     <nav className="nav u-clearfix">
                         {/* Logo */}
                         <div className="u-push-left">
-                            <div className="logo u-padding-t-8 u-padding-b-8">
+                            <div className="logo u-padding-t-4 u-padding-b-4">
                                 <Link to="/" className="link">
                                     <img className="image" src="/favicon.ico" alt="logo" />
                                 </Link>
@@ -49,8 +52,8 @@ class Header extends Component {
                             {
                                 this.props.isSmallDevice ?
                                 <SearchBarIconBtn 
-                                    showMiniSearchBar={this.state.showMiniSearchBar} 
-                                    toggleMiniSearchBar={() => this.toggleMiniSearchBar()} 
+                                    // showMiniSearchBar={this.state.showMiniSearchBar} 
+                                    toggleMiniSearchBar={() => this.showSmallDeviceSearchHeader()} 
                                  />
                                 :
                                 <SearchBar />
@@ -64,14 +67,7 @@ class Header extends Component {
                             {/* 登入 登出 */}
                             <LoginOrRegister />
                         </ul>
-                        {/* 螢幕<768, 按下SearchBarIconBtn後, 彈出的搜尋框 */}
                     </nav>
-                    {
-                        this.state.showMiniSearchBar ?
-                        <SearchBar />
-                        :
-                        ''
-                    }
                 </div>
             </header>
         );

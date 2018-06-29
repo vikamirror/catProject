@@ -18,7 +18,7 @@ const DateAndAuthor = ({isEdit, author, dateAdded, lastModify}) => {
             <div className="author_date u-padding-b-8">
                 <Avatar avatarUrl={author.avatar} />
                 <div className="info">
-                    <span className="font-size-18 font-weight-6 name">{author.name}</span>
+                    <span className="font-size-16 font-weight-6 name">{author.name}</span>
                     <div className="date font-lightGrey">
                         <span className="u-margin-r-16">發文日期: {formatDateTime(dateAdded)}</span>
                         {

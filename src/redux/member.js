@@ -1,5 +1,6 @@
 import * as memberAPI from '../fetch/memberAPI';
 import { removeMemberCached } from '../fetch/accessLocalStorage';
+import * as sockets from '../sockets/notification';
 
 const LOGIN_TRUE = 'LOGIN_TRUE';
 const LOGIN_FALSE = 'LOGIN_FALSE';
@@ -7,6 +8,20 @@ const ADD_FAVORITE_POST = 'ADD_FAVORITE_POST';
 const DELETE_FAVORITE_POST = 'DELETE_FAVORITE_POST';
 const CHANGE_AVATAR = 'CHANGE_AVATAR';
 const CHANGE_NAME = 'CHANGE_NAME';
+const LAST_TIME_LOGOUT = 'LAST_TIME_LOGOUT';
+
+// 監聽上次登出時間
+export function onListenLastLogoutTime () {
+    return (dispatch) => {
+        const receivedLastLogoutTimeHandler = (time) => {
+            dispatch({
+                type: LAST_TIME_LOGOUT,
+                time: time
+            });
+        };
+        sockets.lastLogoutTimeListener(receivedLastLogoutTimeHandler);
+    };
+}
 
 export function updateMember (memberInfo, updateResult) {
     const infoForUpdate = {
@@ -129,6 +144,7 @@ const initialState = {
     name: '',
     avatar: '',
     favoritePosts: [],
+    lastTimeLogout: '',
 };
 
 export default (state = initialState, action) => {
@@ -143,10 +159,12 @@ export default (state = initialState, action) => {
             };
         case LOGIN_FALSE:
             return {
+                ...state,
                 cuid: '',
                 name: '',
                 avatar: '',
                 favoritePosts: [],
+                lastTimeLogout: '',
             };
         case ADD_FAVORITE_POST:
             return {
@@ -168,6 +186,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 name: action.name
+            };
+        case LAST_TIME_LOGOUT:
+            return {
+                ...state,
+                lastTimeLogout: action.time,
             }
         default:
             return state;

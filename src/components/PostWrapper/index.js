@@ -8,6 +8,7 @@ import ScrollWrapper from '../ScrollWrapper';
 import BounceInUp from '../BounceInUp';
 import { rollBackPost, clearPost } from '../../redux/post';
 import { loadingTrue, loadingFalse } from '../../redux/isLoading';
+import { showBlankHeader, showInitialHeader } from '../../redux/header';
 
 import './postWrapper.css';
 
@@ -45,6 +46,8 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     clearPost: clearPost,
     loadingTrue: loadingTrue,
     loadingFalse: loadingFalse,
+    showBlankHeader: showBlankHeader,
+    showInitialHeader: showInitialHeader,
 }, dispatch));
 class PostWrapper extends Component {
     constructor () {
@@ -56,6 +59,9 @@ class PostWrapper extends Component {
     componentDidMount () {
         if (!this.props.post.isFetched) {
             this.props.loadingTrue();
+        };
+        if (this.props.isSmallDevice) {
+            this.props.showBlankHeader();
         };
     }
     componentDidUpdate (prevProps) {
@@ -76,6 +82,9 @@ class PostWrapper extends Component {
     }
     componentWillUnmount () {
         this.props.clearPost();
+        if (this.props.isSmallDevice) {
+            this.props.showInitialHeader();
+        };
     }
     render () {
         const {isSmallDevice, onClickSubmit} = this.props;
@@ -83,7 +92,7 @@ class PostWrapper extends Component {
         const shadowHeader = this.state.isScroll ? "shadow-header" : "";
         return (
             <div className="u-wrapper-fixed-w100-h100 u-post-wrapper-scroll z-index-98" id="post-wrapper-id">
-                <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)} wrapperId="post-wrapper-id">
+                <ScrollWrapper scrollingHandler={(isScroll) => this.handleScroll(isScroll)} wrapperId="post-wrapper-id">
                     <div className={`close-header ${shadowHeader} z-index-1`}>
                         <CloseButton
                             onClickClose={(e) => this.handleClose(e)}
@@ -91,7 +100,7 @@ class PostWrapper extends Component {
                         />
                     </div>
                     <BounceInUp inCondition={isFetched} enterMilliseconds={300}>
-                        <div className="u-margin-header u-margin-footer u-padding-l-8 u-padding-r-8"> 
+                        <div className="u-margin-header u-padding-l-8 u-padding-r-8"> 
                             <div className="postWrapper">
                                 <article className={`article ${isEdit ? "form" : ""}`} id="articleForm-id">       
                                     {this.props.children}

@@ -1,6 +1,3 @@
 .login-register-group .btn-register{ margin-right: 0px; }
 
-.login-register-group{ padding: 16px 0; }
-@media (max-width: 768px){
-    .login-register-group{ padding: 12px 0; }
-}
+.login-register-group{ padding: 12px 0; }

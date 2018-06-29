@@ -13,7 +13,9 @@ import { addPostList, updatePostList, deletePostList } from '../../../../redux/p
 
 import './home.css';
 
-const mapStateToProps = state => ({ postList: state.postList });
+const mapStateToProps = state => ({ 
+    postList: state.postList,
+});
 const mapDispatchToProps = dispatch => (bindActionCreators({
     addPostList: addPostList,
     updatePostList: updatePostList,

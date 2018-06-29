@@ -4,7 +4,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Header from './Header';
-import { fetchMember, logout } from '../../redux/member';
+import SmallDeviceSearchHeader from './SearchHeader';
+import GoBackHeader from './GoBackHeader';
+import BlankHeader from './BlankHeader';
+import SmallDeviceFooter from './SmallDeviceFooter';
+import Discover from './Discover';
+import { fetchMember, logout, onListenLastLogoutTime } from '../../redux/member';
 import { fetchPosts } from '../../redux/postList';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
@@ -24,6 +29,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     smallDeviceTrue: smallDeviceTrue,
     smallDeviceFalse: smallDeviceFalse,
     logout: logout,
+    onListenLastLogoutTime: onListenLastLogoutTime,
 },dispatch));
 
 class App extends Component {
@@ -31,6 +37,7 @@ class App extends Component {
         super();
         this.state = {
             isScroll: false,
+            isScrollDown: false,
             backgroundClass: 'bg_home'
         }
     }
@@ -38,10 +45,12 @@ class App extends Component {
         this.props.fetchMember();
         // console.log('window.__PRELOADED_STATE__', window.__PRELOADED_STATE__);
         if (!window.__PRELOADED_STATE__) {
-            this.props.fetchPosts();
+            const loadedIds = [];
+            this.props.fetchPosts(loadedIds);
         }
         this.isSmallDevice();
         this.tologoutListener();
+        this.props.onListenLastLogoutTime();
     }
     componentDidUpdate (prevProps, prevState) {
         // if (this.props.location.pathname !== prevProps.location.pathname) {
@@ -89,14 +98,26 @@ class App extends Component {
     handleScroll (isScroll) {
         isScroll ? this.setState({isScroll: true}) : this.setState({isScroll: false});
     }
+    handleScrollDown (isScrollDown) {
+        isScrollDown ? this.setState({isScrollDown: true}) : this.setState({isScrollDown: false});
+    }
     render() {
         return (
             <div id="app">
                 <div id="app_bg" className={this.state.backgroundClass}></div>
                 <Header shoudHeaderColored={this.state.isScroll} />
-                <ScrollWrapper onWindowScroll={(isScroll) => this.handleScroll(isScroll)} wrapperId="app">
+                {/* <Discover /> */}
+                <SmallDeviceSearchHeader />
+                <GoBackHeader />
+                <BlankHeader />
+                <ScrollWrapper
+                    wrapperId="app"
+                    scrollingHandler={(isScroll) => this.handleScroll(isScroll)}
+                    scrollDownHandler={(isScrollDown) => this.handleScrollDown(isScrollDown)}
+                >
                     <Routes location={this.props.location} />
                 </ScrollWrapper>
+                <SmallDeviceFooter isScrollDown={this.state.isScrollDown} />
                 <Loading />
                 <Dialog />
             </div>

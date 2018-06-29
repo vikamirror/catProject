@@ -124,7 +124,6 @@ class QuillEditor extends Component {
     }
     onChangeEditor (html, delta, source, editor) {
         // console.log('onChangeEditor');
-        // this.props.changeContentHandler(html);
         this.setState({content: html});
         this.props.changeContentHandler(html);
     }

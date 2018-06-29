@@ -23,3 +23,7 @@
         max-height: 136px;
     }
 }
+
+.postWrapper .ql-editor.ql-blank::before{
+    font-style: inherit;
+}

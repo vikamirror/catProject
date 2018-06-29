@@ -16,7 +16,7 @@ const PostPreview = ({post, currentPath}) => {
                 title={post.title}
                 isEdit={false}
             />
-            <hr className="hr-line-style2" />
+            <hr className="hr-line-style1" />
             <DateAndAuthor
                 isEdit={false} 
                 author={post.author}

@@ -39,13 +39,16 @@ export function getOnePost(cuid) {
 }
 
 // 取得posts
-export function getPosts(pageNum) {
-    return axios.get(`/api/posts?page=${pageNum}`);
+export function getPosts(loadedIds) {
+    return axios.post(`/api/posts`, {loadedIds: loadedIds});
 }
 
 // 搜尋posts
-export function searchPosts(pageNum, query) {
-    return axios.get(`/api/search?query=${query}&page=${pageNum}`);
+export function searchPosts(query, loadedIds) {
+    return axios.post(`/api/search`, {
+        query: query,
+        loadedIds: loadedIds,
+    });
 }
 
 // 新增post

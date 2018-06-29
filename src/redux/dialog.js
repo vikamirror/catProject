@@ -29,7 +29,6 @@ export function showTextEditorDialog (config) {
                 textEditor: {
                     content: config.textEditor.content,
                     enableUploadImg: config.textEditor.enableUploadImg,
-                    changeContentHandler: config.textEditor.changeContentHandler,
                 },
             },
         });
@@ -127,7 +126,6 @@ export default (state = initialState, action) => {
                     ...state.textEditor,
                     content: action.config.textEditor.content,
                     enableUploadImg: action.config.textEditor.enableUploadImg,
-                    changeContentHandler: action.config.textEditor.changeContentHandler
                 },
             };
         case CLOSE_DIALOG:
@@ -150,7 +148,6 @@ export default (state = initialState, action) => {
                     ...state.textEditor,
                     content: initialState.textEditor.content,
                     enableUploadImg: initialState.textEditor.enableUploadImg,
-                    changeContentHandler: initialState.textEditor.changeContentHandler
                 },
             };
         default:

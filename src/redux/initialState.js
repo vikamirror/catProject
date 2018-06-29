@@ -25,7 +25,7 @@ const initialState = {
         },
     },
     isSmallDevice: false,
-    isLoading: false, 
+    isLoading: false,
     post: {
         cuid: undefined,
         title: '',
@@ -63,6 +63,16 @@ const initialState = {
         isEdit: false, // 是否是編輯模式
     },
     postList: [],
+    searchPosts: {
+        query: '',
+        posts: [],
+        loadedIds: [],
+    },
+    notification: {
+        unSeenNotificationCount: 0,
+        notifications: []
+    },
+    header: 'initial_header',
 };
 
 export default initialState;

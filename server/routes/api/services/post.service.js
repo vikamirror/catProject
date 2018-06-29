@@ -79,27 +79,27 @@ export function createPost (req, res) {
 }
 
 export function getPosts(req, res) {
-    if (!req.query.page) {
+    if (!req.body.loadedIds) {
         res.status(400).json({
-            message: 'url缺少query:page'
+            message: 'req.body缺少:loadedIds'
         });
         return;
     };
     
     const conditions = {
-        "isDeleted": false
+        "isDeleted": false,
+        "cuid": { "$nin": req.body.loadedIds }, // not in Array
     };
     const projection = {_id:0, __v:0}; // 不需要的欄位
     const populateField = 'author';
     const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
-    const pageNumber =  req.query.page;
+    // const pageNumber =  req.query.page;
     const postsPerPage = 50;
 
     Post
         .find(conditions, projection)
         .populate({path: populateField, select: selectedFields})
         .sort({lastModify: -1}) // 最近更新文章的排在前面
-        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * postsPerPage ) : 0 )
         .limit(postsPerPage)
         .exec((err, posts) => {
             // console.log('posts', posts);
@@ -115,20 +115,20 @@ export function getPosts(req, res) {
 };
 
 export function searchPosts (req, res) {
-    if (!req.query.page || !req.query.query) {
+    if (!req.body.loadedIds || !req.body.query) {
         res.status(400).json({
-            message: 'url缺少page或query'
+            message: 'req.body缺少loadedIds或query'
         });
         return;
     };
   
-    const queryString = sanitizeHtml(req.query.query);
+    const queryString = sanitizeHtml(req.body.query);
     const regex = new RegExp(queryString,'g');
 
     const projection = {"_id": 0, "__v": 0}; // 不需要的欄位
     const populateField = "author";
     const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
-    const pageNumber =  req.query.page;
+    // const pageNumber =  req.query.page;
     const postsPerPage = 50;
 
     // select * from POST
@@ -139,6 +139,7 @@ export function searchPosts (req, res) {
         .find({
             $and: [
                 { "isDeleted": false },
+                { "cuid": { "$nin": req.body.loadedIds }}, // not in Array
                 { $or: [
                     {"title": regex},
                     {"charactor": regex},
@@ -149,7 +150,7 @@ export function searchPosts (req, res) {
         }, projection)
         .populate({path: populateField, select: selectedFields})
         .sort({lastModify: -1}) // 最近更新文章的排在前面
-        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * postsPerPage ) : 0 )
+        // .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * postsPerPage ) : 0 )
         .limit(postsPerPage)
         .exec((err, posts) => {
             // console.log('posts', posts);
@@ -158,7 +159,7 @@ export function searchPosts (req, res) {
                 console.error(`api/services/post getPosts newPost.find: ${err}`);
                 return;
             };
-            console.log('searchPosts', posts);
+            // console.log('searchPosts', posts);
             res.status(200).json({
                 posts: posts
             });
