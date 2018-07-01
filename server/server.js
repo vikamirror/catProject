@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import path from 'path';
 import http from 'http';
-import proxy from 'http-proxy-middleware';
 import socket_io from 'socket.io';
 
 import index from './routes';

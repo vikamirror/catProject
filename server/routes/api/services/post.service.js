@@ -180,7 +180,7 @@ export function updatePost (req, res) {
         !req.body.district ||
         !req.body.age ||
         !req.body.gender ||
-        !req.body.remark ||
+        // !req.body.remark ||
         !req.body.contact ||
         !req.body.contactInfo) {
             res.status(400).json({
