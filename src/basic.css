@@ -313,6 +313,8 @@ ul {
 * Button
 * -------------- */
 .btn{
+    /* Remove First 移除ios input style */
+    appearance: none;
     /* 基礎定位 */
     position: relative;
     box-sizing: border-box;
@@ -325,7 +327,7 @@ ul {
     min-width: 64px;
     background-color: #d1d2d3;
     border: 0;
-    border-radius: 5px;
+    border-radius: 4px;
     outline: 0;
     /* overflow: hidden; */
     /* btn文字 */
@@ -531,6 +533,8 @@ span{display: inline-block;}
 .form input[type="email"],
 .form input[type="text"],
 .form textarea{
+    /* Remove First 移除ios input style */
+    appearance: none;
     width: 100%;
     display: inline-block;
     box-sizing: border-box;
@@ -542,6 +546,8 @@ span{display: inline-block;}
     resize: none;
     background-color: #fefefe;
     color: #484848;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .form textarea:focus{
@@ -554,6 +560,7 @@ span{display: inline-block;}
 .form input[type="email"]:focus,
 .form input[type="text"]:focus{
     outline: 0;
+    border: 1px solid #cdcdcd;
     background-color: #cdcdcd;
 }
   

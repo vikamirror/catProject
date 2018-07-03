@@ -164,7 +164,7 @@ class Register extends Component {
 							<div className="form-field-password icon-key">
 								<input type="password" placeholder="密碼" onBlur={evt => this.checkPassword(evt)} />
 							</div>
-							<div className="form-field-name icon-member">
+							<div className="form-field-name icon-user">
 								<input type="text" placeholder="暱稱" onBlur={evt => this.checkName(evt)} />
 							</div>
 							<FadeErrMsg

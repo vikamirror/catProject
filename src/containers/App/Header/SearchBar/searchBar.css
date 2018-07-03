@@ -28,15 +28,8 @@
  * ---------------------------- */
 .header .searchBar .form input[type="text"]{
     padding-left: 36px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 768px){
-    .header .searchBar .form input[type="text"]{
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
+    margin-top: 6px;
+    margin-bottom: 6px;
 }
 
 /* ----------------------------
@@ -46,13 +39,11 @@
     position: absolute;
     top: 50%;
     right: 8px;
+    transform: translateY(-50%);
     min-width: 24px;
+    height: 24px;
     background-color: transparent;
     border-radius: 50%;
-}
-
-.searchBar .btn.clear{
-    height: 0;
 }
 
 .searchBar .clear:hover{

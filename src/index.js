@@ -7,7 +7,7 @@ import { Route } from 'react-router-dom';
 // 在document.getElementById('root')之前, 引入的css
 // import './css/bootstrapGrid.css';
 // import './css/basic.css';
-import 'normalize.css'
+// import 'normalize.css';
 import './bootstrapGrid.css';
 // import './animate.css';
 import './basic.css';
