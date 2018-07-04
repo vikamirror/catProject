@@ -56,7 +56,7 @@ class Home extends Component {
                         <article className="articles">
                             {
                                 this.props.postList.map((post, index) => (
-                                    <LazyLoad key={index}>
+                                    <LazyLoad key={index} offsetTop={200}>
                                         <Link
                                             to={{
                                                 pathname: `/post/${post.cuid}`,

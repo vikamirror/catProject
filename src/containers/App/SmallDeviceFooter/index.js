@@ -26,30 +26,59 @@ const menu = [{
     text: "帳號設定"
 }];
 
+const nonLoginMenu = [{
+    linkTo: "/",
+    icon: "icon-home",
+    text: "首頁"
+},{
+    linkTo: "/login",
+    icon: "icon-login",
+    text: "登入"
+},{
+    linkTo: "/register",
+    icon: "icon-pencil",
+    text: "註冊"
+}];
+
 const Icon = ({itemIcon}) => <span className="icon-btn"><i className={`icon ${itemIcon}`} /></span>;
 
 const mapStateToProps = state => ({
     isSmallDevice: state.isSmallDevice,
+    member: state.member,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
 }, dispatch));
-const SmallDeviceFooter = ({isScrollDown, isSmallDevice}) => {
+const SmallDeviceFooter = ({isScrollDown, isSmallDevice, member}) => {
+    let isLogin = member.cuid ? true : false;
     return (
         <FadeInOut inCondition={isSmallDevice && !isScrollDown} milliseconds={200}>
             <div className="sm-device-footer u-padding-t-8 u-padding-b-8">
                 <div className="container">
                     <ul className="row">
                         {
-                            menu.map((item, index) => (
-                                <li
-                                    key={index}
-                                    className="col-xs-3 u-text-center"
-                                >
-                                    <Link to={item.linkTo} className="link">
-                                        <Icon itemIcon={item.icon} />
-                                        <div className="font-size-12">{item.text}</div>
-                                    </Link>
-                                </li>
+                            isLogin ?
+                                menu.map((item, index) => (
+                                    <li
+                                        key={index}
+                                        className="col-xs-3 u-text-center"
+                                    >
+                                        <Link to={item.linkTo} className="link">
+                                            <Icon itemIcon={item.icon} />
+                                            <div className="font-size-12">{item.text}</div>
+                                        </Link>
+                                    </li>
+                                ))
+                            :
+                                nonLoginMenu.map((item, index) => (
+                                    <li
+                                        key={index}
+                                        className="col-xs-4 u-text-center"
+                                    >
+                                        <Link to={item.linkTo} className="link">
+                                            <Icon itemIcon={item.icon} />
+                                            <div className="font-size-12">{item.text}</div>
+                                        </Link>
+                                    </li>
                             ))
                         }
                     </ul>

@@ -25,12 +25,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 64px;
-}
-@media (max-width: 768px) {
-    .close-header{
-        height: 56px;
-    }
+    height: 56px;
 }
 
 .shadow-header{
@@ -49,17 +44,11 @@
 .closeCross{
     position: absolute;
     right: 0;
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     /* background-color: #fefefe; */
     /* border-radius: 50%; */
     transition: all 0.3s;
-}
-@media (max-width: 768px) {
-    .closeCross{
-        height: 56px;
-        width: 56px;
-    }
 }
 .closeCross:hover{
     transform: rotate(180deg);

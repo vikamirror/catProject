@@ -12,23 +12,23 @@ import './leaveMsg.css';
 const mapStateToProps = state => ({member: state.member});
 const mapDispatchToProps = dispatch => (bindActionCreators({ }, dispatch));
 const LeaveMsg = ({member, openMsgDialog, postAuthor}) => (
-    <div className="leave-msg-wrapper bg-ghostWhite u-margin-t-8">
-        <div className="postReply_inner-padding">
-            <Avatar avatarUrl={member.avatar} />
-            <div className="message-content form">                  
-                <div
-                    className="textarea edit"
-                    placeholder="請輸入留言......"
-                    contentEditable="false"
-                    dangerouslySetInnerHTML={{ __html: ''}}
-                    onClick={() => openMsgDialog({
-                        name: `${postAuthor.name}(原po)`,
-                        memberCuid: postAuthor.cuid,
-                    })}
-                />
+        <div className="leave-msg-wrapper bg-ghostWhite u-margin-t-8">
+            <div className="postReply_inner-padding">
+                <Avatar avatarUrl={member.avatar} />
+                <div className="message-content form">                  
+                    <div
+                        className="textarea edit"
+                        placeholder="請輸入留言......"
+                        contentEditable="false"
+                        dangerouslySetInnerHTML={{ __html: ''}}
+                        onClick={() => openMsgDialog({
+                            name: `${postAuthor.name}(原po)`,
+                            memberCuid: postAuthor.cuid,
+                        })}
+                    />
+                </div>
             </div>
         </div>
-    </div>
 );
 
 LeaveMsg.propTypes = {

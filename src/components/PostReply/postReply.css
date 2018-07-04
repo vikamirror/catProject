@@ -53,4 +53,9 @@
 .postReply-wrapper .message-content{
     padding-left: 72px;
 }
+@media (max-width: 768px){
+    .postReply-wrapper .message-content{
+        padding-left: 56px;
+    }
+}
 

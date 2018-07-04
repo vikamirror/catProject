@@ -1,16 +1,4 @@
 /* --------------
-* .Lazyload
-* --------------- */
-.LazyLoad{
-    display: inline-block;
-    width: 100%;
-    height: 512px;
-}
-.LazyLoad.is-visible{
-    height: auto;
-}
-
-/* --------------
 * .postCover
 * --------------- */
 .postCover{
@@ -20,6 +8,7 @@
     /* display: inline-block; */
     /* width: 100%;  */
     margin-bottom: 24px;
+    /* height: auto; */
 }
 
 .postCover:hover{

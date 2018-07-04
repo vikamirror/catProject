@@ -23,7 +23,7 @@ const Message = ({message, isLastMessage, openMsgDialog}) => (
                 </div>
                 <div className="font-size-16 message u-margin-b-8">{message.message}</div>
                 <span className="reply-btn">
-                    <div className="icon-btn font-size-16 line-height-32"><i className="icon icon-comment" /></div>
+                    <div className="icon-btn font-size-16 line-height-32"><i className="icon icon-comment-empty" /></div>
                     <span 
                         className="font-size-16" 
                         onClick={() => openMsgDialog({

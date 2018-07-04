@@ -69,7 +69,17 @@ class PostReply extends Component {
         });
     }
     openMsgDialog (taggadMember) {
-        // this.setState({tag: name});
+        if (!this.props.member.cuid) {
+            this.props.showDialog({
+                type: 'warning',
+                title: 'Oops, 請先登入喲',
+                showCancelButton: false,
+                showConfirmButton: true,
+                confirmButtonText: "知道了",
+                modalVerticalAlign: "middle"
+            });
+            return;
+        };
         this.setState({
             taggadMemberName: taggadMember.name,
             taggedMemberCuid: taggadMember.memberCuid

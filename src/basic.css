@@ -192,16 +192,16 @@ p{
 * Icons
 * -------------- */
 @font-face {
-    font-family: 'fontello';
-    src: url(/font/fontello.eot?96388417);
-    src: url(/font/fontello.eot?96388417#iefix) format('embedded-opentype'),
-         url(/font/fontello.woff2?96388417) format('woff2'),
-         url(/font/fontello.woff?96388417) format('woff'),
-         url(/font/fontello.ttf?96388417) format('truetype'),
-         url(/font/fontello.svg?96388417#fontello) format('svg');
+    font-family: 'icon';
+    src: url(/font/icon.eot?11374434);
+    src: url(/font/icon.eot?11374434#iefix) format('embedded-opentype'),
+         url(/font/icon.woff2?11374434) format('woff2'),
+         url(/font/icon.woff?11374434) format('woff'),
+         url(/font/icon.ttf?11374434) format('truetype'),
+         url(/font/icon.svg?11374434#icon) format('svg');
     font-weight: normal;
     font-style: normal;
-}
+  }
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -214,7 +214,7 @@ p{
 */
      
 [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
+    font-family: "icon";
     font-style: normal;
     font-weight: normal;
     speak: none;
@@ -248,32 +248,31 @@ p{
     /* Uncomment for 3D effect */
     /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-  
-.icon-comment:before { content: '\e800'; } /* '' */
-.icon-search:before { content: '\e801'; } /* '' */
-.icon-mail:before { content: '\e802'; } /* '' */
-.icon-heart-empty:before { content: '\e803'; } /* '' */
+.icon-comment-empty:before { content: '\f0e5'; } /* '' */
+.icon-search:before { content: '\e800'; } /* '' */
+.icon-mail:before { content: '\e801'; } /* '' */
+.icon-heart-empty:before { content: '\e802'; } /* '' */
 .icon-picture:before { content: '\e804'; } /* '' */
-.icon-heart:before { content: '\e805'; } /* '' */
+.icon-heart:before { content: '\e803'; } /* '' */
 .icon-star-empty:before { content: '\e806'; } /* '' */
-.icon-star:before { content: '\e807'; } /* '' */
-.icon-home:before { content: '\e808'; } /* '' */
-.icon-phone:before { content: '\e809'; } /* '' */
+.icon-star:before { content: '\e805'; } /* '' */
+.icon-home:before { content: '\e807'; } /* '' */
+.icon-phone:before { content: '\e808'; } /* '' */
 .icon-chat:before { content: '\e80a'; } /* '' */
-.icon-key:before { content: '\e80b'; } /* '' */
-.icon-user:before { content: '\e80c'; } /* '' */
-.icon-pencil:before { content: '\e80d'; } /* '' */
-.icon-edit:before { content: '\e80e'; } /* '' */
-.icon-trash-empty:before { content: '\e80f'; } /* '' */
-.icon-logout:before { content: '\e810'; } /* '' */
-.icon-down-open:before { content: '\e811'; } /* '' */
-.icon-left-open:before { content: '\e812'; } /* '' */
-.icon-right-open:before { content: '\e813'; } /* '' */
-.icon-up-open:before { content: '\e814'; } /* '' */
-.icon-check:before { content: '\e815'; } /* '' */
-.icon-bell:before { content: '\e816'; } /* '' */
-.icon-instagram:before { content: '\f16d'; } /* '' */
-.icon-facebook-squared:before { content: '\f308'; } /* '' */
+.icon-key:before { content: '\e809'; } /* '' */
+.icon-user:before { content: '\e80a'; } /* '' */
+.icon-pencil:before { content: '\e80b'; } /* '' */
+.icon-edit:before { content: '\e80c'; } /* '' */
+.icon-trash-empty:before { content: '\e80d'; } /* '' */
+.icon-logout:before { content: '\e80e'; } /* '' */
+.icon-down-open:before { content: '\e80f'; } /* '' */
+.icon-left-open:before { content: '\e810'; } /* '' */
+.icon-right-open:before { content: '\e811'; } /* '' */
+.icon-up-open:before { content: '\e812'; } /* '' */
+.icon-ok:before { content: '\e813'; } /* '' */
+.icon-bell:before { content: '\e814'; } /* '' */
+.icon-login:before { content: '\e815'; } /* '' */
+.icon-envelope-open-o:before { content: '\f2b7'; } /* '' */
   
 /* --------------
 * link anchor

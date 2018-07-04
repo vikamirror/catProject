@@ -118,7 +118,7 @@ class Requirements extends Component {
                                     return requirement.value === true ?
                                     <div key={index} className="row">
                                         <div className="col-xs-1 check">
-                                            <div className="icon-btn font-red-wine"><i className="icon icon-check" /></div>
+                                            <div className="icon-btn font-red-wine"><i className="icon icon-ok" /></div>
                                         </div>
                                         <div className="col-xs-11 text">{requirement.desc}</div>
                                     </div>
