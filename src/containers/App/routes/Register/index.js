@@ -137,7 +137,7 @@ class Register extends Component {
 		return (
 			<div className="u-wrapper-fixed-w100-h100">
 				<Helmet>
-					<title>register</title>
+					<title>Cat Crush | 註冊</title>
 				</Helmet>
 				<div className="u-wrapper-absolute-center">
 					<div className="form_header">

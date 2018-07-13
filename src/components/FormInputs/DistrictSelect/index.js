@@ -7,15 +7,14 @@ import PropTypes from 'prop-types';
 
 const DistrictSelect = ({district, districts, onChangeDistrict}) => {
     return (
-    <div className="district-select">
-        <select className="select" onChange={(evt) => onChangeDistrict(evt.target.value)} value={district}>
+    <div className="district-select select-wrapper">
+        <select className="select font-size-16" onChange={(evt) => onChangeDistrict(evt.target.value)} value={district}>
             {
                 districts.map((district,index) => (
                     <option key={index} value={district}>{district}</option>
                 ))
             }
         </select>
-        <div className="icon-btn"><i className="icon icon-down-open" /></div>
     </div>);
 };
 DistrictSelect.propTypes = {

@@ -50,7 +50,7 @@ class Title extends Component {
             return (
                 <input
                     ref="input_title"
-                    className="title edit font-size-20 line-height-40"
+                    className="title edit font-size-20 line-height-32"
                     type="text" 
                     placeholder="標題"
                     maxLength={20}
@@ -59,7 +59,7 @@ class Title extends Component {
                 />
             )
         } else {
-            return <div className="title font-size-20 line-height-40">{title}</div>;
+            return <div className="title font-size-20 line-height-32">{title}</div>;
         }
     }
 }

@@ -1,21 +1,3 @@
-/* -------------------
- * searchBar__xs__icon
- * ------------------- */
-.searchBar_box .searchBar__xs__icon{
-    width: 48px;
-    height: 56px;
-    padding-top: 4px; /* 為active的正圓留上下空間 */
-    padding-bottom: 4px;
-}
-.searchBar__xs__icon .icon-btn{ 
-    width: 100%;
-    height: 100%;
-}
-.searchBar__xs__icon .icon{
-    line-height: 42px;
-    height: 100%;
-}
-
 /* ----------------------------
  * searchBar
  * ---------------------------- */

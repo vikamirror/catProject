@@ -32,7 +32,6 @@ import '../PostBody/postBody.css';
 const mapStateToProps = state => ({
     post: state.post,
     dialog: state.dialog,
-    isLoading: state.isLoading,
     // routing: state.routing,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
@@ -48,6 +47,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
 }, dispatch));
 class PostModal extends Component {
     componentDidMount () {
+        this.props.loadingTrue();
         postAPI
             .getOnePost(this.props.match.params.cuid)
             .then((res) => {
@@ -55,8 +55,10 @@ class PostModal extends Component {
                     // console.log('res.data.post', res.data.post);
                     if (!res.data.post) {
                         this.postNotFound();
+                        this.props.loadingFalse();
                     } else {
                         this.props.fetchOnePost(res.data.post);
+                        this.props.loadingFalse();
                     }
                 }
             })
@@ -162,14 +164,14 @@ class PostModal extends Component {
             district,
             age,
             gender,
-            isSpay,
+            isSpay, 
             requirements,
             remark,
             contact,
             contactInfo
         } = this.props.post;
         return (
-            <div>
+            <div className="post-modal">
                 {
                     isEdit ? '' :  <Helmet><title>{title}</title></Helmet>
                 }

@@ -7,7 +7,7 @@ import axios from 'axios';
 import rootReducer from '../src/redux';
 import initState from '../src/redux/initialState';
 
-const domain = `http://${process.env.HOST}:${process.env.SERVER_PORT}`;
+const domain = process.env.DOMAIN; //`http://${process.env.HOST}:${process.env.SERVER_PORT}`;
 
 const prepInitPostList = () => {
     return new Promise((resolve, reject) => {
@@ -22,7 +22,6 @@ const prepInitPostList = () => {
 
 // Create a store and history based on a path
 const createServerStore = async (path = '/') => {
-    console.log('createServerStore');
     // We don't have a DOM, so let's create some fake history and push the current path
     // const history = createHistory({ initialEntries: [path] });
     const history = createHistory({ initialEntries: [path] });

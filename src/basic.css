@@ -14,10 +14,10 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow: hidden;
+  /* height: 100vh; */
+  /* overflow: hidden; */
 }
-#root, #app{ height:100%; overflow-y:scroll; }
+/* #app{ overflow-y:scroll; } */
 /* --------------
 * background
 * -------------- */
@@ -33,6 +33,7 @@ body {
 .bg_myPosts{ background: url(/images/background/ricepaper_v3.png); }
 .bg_login{ background: url(/images/background/weather.png); }
 .bg_register{ background: url(/images/background/food.png); }
+.bg_post{ background-color: rgba(197, 197, 197, 0.2); margin-top: 56px; }
 
 /* --------------
 * Fonts
@@ -104,13 +105,13 @@ p{
 }
 
 /* font-size */
-.font-size-12{ font-size: 12px; line-height: 1.2; }
-.font-size-14{ font-size: 14px; line-height: 24px; }
+.font-size-12{ font-size: 12px !important; line-height: 1.2 !important; }
+.font-size-14{ font-size: 14px !important; line-height: 24px!important; }
 .font-size-16{ font-size: 16px !important; line-height: 24px !important; }
-.font-size-18{ font-size: 18px; line-height: 24px; }
-.font-size-20{ font-size: 20px; line-height: 24px; }
-.font-size-24{ font-size: 24px; }
-.font-size-36{ font-size: 36px; }
+.font-size-18{ font-size: 18px !important; line-height: 24px !important; }
+.font-size-20{ font-size: 20px !important; line-height: 24px!important; }
+.font-size-24{ font-size: 24px !important; }
+.font-size-36{ font-size: 36px !important; }
 
 /* font-weight */
 .font-weight-5{ font-weight: 500; }
@@ -597,6 +598,7 @@ span{display: inline-block;}
     font-family: inherit;
     vertical-align: center;
     vertical-align: middle;
+    width: 100%;
 }
 .select:focus{
     outline: 0;
@@ -669,6 +671,8 @@ span{display: inline-block;}
 .u-padding-b-32{ padding-bottom: 32px !important; }
 .u-padding-t-32{ padding-top: 32px !important; }
 .u-padding-b-40{ padding-bottom: 40px !important; }
+.u-padding-t-40{ padding-top: 40px !important; }
+.u-padding-56{padding: 56px !important;}
 .u-padding-64{padding: 64px !important;}
 
 .u-div-outline-0:focus{ outline: 0 !important; }
@@ -736,10 +740,12 @@ span{display: inline-block;}
     background-color: rgba(27, 43, 47, 0.2);
     overflow-y: scroll;
 }
+/* 
 .u-post-wrapper-scroll::-webkit-scrollbar { 
-    /* 讓垂直的滾輪消失 */
+    讓垂直的滾輪消失
     display: none;
 }
+ */
 
 /* --------------
 * z-index

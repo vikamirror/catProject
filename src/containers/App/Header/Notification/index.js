@@ -44,7 +44,7 @@ class Notification extends Component {
             this.execCounterTransition();
         };
     }
-    // 開關下拉式選單
+    // 下拉式選單
     toggleDropdownMenu () {
         this.state.isShowNotifications ? 
             this.closeDropdownMenu() : this.openDropdownMenu();
@@ -71,7 +71,8 @@ class Notification extends Component {
         }, 200);
     }
     render () {
-        if (!this.props.member.cuid) {
+        const { member } = this.props;
+        if (!member.cuid) { // 螢幕>768px
             return '';
         }
         const { bounceInDown } = this.state;
@@ -105,40 +106,35 @@ class Notification extends Component {
                         )
                     }
                     </Transition>
-                    {
-                        !this.props.isSmallDevice ? // 螢幕>768px
-                        <div className="notify-dropdown">
-                            <DropdownMenu isShowMenu={this.state.isShowNotifications}>
-                                {
-                                    notifications.length > 0 ?
-                                        notifications.map((notify, index) => (
-                                            <Aux key={index}>
-                                                <MenuItem
-                                                    itemType="notification"
-                                                    linkTo={notify.link}
-                                                    boldText={notify.messageFrom.name}
-                                                    itemText={notify.message}
-                                                    date={notify.dateAdded}
-                                                    isHighLight={notify.isHighLight}
-                                                />
-                                                <MenuItem
-                                                    itemType="divider"
-                                                    hasIcon={false}
-                                                />
-                                            </Aux>
-                                        ))
-                                        :
-                                        <MenuItem
-                                            itemType="text"
-                                            hasIcon={false}
-                                            itemText="您目前沒有新的訊息"
-                                        />
-                                }
-                            </DropdownMenu>
-                        </div>
-                        :
-                        ''
-                    }
+                    <div className="notify-dropdown">
+                        <DropdownMenu isShowMenu={this.state.isShowNotifications}>
+                            {
+                                notifications.length > 0 ?
+                                    notifications.map((notify, index) => (
+                                        <Aux key={index}>
+                                            <MenuItem
+                                                itemType="notification"
+                                                linkTo={notify.link}
+                                                boldText={notify.messageFrom.name}
+                                                itemText={notify.message}
+                                                date={notify.dateAdded}
+                                                isHighLight={notify.isHighLight}
+                                            />
+                                            <MenuItem
+                                                itemType="divider"
+                                                hasIcon={false}
+                                            />
+                                        </Aux>
+                                    ))
+                                    :
+                                    <MenuItem
+                                        itemType="text"
+                                        hasIcon={false}
+                                        itemText="您目前沒有新的訊息"
+                                    />
+                            }
+                        </DropdownMenu>
+                    </div>
                 </OnBlurListener>
             </li>
         );

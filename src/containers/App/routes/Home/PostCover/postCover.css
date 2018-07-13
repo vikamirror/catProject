@@ -10,9 +10,13 @@
     margin-bottom: 24px;
     /* height: auto; */
 }
-
 .postCover:hover{
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+@media (max-width: 768px){
+    .postCover:hover{
+        box-shadow: none;
+    }
 }
 
 /* --------------

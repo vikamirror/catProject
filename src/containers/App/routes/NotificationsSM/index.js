@@ -30,7 +30,7 @@ class NotificationsSM extends Component {
         const Aux = props => props.children;
         return (
             <div className="sm-notifications">
-                <div className="u-margin-header">
+                {/* <div className="u-margin-header"> */}
                     <div className="container u-padding-t-16">
                         <ul>
                         {
@@ -60,7 +60,7 @@ class NotificationsSM extends Component {
                         }
                         </ul>
                     </div>
-                </div>
+                {/* </div> */}
             </div>
         );
     }

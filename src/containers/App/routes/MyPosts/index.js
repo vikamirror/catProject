@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -48,9 +49,12 @@ class MyPosts extends Component{
         }
         return (
             <div className="myPosts-wrapper">
-                <div className="u-margin-header u-padding-b-40">
-                    <div className="container">
-                        <div className="fake-new-post form u-margin-b-40">
+                <Helmet>
+					<title>Cat Crush | 我的文章</title>
+				</Helmet>
+                <div className="u-padding-b-40"> {/*  u-margin-header */} 
+                    <div className="container u-padding-l-8 u-padding-r-8">
+                        <div className="fake-new-post form u-margin-t-40 u-margin-b-40">
                             <div className="postWrapper">
                                 <Link to={{
                                     pathname: "/myPosts/newPost",

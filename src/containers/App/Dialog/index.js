@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import BounceInUp from '../../../components/BounceInUp';
 import { convertFromStringToDom } from '../../../Utils/stringFormat';
 import { closeDialog } from '../../../redux/dialog';
-import { baseUrl } from '../../../Utils/stringFormat';
+// import { baseUrl } from '../../../Utils/stringFormat';
 import QuillEditor from '../../../components/QuillEditor';
 
 import './dialog.css';
@@ -15,9 +15,9 @@ import './dialog.css';
 const Icon = ({type}) => {
     switch (type) {
         case 'question':
-            return <div className="u-margin-b-8"><img src={`${baseUrl}/images/question.png`} alt="" /></div>;
+            return <div className="u-margin-b-8"><img src={`${window.location.hostname}/images/question.png`} alt="" /></div>;
         case 'warning':
-            return <div className="u-margin-b-8"><img src={`${baseUrl}/images/alert.png`} alt="" /></div>;
+            return <div className="u-margin-b-8"><img src={`${window.location.hostname}/images/alert.png`} alt="" /></div>;
         default:
             return '';
     }

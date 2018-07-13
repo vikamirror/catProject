@@ -18,14 +18,21 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     
 }, dispatch));
 class Search extends Component {
+    // componentDidMount () {
+    //     let {location, searchPosts} = this.props;
+    //     if (location.pathname !== `/search/${searchPosts.query}`) {
+    //         this.props.history.push("/");
+    //         return;
+    //     };
+    // }
     render () {
         const { query, posts } = this.props.searchPosts;
         return (
-            <div>
+            <div className="u-padding-t-40">
                 <Helmet>
                     <title>Cat Crush | {query}</title>
                 </Helmet>
-                <div className="u-margin-header">
+                {/* <div className="u-margin-header"> */}
                     <div className="container home-container">
                         <div className="search-result u-text-center">
                             <h4>{query}</h4>
@@ -57,7 +64,7 @@ class Search extends Component {
                             }
                         </article>
                     </div>     
-                </div>
+                {/* </div> */}
             </div>
         );
     }

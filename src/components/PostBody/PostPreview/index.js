@@ -60,7 +60,8 @@ PostPreview.propTypes = {
         cover: PropTypes.string.isRequired,
         charactor: PropTypes.string.isRequired,
         cuid: PropTypes.string.isRequired,
-    })
+    }),
+    currentPath: PropTypes.string.isRequired,
 };
 
 export default PostPreview;

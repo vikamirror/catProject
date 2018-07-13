@@ -4,24 +4,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import ScrollWrapper from '../ScrollWrapper';
 import BounceInUp from '../BounceInUp';
-import { rollBackPost, clearPost } from '../../redux/post';
-import { loadingTrue, loadingFalse } from '../../redux/isLoading';
-import { showBlankHeader, showInitialHeader } from '../../redux/header';
+import { clearPost } from '../../redux/post';
+import { showPostHeader, showInitialHeader } from '../../redux/header';
+import { showPostBackground, showInitialBackground } from '../../redux/background';
 
 import './postWrapper.css';
-
-const CloseButton = ({onClickClose, isSmallDevice}) => {
-    return (
-        <div className="close-button u-div-center z-index-1" onClick={(e) => onClickClose(e)}>
-            <div className="closeCross">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    );
-};
 
 const PostEditFooter = ({onClickClose, onClickSubmit}) => (
     <div>
@@ -35,90 +23,48 @@ const PostEditFooter = ({onClickClose, onClickSubmit}) => (
     </div>
 );
 
-const mapStateToProps = state => ({ 
-    isSmallDevice: state.isSmallDevice,
+const mapStateToProps = state => ({
     post: state.post,
-    isLoading: state.isLoading,
-    // routing: state.routing,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    rollBackPost: rollBackPost,
     clearPost: clearPost,
-    loadingTrue: loadingTrue,
-    loadingFalse: loadingFalse,
-    showBlankHeader: showBlankHeader,
+    showPostHeader: showPostHeader,
     showInitialHeader: showInitialHeader,
+    showPostBackground: showPostBackground,
+    showInitialBackground: showInitialBackground,
 }, dispatch));
 class PostWrapper extends Component {
-    constructor () {
-        super();
-        this.state = {
-            isScroll: false,
-        }
-    }
     componentDidMount () {
-        if (!this.props.post.isFetched) {
-            this.props.loadingTrue();
-        };
-        if (this.props.isSmallDevice) {
-            this.props.showBlankHeader();
-        };
-    }
-    componentDidUpdate (prevProps) {
-        if (this.props.post.isFetched && (prevProps.post.isFetched !== this.props.post.isFetched)) {
-            this.props.loadingFalse();
-        };
-    }
-    handleScroll (isScroll) {
-        isScroll ? this.setState({isScroll: true}) : this.setState({isScroll: false});
-    }
-    handleClose (e) {
-        if (this.props.post.cuid && this.props.post.isEdit) {
-            this.props.rollBackPost();
-        } else {
-            e.stopPropagation();
-            this.props.history.goBack();
-        }
+        this.props.showPostHeader();
+        this.props.showPostBackground();
     }
     componentWillUnmount () {
         this.props.clearPost();
-        if (this.props.isSmallDevice) {
-            this.props.showInitialHeader();
-        };
+        this.props.showInitialHeader();
+        this.props.showInitialBackground();
     }
     render () {
-        const {isSmallDevice, onClickSubmit} = this.props;
-        const {isFetched, isEdit} = this.props.post;
-        const shadowHeader = this.state.isScroll ? "shadow-header" : "";
-        return (
-            <div className="u-wrapper-fixed-w100-h100 u-post-wrapper-scroll z-index-98" id="post-wrapper-id">
-                <ScrollWrapper scrollingHandler={(isScroll) => this.handleScroll(isScroll)} wrapperId="post-wrapper-id">
-                    <div className={`close-header ${shadowHeader} z-index-1`}>
-                        <CloseButton
-                            onClickClose={(e) => this.handleClose(e)}
-                            isSmallDevice={isSmallDevice}
-                        />
+        const { onClickSubmit } = this.props;
+        const { isFetched, isEdit } = this.props.post;
+        return (               
+            <BounceInUp inCondition={isFetched} enterMilliseconds={300}>
+                <div className="u-padding-t-16 u-padding-r-8 u-padding-b-16 u-padding-l-8" id="post-wrapper-id">
+                    <div className="postWrapper">
+                        <article className={`article ${isEdit ? "form" : ""}`} id="articleForm-id">       
+                            {this.props.children}
+                            {
+                                isEdit ? 
+                                <PostEditFooter 
+                                    onClickClose={(e) => this.handleClose(e)}
+                                    onClickSubmit={(e) => onClickSubmit(e)} 
+                                /> 
+                                : 
+                                ''
+                            }
+                        </article>
                     </div>
-                    <BounceInUp inCondition={isFetched} enterMilliseconds={300}>
-                        <div className="u-margin-header u-padding-l-8 u-padding-r-8"> 
-                            <div className="postWrapper">
-                                <article className={`article ${isEdit ? "form" : ""}`} id="articleForm-id">       
-                                    {this.props.children}
-                                    {
-                                        isEdit ? 
-                                        <PostEditFooter 
-                                            onClickClose={(e) => this.handleClose(e)}
-                                            onClickSubmit={(e) => onClickSubmit(e)} 
-                                        /> 
-                                        : 
-                                        ''
-                                    }
-                                </article>
-                            </div>
-                        </div>
-                    </BounceInUp>
-                </ScrollWrapper>
-            </div>
+                </div>
+            </BounceInUp>
         );
     }
 }
@@ -128,9 +74,7 @@ PostWrapper.propTypes = {
         isEdit: PropTypes.bool.isRequired,
         isFetched: PropTypes.bool.isRequired
     }),
-    isSmallDevice: PropTypes.bool.isRequired,
     onClickSubmit: PropTypes.func,
-    rollBackPost: PropTypes.func.isRequired,
 };
 
 // 因為要使用history.goBack()

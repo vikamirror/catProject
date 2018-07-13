@@ -12,6 +12,7 @@ import postList from './postList';
 import myPosts from './myPosts';
 import notification from './notification';
 import searchPosts from './searchPosts';
+import background from './background';
 // import routerLocation from './routerLocation';
 
 export default combineReducers({
@@ -26,5 +27,6 @@ export default combineReducers({
     postList,
     notification,
     searchPosts,
+    background,
     // routerLocation
 });

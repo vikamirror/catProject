@@ -26,10 +26,6 @@ article.articles{
         column-gap: 8px;
     }
 }
-/* --------------
-* home-container
-* -------------- */
-.home-container{ padding-top: 24px; }
 
 /* ------------------
 * 包住postCover的a標籤

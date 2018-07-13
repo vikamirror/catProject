@@ -22,9 +22,9 @@ const initialState = false;
 export default (state = initialState, action) => {
     switch(action.type) {
         case LOADING_TRUE:
-            return !state;
+            return true;
         case LOADING_FALSE:
-            return !state;
+            return false;
         default:
             return state;
     }

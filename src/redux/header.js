@@ -1,12 +1,12 @@
 const SHOW_SEARCH_HEADER = 'SHOW_SEARCH_HEADER';
 const SHOW_INIT_HEADER = 'SHOW_INIT_HEADER';
 const SHOW_GO_BACK_HEADER = 'SHOW_GO_BACK_HEADER';
-const SHOW_BLANK_HEADER = 'SHOW_BLANK_HEADER';
+const SHOW_POST_HEADER = 'SHOW_POST_HEADER';
 
-export function showBlankHeader () {
+export function showPostHeader () {
     return (dispatch) => {
         dispatch({
-            type: SHOW_BLANK_HEADER,
+            type: SHOW_POST_HEADER,
         });
     }
 }
@@ -38,7 +38,7 @@ export function showInitialHeader() {
 export const initial_header = 'initial_header';
 export const search_header = 'search_header';
 export const goBack_header = 'goBack_header';
-export const blank_header = 'blank_header';
+export const post_header = 'post_header';
 
 const initialState = initial_header;
 
@@ -50,8 +50,8 @@ export default (state = initialState, action) => {
             return initial_header;
         case SHOW_GO_BACK_HEADER:
             return goBack_header;
-        case SHOW_BLANK_HEADER:
-            return blank_header;
+        case SHOW_POST_HEADER:
+            return post_header;
         default:
             return state;
     }

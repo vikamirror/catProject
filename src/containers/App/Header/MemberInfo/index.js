@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Avatar from '../../../../components/Avatar';
 import { showDialog } from '../../../../redux/dialog';
@@ -56,6 +57,7 @@ class MemberInfo extends Component{
             sockets.logoutAllTheOtherDevicesEmitter(this.props.member.cuid);
             sockets.logoutEmitter(this.props.member.cuid);
             this.props.logout();
+            this.props.history.push("/");
             this.props.resetMyPost();
         }
     }
@@ -132,4 +134,4 @@ MemberInfo.propTypes = {
     logout: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MemberInfo);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MemberInfo));

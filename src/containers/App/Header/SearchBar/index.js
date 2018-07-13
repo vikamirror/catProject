@@ -9,22 +9,6 @@ import { showInitialHeader } from '../../../../redux/header';
 
 import './searchBar.css';
 
-export const SearchBarIconBtn = ({toggleMiniSearchBar}) => (
-    <div className="u-push-left">
-        <div className="searchBar__xs__icon">
-            <div
-                className="icon-btn" /*{showMiniSearchBar ? 'icon-btn active' : 'icon-btn'}*/
-                onClick={() => toggleMiniSearchBar()}
-            >
-                <i className="icon icon-search" />
-            </div>
-        </div>
-    </div>
-);
-SearchBarIconBtn.propTypes = {
-    toggleMiniSearchBar: PropTypes.func.isRequired
-};
-
 const mapStateToProps = state => ({
     isSmallDevice: state.isSmallDevice,
     searchPosts: state.searchPosts,
@@ -62,6 +46,12 @@ class SearchBar extends Component {
         };
     }
     render () {
+        const { location } = this.props;
+        if (location.pathname === "/myPosts" ||
+            location.pathname === "/myFavorites" ||
+            location.pathname === "/myAccount") {
+            return '';
+        }
         return (
             <div className="u-clearPadding">
                 <div className="searchBar">

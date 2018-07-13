@@ -196,11 +196,11 @@ class MyAccount extends Component {
             return '';
         }
         return (
-            <div className="myAccount-wrapper">
+            <div className="myAccount-wrapper u-padding-t-40">
                 <Helmet>
-					<title>Cat Crush:register</title>
+					<title>Cat Crush ｜ 個人資料</title>
 				</Helmet>
-                <div className="u-margin-header">
+                {/* <div className="u-margin-header"> */}
                     <div className="account-board u-div-center">
                         <div className="container">
                             <ul className="row u-text-center">
@@ -259,14 +259,16 @@ class MyAccount extends Component {
                                         />
                                     </div>
                                     <div className="btn-group-center">
-                                        <button
-                                            type="button"
-                                            className="btn btn-md btn-secondary"
-                                            disabled={!hasEdit}
-                                            onClick={() => this.requestUpdate()}
-                                        >
-                                            確認送出
-                                        </button>
+                                        {
+                                            hasEdit ?
+                                            <button
+                                                type="button"
+                                                className="btn btn-md btn-secondary"
+                                                onClick={() => this.requestUpdate()}
+                                            >
+                                                確認修改
+                                            </button> : ''
+                                        }
                                     </div>
                                 </form>
                                 :
@@ -311,21 +313,23 @@ class MyAccount extends Component {
                                         />
                                     </div>
                                     <div className="btn-group-center">
-                                        <button
-                                            type="button"
-                                            className="btn btn-md btn-secondary"
-                                            disabled={!hasEdit}
-                                            onClick={() => this.requestChangePassword()}
-                                        >
-                                            確認送出
-                                        </button>
+                                        {
+                                            hasEdit ?
+                                            <button
+                                                type="button"
+                                                className="btn btn-md btn-secondary"
+                                                onClick={() => this.requestChangePassword()}
+                                            >
+                                                確認修改
+                                            </button> : ''
+                                        }
                                     </div>
                                 </form>
                             }
                         </div>  
                     </div>
                 </div>
-            </div>
+            // </div>
         );
     }
 }

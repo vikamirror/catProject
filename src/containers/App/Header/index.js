@@ -1,41 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import SearchBar, { SearchBarIconBtn } from './SearchBar';
+import FadeInOut from '../../../components/FadeInOut';
+import SearchBar from './SearchBar';
 import LoginOrRegister from './LoginOrRegister';
 import MemberInfo from './MemberInfo';
 import Notification from './Notification';
-import { showSearchHeader, initial_header } from '../../../redux/header';
+import { initial_header } from '../../../redux/header';
 
 import './header.css';
 
 const mapStateToProps = state => ({
-    isSmallDevice: state.isSmallDevice,
     header: state.header,
 });
-const mapDispatchToProps = dispatch => (bindActionCreators({
-    showSearchHeader: showSearchHeader
-}, dispatch));
-
-class Header extends Component {
-    constructor () {
-        super();
-        this.state = {
-            showMiniSearchBar: false,
-		};
-    }
-    showSmallDeviceSearchHeader () {
-        this.props.showSearchHeader();
-    }
-    render() {
-        if (this.props.header !== initial_header) {
-            return '';
-        };
-        const header_id = this.props.shoudHeaderColored ? "header-colored" : "";
-        return (
+const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
+const Header = ({header, isScrollDown, location}) => {
+    if (header !== initial_header) {
+        return '';
+    };
+    const header_id = isScrollDown ? "" : "header-colored";
+    return (
+        <FadeInOut inCondition={!isScrollDown} milliseconds={100}>
             <header className="header z-index-97" id={header_id}>
                 <div className="container">
                     <nav className="nav u-clearfix">
@@ -49,15 +37,7 @@ class Header extends Component {
                         </div>
                         {/* 搜尋欄 */}
                         <div className="searchBar_box u-push-left">
-                            {
-                                this.props.isSmallDevice ?
-                                <SearchBarIconBtn 
-                                    // showMiniSearchBar={this.state.showMiniSearchBar} 
-                                    toggleMiniSearchBar={() => this.showSmallDeviceSearchHeader()} 
-                                 />
-                                :
-                                <SearchBar />
-                            }
+                            <SearchBar />
                         </div>
                         <ul className="right-actions u-push-right u-clearfix">
                             {/* 通知 */}
@@ -70,12 +50,12 @@ class Header extends Component {
                     </nav>
                 </div>
             </header>
-        );
-    }
+        </FadeInOut>
+    );
 }
-
+ 
 Header.propTypes = {
-    shoudHeaderColored: PropTypes.bool.isRequired
-}
+    isScrollDown: PropTypes.bool.isRequired,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

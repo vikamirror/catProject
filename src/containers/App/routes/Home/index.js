@@ -23,6 +23,10 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
 }, dispatch));
 class Home extends Component {
     componentDidMount () {
+        // if (this.props.location.pathname !== "/") {
+        //     this.props.history.push("/");
+        //     return;
+        // };
         this.toAddPostListListener();
         this.toUpdatePostListListener();
         this.toDeletePostListListener();
@@ -47,12 +51,12 @@ class Home extends Component {
     }
     render () {
         return (
-            <div>
+            <div className="home-container">
                 <Helmet>
                     <title>Cat Crush</title>
                 </Helmet>
-                <div className="u-margin-header">
-                    <div className="container home-container">
+                {/* <div className="u-margin-header"> */}
+                    <div className="container u-padding-t-24">
                         <article className="articles">
                             {
                                 this.props.postList.map((post, index) => (
@@ -81,7 +85,7 @@ class Home extends Component {
                         </article>
                     </div>     
                 </div>
-            </div>
+            // </div>
         );
     }
 }

@@ -23,5 +23,3 @@ export const ellipsisTextAfterMaxLength = (text, maxLength) => {
         return text;
     }
 }
-
-export const baseUrl = "http://localhost:3000";

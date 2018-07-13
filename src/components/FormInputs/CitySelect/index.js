@@ -14,15 +14,14 @@ const cities = [
 ];
 
 const CitySelect = ({city, onChangeCity}) => (
-    <div className="country-select">
-        <select className="select" onChange={(evt) => onChangeCity(evt.target.value)} value={city}>
+    <div className="country-select select-wrapper">
+        <select className="select font-size-16" onChange={(evt) => onChangeCity(evt.target.value)} value={city}>
             {
                 cities.map((city, index) => (
                     <option key={index} value={city}>{city}</option>
                 ))
             }
         </select>
-        <div className="icon-btn"><i className="icon icon-down-open" /></div>
     </div>
 )
 

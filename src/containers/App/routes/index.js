@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Home from './Home';
 import Search from './Search';
@@ -12,25 +12,26 @@ import MyFavorites from './MyFavorites';
 import MyAccount from './MyAccount';
 import NotificationsSM from './NotificationsSM';
 
-export default ({location}) => {
+const AppRoutes = ({location}) => {
     const isShowNewPostModal = !!(location.state && location.state.isShowNewPostModal);
     const isShowPostModal = !!(location.state && location.state.isShowPostModal);
+    // const isLogin = !!(member.cuid);
     return (
-        <div>
+        <main id="app-routes" className="u-margin-header">      
             <Switch>
+                <Route exact path="/" component={Home} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
-                <Route exact path="/myFavorites" component={MyFavorites} />
                 <Route exact path="/myAccount" component={MyAccount} />
                 <Route exact path="/notifications" component={NotificationsSM} />
-                <Route path="/myPosts" component={MyPosts} />
-                <Route path="/search/:query" component={Search} />
-                <Route path="/" component={Home} />
-                {/* <Redirect to="/" /> */}
-                {/* <Route component={NotFound} /> */}
+                <Route exact path="/myFavorites" component={MyFavorites} />
+                <Route exact path="/myPosts" component={MyPosts} />
+                <Route exact path="/search/:query" component={Search} />
+                {isShowPostModal ? <Route exact path={`${location.state.modalPath}/:cuid`} component={PostModal} /> : null}
+                {isShowNewPostModal ? <Route exact path="/myPosts/newPost" component={NewPost} /> : null}
             </Switch>
-            {isShowPostModal ? <Route path={`${location.state.modalPath}/:cuid`} component={PostModal} /> : null}
-            {isShowNewPostModal ? <Route path="/myPosts/newPost" component={NewPost} /> : null}
-        </div>
+        </main>
     );
 };
+
+export default AppRoutes;

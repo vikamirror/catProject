@@ -5,3 +5,17 @@
     bottom: 0;
     left: 0;
 }
+
+.sm-device-footer .notification-counter{
+    display: inline-block;
+    position: absolute;
+    top: -2px;
+    right: 1px;
+    background-color: rgba(212, 19, 13, 1);
+    border-radius: 50%;
+    height: 18px;
+    width: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #fefefe;
+}

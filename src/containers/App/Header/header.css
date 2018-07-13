@@ -43,12 +43,6 @@
     left: 50%;
     transform: translate(-50%,-50%);
 }
-@media (max-width: 768px){
-    .header .logo{
-        width: 56px;
-        height: 56px;
-    }
-}
 
 /* @keyframes logoHover{
     0% { background: linear-gradient(to bottom right, #8c9bd3,#a07ab8,#c98799,#e7a09c,#f7d6b0,#f7e2b4); }

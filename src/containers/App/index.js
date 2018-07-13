@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Header from './Header';
+import HeaderSmall from './HeaderSmall';
 import SmallDeviceSearchHeader from './SearchHeader';
 import GoBackHeader from './GoBackHeader';
-import BlankHeader from './BlankHeader';
+import PostHeader from './PostHeader';
 import SmallDeviceFooter from './SmallDeviceFooter';
-import Discover from './Discover';
+// import Discover from './Discover';
 import { fetchMember, logout, onListenLastLogoutTime } from '../../redux/member';
 import { fetchPosts } from '../../redux/postList';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
@@ -22,6 +23,8 @@ import './app.css';
 
 const mapStateToProps = state => ({ 
     member: state.member,
+    background: state.background,
+    isSmallDevice: state.isSmallDevice,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     fetchMember: fetchMember,
@@ -38,8 +41,7 @@ class App extends Component {
         this.state = {
             isScroll: false,
             isScrollDown: false,
-            backgroundClass: 'bg_home'
-        }
+        };
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
         this.props.fetchMember();
@@ -74,24 +76,6 @@ class App extends Component {
         };
         sockets.logoutListener(logoutHandler);
     }
-    setBackground (pathname) {
-        switch (pathname) {
-            case '/':
-                this.setState({backgroundClass: 'bg_home'});
-                break;
-            case '/myPosts':
-                this.setState({backgroundClass: 'bg_myPosts'});
-                break;
-            case '/login':
-                this.setState({backgroundClass: 'bg_login'});
-                break;
-            case '/register':
-                this.setState({backgroundClass: 'bg_register'});
-                break;
-            default:
-                break;
-        }
-    }
     isSmallDevice () {
         window.innerWidth < 768 ? this.props.smallDeviceTrue() : this.props.smallDeviceFalse();
     }
@@ -102,22 +86,32 @@ class App extends Component {
         isScrollDown ? this.setState({isScrollDown: true}) : this.setState({isScrollDown: false});
     }
     render() {
+        const {background, isSmallDevice, location, member} = this.props;
+        const {isScroll, isScrollDown} = this.state;
         return (
             <div id="app">
-                <div id="app_bg" className={this.state.backgroundClass}></div>
-                <Header shoudHeaderColored={this.state.isScroll} />
+                <div id="app_bg" className={background}></div>
+                {
+                    isSmallDevice ?
+                    <HeaderSmall shoudHeaderColored={isScroll} isScrollDown={isScrollDown} />
+                    :
+                    <Header shoudHeaderColored={isScroll} isScrollDown={isScrollDown} />
+                }
                 {/* <Discover /> */}
                 <SmallDeviceSearchHeader />
                 <GoBackHeader />
-                <BlankHeader />
+                <PostHeader shoudHeaderColored={isScroll} />
                 <ScrollWrapper
                     wrapperId="app"
                     scrollingHandler={(isScroll) => this.handleScroll(isScroll)}
                     scrollDownHandler={(isScrollDown) => this.handleScrollDown(isScrollDown)}
                 >
-                    <Routes location={this.props.location} />
+                    <Routes 
+                        location={location}
+                        member={member}
+                    />
                 </ScrollWrapper>
-                <SmallDeviceFooter isScrollDown={this.state.isScrollDown} />
+                <SmallDeviceFooter isScrollDown={isScrollDown} />
                 <Loading />
                 <Dialog />
             </div>
