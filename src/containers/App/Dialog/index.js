@@ -15,9 +15,9 @@ import './dialog.css';
 const Icon = ({type}) => {
     switch (type) {
         case 'question':
-            return <div className="u-margin-b-8"><img src={`${window.location.hostname}/images/question.png`} alt="" /></div>;
+            return <div className="u-margin-b-8"><img src={`http://${window.location.hostname}/images/question.png`} alt="" /></div>;
         case 'warning':
-            return <div className="u-margin-b-8"><img src={`${window.location.hostname}/images/alert.png`} alt="" /></div>;
+            return <div className="u-margin-b-8"><img src={`http://${window.location.hostname}/images/alert.png`} alt="" /></div>;
         default:
             return '';
     }
