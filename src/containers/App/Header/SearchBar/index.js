@@ -75,6 +75,16 @@ class SearchBar extends Component {
         );
     }
 };
-
+SearchBar.propTypes = {
+    isSmallDevice: PropTypes.bool.isRequired,
+    searchPosts: PropTypes.shape({
+        loadedIds: PropTypes.array.isRequired
+    }),
+    requestSearch: PropTypes.func.isRequired,
+    showInitialHeader: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    }),
+};
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchBar));
 

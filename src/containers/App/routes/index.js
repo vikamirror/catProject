@@ -29,6 +29,7 @@ const AppRoutes = ({location}) => {
                 <Route exact path="/search/:query" component={Search} />
                 {isShowPostModal ? <Route exact path={`${location.state.modalPath}/:cuid`} component={PostModal} /> : null}
                 {isShowNewPostModal ? <Route exact path="/myPosts/newPost" component={NewPost} /> : null}
+                <Redirect to="/" />
             </Switch>
         </main>
     );

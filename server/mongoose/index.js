@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 
 // Get the default connection
 const connect = mongoose.connection;
