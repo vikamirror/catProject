@@ -31,15 +31,19 @@ class Notification extends Component {
         this.state = {
             isShowNotifications: false,
             bounceInDown: false,
-            hasActivateSocket: false, // 已開始監聽
+            hasActivateNotificationListener: false,
+            hasFetchedNotifications: false,
         }
     }
     componentDidUpdate (prevProps, prevState) {
-        if (this.props.member.cuid && !this.state.hasActivateSocket) {
+        if (this.props.member.cuid && !this.state.hasActivateNotificationListener) {
             this.props.onListenNotification(); // 監聽新的通知
-            this.setState({hasActivateSocket: true});
-            this.props.fetchNotifications(this.props.member.lastTimeLogout); // 向後端請求歷史通知
+            this.setState({hasActivateNotificationListener: true});
         };
+        if (this.props.member.lastTimeLogout && !this.state.hasFetchedNotifications) {
+            this.props.fetchNotifications(this.props.member.lastTimeLogout); // 向後端請求歷史通知
+            this.setState({hasFetchedNotifications: true});
+        }
         if (this.props.notification.unSeenNotificationCount !== prevProps.notification.unSeenNotificationCount) {
             this.execCounterTransition();
         };
