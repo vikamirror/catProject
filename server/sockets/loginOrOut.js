@@ -11,7 +11,10 @@ export default function loginAndOutFactory (socket) {
     };
 
     const emitLastLogoutTimeOfMember = async (member) => {
-        const lastLogoutTime = await getLastLogoutTime(member);
+        let lastLogoutTime = await getLastLogoutTime(member);
+        if (!lastLogoutTime) { // 若沒有上次登入時間, 則塞入1970/01/01
+            lastLogoutTime = "01 Jan 1970 00:00:00 GMT";
+        };
         socket.emit('lastLogoutTime', lastLogoutTime);
     }
 
