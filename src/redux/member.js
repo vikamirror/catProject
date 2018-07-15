@@ -191,7 +191,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 lastTimeLogout: action.time,
-            }
+            };
         default:
             return state;
     }

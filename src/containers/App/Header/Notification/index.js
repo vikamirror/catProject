@@ -43,7 +43,7 @@ class Notification extends Component {
         if (this.props.member.lastTimeLogout && !this.state.hasFetchedNotifications) {
             this.props.fetchNotifications(this.props.member.lastTimeLogout); // 向後端請求歷史通知
             this.setState({hasFetchedNotifications: true});
-        }
+        };
         if (this.props.notification.unSeenNotificationCount !== prevProps.notification.unSeenNotificationCount) {
             this.execCounterTransition();
         };
@@ -147,6 +147,7 @@ class Notification extends Component {
 Notification.propTypes = {
     member: PropTypes.shape({
         cuid: PropTypes.string,
+        lastTimeLogout: PropTypes.string,
     }),
     isSmallDevice: PropTypes.bool.isRequired,
     notification: PropTypes.shape({
