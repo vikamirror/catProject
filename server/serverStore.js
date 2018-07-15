@@ -7,7 +7,7 @@ import axios from 'axios';
 import rootReducer from '../src/redux';
 import initState from '../src/redux/initialState';
 
-const domain = process.env.DOMAIN;
+const domain = process.env.DEV_IP;
 
 const prepInitPostList = () => {
     return new Promise((resolve, reject) => {
