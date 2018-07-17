@@ -5,6 +5,8 @@ const FETCHED_NOTIFICATION = 'FETCHED_NOTIFICATION';
 const UPDATE_NOTIFICATION = 'UPDATE_NOTIFICATION';
 const HAS_SEEN = 'HAS_SEEN';
 const RESET = 'RESET';
+const ACTIVATE_SOCKET_LISTENER = 'ACTIVATE_SOCKET_LISTENER';
+const ACTIVATE_FETCH_NOTIFICATION = 'ACTIVATE_FETCH_NOTIFICATION';
 
 const highLightNotifications = (notifies, lastTimeLogout) => {
     let unSeenCount = 0; // 未讀的數量
@@ -36,6 +38,7 @@ export function notificationsHasBeenSeen () {
 // 監聽新的通知
 export function onListenNotification () {
     return (dispatch) => {
+        dispatch({ type: ACTIVATE_SOCKET_LISTENER });
         const receivedNotifyHandler = (notification) => {
             notification.isHighLight = true;
             dispatch({
@@ -45,11 +48,12 @@ export function onListenNotification () {
         };
         sockets.notificationListener(receivedNotifyHandler);
     };
-}
+};
 
 // 向後端請求歷史通知
 export function fetchNotifications (lastTimeLogout) {
     return (dispatch) => {
+        dispatch({ type: ACTIVATE_FETCH_NOTIFICATION });       
         notifyAPI
             .getNotifications()
             .then(res => {
@@ -74,16 +78,28 @@ export function fetchNotifications (lastTimeLogout) {
 
 const initialState = {
     unSeenNotificationCount: 0,
-    notifications: []
+    notifications: [],
+    hasActivateNotificationListener: false,
+    hasActivateFetch: false
 };
 
 export default (state = initialState, action) => {
     switch(action.type) {
+        case ACTIVATE_FETCH_NOTIFICATION:
+            return {
+                ...state,
+                hasActivateFetch: true,
+            };
         case FETCHED_NOTIFICATION:
             return {
                 ...state,
                 unSeenNotificationCount: action.unSeenNotificationCount,
                 notifications: [...action.notifications],
+            };
+        case ACTIVATE_SOCKET_LISTENER:
+            return {
+                ...state,
+                hasActivateNotificationListener: true,
             };
         case UPDATE_NOTIFICATION:
             return {

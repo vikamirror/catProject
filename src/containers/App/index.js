@@ -10,7 +10,8 @@ import GoBackHeader from './GoBackHeader';
 import PostHeader from './PostHeader';
 import SmallDeviceFooter from './SmallDeviceFooter';
 // import Discover from './Discover';
-import { fetchMember, logout, onListenLastLogoutTime } from '../../redux/member';
+import { fetchMember, onListenLastLogoutTime } from '../../redux/member';
+import { logout } from '../../redux';
 import { fetchPosts } from '../../redux/postList';
 import { smallDeviceTrue, smallDeviceFalse } from '../../redux/isSmallDevice';
 import Routes from './routes';
@@ -49,7 +50,7 @@ class App extends Component {
         if (!window.__PRELOADED_STATE__) {
             const loadedIds = [];
             this.props.fetchPosts(loadedIds);
-        }
+        };
         this.isSmallDevice();
         this.tologoutListener();
     }
@@ -72,7 +73,7 @@ class App extends Component {
     tologoutListener () {
         const logoutHandler = () => {
             this.props.logout();
-            this.props.history.push('/');
+            this.props.history.push("/login");
         };
         sockets.logoutListener(logoutHandler);
     }
@@ -111,7 +112,7 @@ class App extends Component {
                         member={member}
                     />
                 </ScrollWrapper>
-                <SmallDeviceFooter isScrollDown={isScrollDown} />
+                { isSmallDevice ? <SmallDeviceFooter isScrollDown={isScrollDown} /> : '' }
                 <Loading />
                 <Dialog />
             </div>

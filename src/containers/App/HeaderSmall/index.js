@@ -13,11 +13,12 @@ import '../Header/header.css';
 
 const mapStateToProps = state => ({
     header: state.header,
+    member: state.member,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     showSearchHeader: showSearchHeader
 }, dispatch));
-const HeaderSmall = ({isScrollDown, header, showSearchHeader, location}) => {
+const HeaderSmall = ({isScrollDown, header, member, showSearchHeader, location}) => {
     if (header !== initial_header) {
         return '';
     };
@@ -44,7 +45,7 @@ const HeaderSmall = ({isScrollDown, header, showSearchHeader, location}) => {
                         </div>
                         <ul className="right-actions u-push-right">
                             {/* 會員中心 */}
-                            <MemberInfo />
+                            { member.cuid ? <MemberInfo /> : '' }
                         </ul>
                     </nav>
                 </div>

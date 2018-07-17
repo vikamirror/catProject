@@ -15,9 +15,11 @@ import './header.css';
 
 const mapStateToProps = state => ({
     header: state.header,
+    member: state.member,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({}, dispatch));
-const Header = ({header, isScrollDown, location}) => {
+// 螢幕>768px
+const Header = ({header, member, isScrollDown, location}) => {
     if (header !== initial_header) {
         return '';
     };
@@ -41,11 +43,11 @@ const Header = ({header, isScrollDown, location}) => {
                         </div>
                         <ul className="right-actions u-push-right u-clearfix">
                             {/* 通知 */}
-                            <Notification />
+                            { member.cuid ? <Notification /> : '' }
                             {/* 會員中心 */}
-                            <MemberInfo />
+                            { member.cuid ? <MemberInfo /> : '' }
                             {/* 登入 登出 */}
-                            <LoginOrRegister />
+                            { member.cuid ? '' :  <LoginOrRegister />}
                         </ul>
                     </nav>
                 </div>

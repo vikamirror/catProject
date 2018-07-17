@@ -1,5 +1,4 @@
 import * as memberAPI from '../fetch/memberAPI';
-import { removeMemberCached } from '../fetch/accessLocalStorage';
 import * as sockets from '../sockets/notification';
 
 const LOGIN_TRUE = 'LOGIN_TRUE';
@@ -14,9 +13,10 @@ const LAST_TIME_LOGOUT = 'LAST_TIME_LOGOUT';
 export function onListenLastLogoutTime () {
     return (dispatch) => {
         const receivedLastLogoutTimeHandler = (time) => {
+            let lastTimeLogout = time ? time : "1970-01-01T00:00:00Z"; // 若沒有上次登入時間, 則塞入1970/01/01
             dispatch({
                 type: LAST_TIME_LOGOUT,
-                time: time
+                time: lastTimeLogout
             });
         };
         sockets.lastLogoutTimeListener(receivedLastLogoutTimeHandler);
@@ -130,6 +130,7 @@ export function fetchMember() {
     };
 };
 
+/*
 export function logout() {
     return (dispatch) => {
         removeMemberCached();
@@ -138,6 +139,7 @@ export function logout() {
         });
     };
 }
+*/
 
 const initialState = {
     cuid: '',

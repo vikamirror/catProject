@@ -17,7 +17,6 @@ import './notification.css'
 
 const mapStateToProps = state => ({
     member: state.member,
-    isSmallDevice: state.isSmallDevice,
     notification: state.notification,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
@@ -31,18 +30,14 @@ class Notification extends Component {
         this.state = {
             isShowNotifications: false,
             bounceInDown: false,
-            hasActivateNotificationListener: false,
-            hasFetchedNotifications: false,
-        }
+        };
     }
     componentDidUpdate (prevProps, prevState) {
-        if (this.props.member.cuid && !this.state.hasActivateNotificationListener) {
+        if (this.props.member.cuid && !this.props.notification.hasActivateNotificationListener) {
             this.props.onListenNotification(); // 監聽新的通知
-            this.setState({hasActivateNotificationListener: true});
         };
-        if (this.props.member.lastTimeLogout && !this.state.hasFetchedNotifications) {
+        if (this.props.member.lastTimeLogout && !this.props.notification.hasActivateFetch) {
             this.props.fetchNotifications(this.props.member.lastTimeLogout); // 向後端請求歷史通知
-            this.setState({hasFetchedNotifications: true});
         };
         if (this.props.notification.unSeenNotificationCount !== prevProps.notification.unSeenNotificationCount) {
             this.execCounterTransition();
@@ -50,21 +45,15 @@ class Notification extends Component {
     }
     // 下拉式選單
     toggleDropdownMenu () {
-        this.state.isShowNotifications ? 
-            this.closeDropdownMenu() : this.openDropdownMenu();
+        this.state.isShowNotifications ? this.closeDropdownMenu() : this.openDropdownMenu();
     }
     // 打開下拉式選單
     openDropdownMenu () {   
-        this.props.isSmallDevice ?
-            this.props.history.push("/notifications") : this.setState({isShowNotifications: true});
+        this.setState({isShowNotifications: true});
     }
     // 關閉下拉式選單
     closeDropdownMenu () {
-        if (!this.props.isSmallDevice) {
-            this.setState({
-                isShowNotifications: false,
-            });
-        }
+        this.setState({isShowNotifications: false});
         this.props.notificationsHasBeenSeen();
     }
     // 啟動計數器的動畫
@@ -75,10 +64,6 @@ class Notification extends Component {
         }, 200);
     }
     render () {
-        const { member } = this.props;
-        if (!member.cuid) { // 螢幕>768px
-            return '';
-        }
         const { bounceInDown } = this.state;
         const { notifications, unSeenNotificationCount } = this.props.notification;
         const defaultStyles = {
@@ -149,7 +134,6 @@ Notification.propTypes = {
         cuid: PropTypes.string,
         lastTimeLogout: PropTypes.string,
     }),
-    isSmallDevice: PropTypes.bool.isRequired,
     notification: PropTypes.shape({
         notifications: PropTypes.array.isRequired,
         unSeenNotificationCount: PropTypes.number.isRequired,

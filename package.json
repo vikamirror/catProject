@@ -14,7 +14,7 @@
 		"ignore-styles": "5.0.1",
 		"immutability-helper": "^2.7.0",
 		"jsonwebtoken": "^8.1.1",
-		"mongoose": "^5.0.4",
+		"mongoose": "5.0.10",
 		"morgan": "1.9.0",
 		"nodemailer": "3.1.5",
 		"nodemon": "^1.15.1",

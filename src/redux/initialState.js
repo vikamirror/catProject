@@ -4,6 +4,7 @@ const initialState = {
         name: '',
         avatar: '',
         favoritePosts: [],
+        lastTimeLogout: '',
     },
     dialog: {
         isShow: false,
@@ -63,6 +64,7 @@ const initialState = {
         isEdit: false, // 是否是編輯模式
     },
     postList: [],
+    myPosts: [],
     searchPosts: {
         query: '',
         posts: [],
@@ -70,9 +72,12 @@ const initialState = {
     },
     notification: {
         unSeenNotificationCount: 0,
-        notifications: []
+        notifications: [],
+        hasActivateNotificationListener: false,
+        hasActivateFetch: false
     },
     header: 'initial_header',
+    background: 'bg_home',
 };
 
 export default initialState;

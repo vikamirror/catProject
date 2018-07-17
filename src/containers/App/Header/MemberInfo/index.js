@@ -9,7 +9,8 @@ import { showDialog } from '../../../../redux/dialog';
 import DropdownMenu from '../../../../components/DropdownMenu';
 import MenuItem from '../../../../components/DropdownMenu/DropdownMenuItem';
 import OnBlurListener from '../../../../components/OnBlurListener';
-import { logout } from '../../../../redux/member';
+// import { logout } from '../../../../redux/member';
+import { logout } from '../../../../redux';
 import { resetMyPost } from '../../../../redux/myPosts';
 import * as sockets from '../../../../sockets/loginOrOut';
 
@@ -57,8 +58,7 @@ class MemberInfo extends Component{
             sockets.logoutAllTheOtherDevicesEmitter(this.props.member.cuid);
             sockets.logoutEmitter(this.props.member.cuid);
             this.props.logout();
-            this.props.history.push("/");
-            this.props.resetMyPost();
+            this.props.history.push("/login");
         }
     }
     render() {
@@ -91,41 +91,37 @@ class MemberInfo extends Component{
             itemIcon: "icon-logout",
             itemText: "登出",
         }];
-        if (member.cuid) {
-            return (
-                <li tabIndex="0" className="member-info u-clearfix">
-                    <OnBlurListener activeFocus={() => this.tuggleMenu()} 
-                                    inactiveFocus={() => this.closeMenu()}>
-                        <div className="u-push-left">
-                            <Avatar avatarUrl={member.avatar} />
-                        </div>     
-                        <div className="name u-push-right font-grey">
-                            {member.name}
-                        </div>
-                        <div className={isSmallDevice ? "menu-xs" : "menu"}>
-                            <DropdownMenu isShowMenu={this.state.isShowMenu}>  
-                                {
-                                    items.map((item, index) => (
-                                        <MenuItem
-                                            key={index}
-                                            itemType={item.itemType}
-                                            linkTo={item.linkTo || null}
-                                            clickHandler={item.clickHandler || null}
-                                            hasIcon={item.hasIcon}
-                                            itemIcon={item.itemIcon || null}
-                                            itemText={item.itemText || null}
-                                            divider={item.divider}
-                                        />
-                                    ))
-                                }
-                            </DropdownMenu>
-                        </div>
-                    </OnBlurListener>
-                </li>
-            );
-        } else {
-            return '';
-        }
+        return (
+            <li tabIndex="0" className="member-info u-clearfix">
+                <OnBlurListener activeFocus={() => this.tuggleMenu()} 
+                                inactiveFocus={() => this.closeMenu()}>
+                    <div className="u-push-left">
+                        <Avatar avatarUrl={member.avatar} />
+                    </div>     
+                    <div className="name u-push-right font-grey">
+                        {member.name}
+                    </div>
+                    <div className={isSmallDevice ? "menu-xs" : "menu"}>
+                        <DropdownMenu isShowMenu={this.state.isShowMenu}>  
+                            {
+                                items.map((item, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        itemType={item.itemType}
+                                        linkTo={item.linkTo || null}
+                                        clickHandler={item.clickHandler || null}
+                                        hasIcon={item.hasIcon}
+                                        itemIcon={item.itemIcon || null}
+                                        itemText={item.itemText || null}
+                                        divider={item.divider}
+                                    />
+                                ))
+                            }
+                        </DropdownMenu>
+                    </div>
+                </OnBlurListener>
+            </li>
+        );
     }
 };
 
