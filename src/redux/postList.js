@@ -5,23 +5,6 @@ const ADD_POST_LIST = 'ADD_POST_LIST';
 const UPDATE_POST_LIST = 'UPDATE_POST_LIST';
 const DELETE_POST_LIST = 'DELETE_POST_LIST';
 
-// const INCREASE_PAGENUM = 'INCREASE_PAGENUM';
-// const RESET_PAGENUM = 'RESET_PAGENUM';
-
-// let pageNum = 1;
-// const pageNumberSetter = (action) => {
-//     switch (action.type) {
-//         case INCREASE_PAGENUM:
-//             pageNum = pageNum + 1;
-//             break;
-//         case RESET_PAGENUM:
-//             pageNum = 1;
-//             break;
-//         default:
-//             return pageNum;
-//     }
-// };
-
 export function deletePostList (cuid) {
     return (dispatch) => {
         dispatch({
@@ -67,28 +50,6 @@ export function fetchPosts (loadedIds) {
             });
     };
 };
-
-// export function searchPosts (query) {
-//     pageNumberSetter({
-//         type: RESET_PAGENUM
-//     });
-//     return (dispatch) => {
-//         postAPI
-//             .searchPosts(pageNum, query)
-//             .then((res) => {
-//                 if (res.status === 200) {
-//                     dispatch({
-//                         type: FETCH_POSTS,
-//                         posts: res.data.posts
-//                     });
-//                     pageNumberSetter({
-//                         type: INCREASE_PAGENUM
-//                     });
-//                 };
-//             })
-//             .catch(err => console.log('searchPosts Error:', err.message));
-//     };
-// };
 
 const initialState = [];
 

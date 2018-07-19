@@ -9,9 +9,9 @@ export default function authToken(req, res, next) {
     }
     if (token) {
         jwt.verify(token, jwtSecret, (err, decoded) => {
-            decoded ? next() : res.status(403).send({ validToken: false });
+            decoded ? next() : res.status(403).json({message: "請重新登入", validToken: false});
         });
     } else {
-        res.status(403).send({ validToken: false });
+        res.status(403).json({message: "請重新登入", validToken: false});
     }
 }

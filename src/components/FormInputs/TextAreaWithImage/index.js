@@ -90,7 +90,7 @@ class TextAreaWithImage extends Component {
                     this.props.loadingFalse();
                 })
                 .catch(err => {
-                    console.log('imgurAPI.uploadImgur, error: ', err.message);
+                    console.error('imgurAPI.uploadImgur, error: ', err.message);
                     this.props.loadingFalse();
                 });
         };

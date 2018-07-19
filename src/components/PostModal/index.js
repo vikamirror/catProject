@@ -105,7 +105,13 @@ class PostModal extends Component {
                     sockets.updatePostListBroadcastEmitter(updatedPost);
                 }
             })
-            .catch(err =>  console.error(err.response.message));
+            .catch(err => {
+                this.props.showDialog({
+                    type: 'warning',
+                    title: err.response.data.message,
+                    confirmButtonText: '知道了',
+                });
+            });
     }
     handleDelete () {
         const shouldDeletePost = (confirmValue) => {
