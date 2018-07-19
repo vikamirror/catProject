@@ -4,17 +4,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { requestSearch } from '../../../../redux/searchPosts';
 import { showInitialHeader } from '../../../../redux/header';
 
 import './searchBar.css';
 
 const mapStateToProps = state => ({
     isSmallDevice: state.isSmallDevice,
-    searchPosts: state.searchPosts,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    requestSearch: requestSearch,
     showInitialHeader: showInitialHeader,
 }, dispatch));
 class SearchBar extends Component {
@@ -35,8 +32,6 @@ class SearchBar extends Component {
     }
     reqSearch () {
         const query = this.state.inputValue;
-        const loadedIds = this.props.searchPosts.loadedIds;
-        this.props.requestSearch(query, loadedIds);
         this.props.history.push(`/search/${query}`);
     }
     clearSearch () {
@@ -77,10 +72,6 @@ class SearchBar extends Component {
 };
 SearchBar.propTypes = {
     isSmallDevice: PropTypes.bool.isRequired,
-    searchPosts: PropTypes.shape({
-        loadedIds: PropTypes.array.isRequired
-    }),
-    requestSearch: PropTypes.func.isRequired,
     showInitialHeader: PropTypes.func.isRequired,
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,

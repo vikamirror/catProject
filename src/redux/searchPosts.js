@@ -1,6 +1,7 @@
 import * as postAPI from '../fetch/postAPI';
 
 const SEARCHED_POSTS = 'SEARCHED_POSTS';
+const CLEAR_SEARCH = 'CLEAR_SEARCH';
 
 export function requestSearch (query, loadedIds) {
     return (dispatch) => {
@@ -20,6 +21,17 @@ export function requestSearch (query, loadedIds) {
     };
 };
 
+export function clearSearch () {
+    return (dispatch) => {
+        dispatch({
+            type: CLEAR_SEARCH,
+            query: initialState.query,
+            posts: initialState.posts,
+            loadedIds: initialState.loadedIds,
+        });
+    };
+}
+
 const initialState = {
     query: '',
     posts: [],
@@ -34,6 +46,13 @@ export default (state = initialState, action) => {
                 query: action.query,
                 posts: [...action.posts],
                 loadedIds: [...action.loadedIds],
+            };
+        case CLEAR_SEARCH:
+            return {
+                ...state,
+                query: action.query,
+                posts: action.posts,
+                loadedIds: action.loadedIds,
             };
         default:
             return state;

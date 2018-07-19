@@ -25,24 +25,29 @@ class Cover extends Component {
     onChangeFileUpload (evt) {
         if (evt.target.files && evt.target.files[0]) {
             this.props.loadingTrue();
-            imgurAPI.uploadImgur(evt.target.files[0])
-                    .then((imgurRes) => {
-                        console.log('imgurRes', imgurRes);
-                        // this.setState({cover: imgurRes.data.data.link});  
-                        // this.props.setStateHandler('inputCover', imgurRes.data.data.link);
-                        // const newPost = {
-                        //     ...this.props.post,
-                        //     cover: imgurRes.data.data.link //只更新cover的部分
-                        // };
-                        // this.props.inputPost(newPost);
-                        // this.props.handleState('cover', imgurRes.data.data.link);
-                        this.props.changeCover(imgurRes.data.data.link);
-                        this.props.loadingFalse();
-                    })
-                    .catch((err) => {
-                        console.log('imgurAPI.uploadImgur, error: ', err);
-                        this.props.loadingFalse();
-                    });
+            const imgForUpload = evt.target.files[0];
+            if (/^image\//i.test(imgForUpload.type)) {
+                imgurAPI.uploadImgur(imgForUpload)
+                        .then((imgurRes) => {
+                            // console.log('imgurRes', imgurRes);
+                            // this.setState({cover: imgurRes.data.data.link});  
+                            // this.props.setStateHandler('inputCover', imgurRes.data.data.link);
+                            // const newPost = {
+                            //     ...this.props.post,
+                            //     cover: imgurRes.data.data.link //只更新cover的部分
+                            // };
+                            // this.props.inputPost(newPost);
+                            // this.props.handleState('cover', imgurRes.data.data.link);
+                            this.props.changeCover(imgurRes.data.data.link);
+                            this.props.loadingFalse();
+                        })
+                        .catch((err) => {
+                            console.log('imgurAPI.uploadImgur, error: ', err);
+                            this.props.loadingFalse();
+                        });
+            } else {
+                console.warn('只能上傳圖片');
+            }
         }
     }
     render () {
@@ -60,7 +65,7 @@ class Cover extends Component {
                             重新選擇封面
                             <input 
                                 type="file"
-                                capture="camera"
+                                // capture="camera"
                                 accept="image/*"
                                 onChange={(evt) => this.onChangeFileUpload(evt)} 
                             />
@@ -74,7 +79,7 @@ class Cover extends Component {
                         </button>
                         <input 
                             type="file"
-                            capture="camera"
+                            // capture="camera"
                             accept="image/*"
                             onChange={(evt) => this.onChangeFileUpload(evt)}
                         />

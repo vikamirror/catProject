@@ -40,12 +40,19 @@ class Dialog extends Component {
             if (!findDOMNode(this.refs.ref_htmlString).firstChild) {
                 findDOMNode(this.refs.ref_htmlString).appendChild(convertFromStringToDom(this.props.dialog.htmlString));
             }
-        }
-        if (prevProps.dialog.isShow !== this.props.dialog.isShow) {
+        };
+        if (this.props.dialog.isShow && (prevProps.dialog.isShow === false)) {
             setTimeout(() => {
                 this.setState({shouldBounceInUp: this.props.dialog.isShow});
             }, 100);
-        }
+        };
+        const bodyElement = document.getElementsByTagName("body")[0];
+        if (this.props.dialog.isShow && (prevProps.dialog.isShow === false)) {
+            bodyElement.setAttribute("style", "overflow: hidden;");
+        };
+        if (!this.props.dialog.isShow && (prevProps.dialog.isShow === true)) {
+            bodyElement.removeAttribute("style", "overflow: hidden;");
+        };
     }
     handleState (state, content) {
         this.setState({[state]: content});

@@ -184,7 +184,8 @@ let postBackUp = null;
 const editorTutorial = `
     <p>這裡是範例, 可將<strong>文字加粗</strong></p><p>也可在這裡插入圖片, 如下圖</p>
     <p><img src="${imageForExample}"></p>
-    <p>也可插入超連結 <a href="https://google.com.tw" target="_blank">https://google.com.tw</a></p><p>點一下上方的放大鏡為預覽模式,</p><p>再點一下可回到編輯模式</p>
+    <p>也可插入超連結 <a href="https://google.com.tw" target="_blank">https://google.com.tw</a></p>
+    <p>最右側的按鈕為清除格式</p>
 `;
 
 const initialState = {

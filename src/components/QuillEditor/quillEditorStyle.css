@@ -6,19 +6,19 @@
     font-size: 16px;
 }
 
-.editor_wrapper_edit .quill .ql-container.ql-snow{
+#editor_wrapper_edit .quill .ql-container.ql-snow{
     min-height: 136px;
     max-height: 480px;
     overflow-y: scroll;
 }
 @media (max-width: 1024px) {
-    .editor_wrapper_edit .quill .ql-container.ql-snow{
+    #editor_wrapper_edit .quill .ql-container.ql-snow{
         /* height: 136px; */
         max-height: 400px;
     }
 }
 @media (max-width: 414px) { /* iphone 6,7,8 */
-    .editor_wrapper_edit .quill .ql-container.ql-snow{
+    #editor_wrapper_edit .quill .ql-container.ql-snow{
         /* height: 136px; */
         max-height: 136px;
     }
@@ -26,4 +26,19 @@
 
 .postWrapper .ql-editor.ql-blank::before{
     font-style: inherit;
+}
+
+/*-----------
+ * 超連結輸入框
+ *----------- */
+#dialog-wrapper .ql-snow .ql-tooltip[data-mode=link]::before {
+    content: "網址:";
+}
+#dialog-wrapper .ql-snow .ql-tooltip input[type=text] {
+    width: 140px;
+}
+@media (max-width: 414px) { /* iphone 6,7,8 */
+    #dialog-wrapper .ql-snow .ql-tooltip input[type=text] {
+        width: 100px;
+    }
 }

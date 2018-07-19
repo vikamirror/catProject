@@ -24,22 +24,18 @@ class QuillEditor extends Component {
             this.ReactQuill = require('react-quill');
         }
         this.state = {
-            // isAttachedQuillRefs: false,
-            // previewBtnHasCreated: false,
             customImgBtnHasCreated: false,
             content: '',
-            // showPreview: false,
         };
         this.editModule = {
-            // toolbar: [['bold','image', 'link', 'clean'], ['preview']]
             toolbar: [['bold','image', 'link', 'clean']]
         };
         this.editModuleWithoutImage = {
-            // toolbar: [['bold', 'link', 'clean'], ['preview']]
             toolbar: [['bold', 'link', 'clean']]
         };
         this.reactQuillRef = null;
         this.quillRef = null;
+        this.imageInputButton = null;
     }
     componentDidMount () {
         this.fetchContent(this.props.content);
@@ -90,24 +86,23 @@ class QuillEditor extends Component {
         const toolbar = this.quillRef.getModule('toolbar');
         this.setState({customImgBtnHasCreated: true});
 
-        toolbar.addHandler('image', () => this.handleImgUpload());
+        toolbar.addHandler('image', () => this.onClickImageUploadButton());
     }
-    handleImgUpload () {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('capture', 'camera');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-        input.onchange = () => {
+    onClickImageUploadButton () {
+        if (this.imageInputButton) {
+            const imageUploadBtn = this.imageInputButton;
+            imageUploadBtn.click();
+        };
+    }
+    imageUploadHandler (evt) {
+        if (evt.target.files && evt.target.files[0]) {
             this.props.loadingTrue();
-            console.log('input.onchange');
-            const imgForUpload = input.files[0];
-            if (/^image\//.test(imgForUpload.type)) {
-                console.log('imgForUpload', imgForUpload)
+            const imgForUpload = evt.target.files[0];
+            if (/^image\//i.test(imgForUpload.type)) {
                 imgurAPI
                     .uploadImgur(imgForUpload)
                     .then((imgurRes) => { 
-                        console.log('imgurRes', imgurRes);
+                        // console.log('imgurRes', imgurRes);
                         const imgLink = imgurRes.data.data.link;
                         const range = this.quillRef.getSelection();
                         this.quillRef.insertEmbed(range.index, 'image', imgLink);
@@ -118,8 +113,9 @@ class QuillEditor extends Component {
                         this.props.loadingFalse();
                     });
             } else {
-                console.warn('你只能上傳圖片');
-            }
+                alert('只能上傳圖片');
+                this.props.loadingFalse();
+            };
         };
     }
     onChangeEditor (html, delta, source, editor) {
@@ -129,31 +125,34 @@ class QuillEditor extends Component {
     }
     // componentWillUnmount () {
     //     if (document.querySelector(`#${this.props.id}`)) {
-    //         const targetEditor = document.querySelector(`#${this.props.id}`);
-    //         const previewBtn = targetEditor.querySelector('.ql-preview');
-    //         previewBtn.removeEventListener('click', () => this.handlePreview());
+    //         // const targetEditor = document.querySelector(`#${this.props.id}`);
+    //         // const previewBtn = targetEditor.querySelector('.ql-preview');
+    //         // previewBtn.removeEventListener('click', () => this.handlePreview());
+    //         const imgUploadInput = document.querySelector("#imgUploadInput-id");
+    //         imgUploadInput.removeEventListener("change", (evt) => this.onChangeImage(evt));
     //     }
-    // }
-    // onBlurEditor () {
-    //     // console.log('this.state.content:', this.state.content);
-    //     this.props.saveEditorContent(this.state.content);
     // }
     render () {
         const ReactQuill = this.ReactQuill;
         const modules = this.props.enableUploadImg ? this.editModule : this.editModuleWithoutImage;
         if (typeof window !== 'undefined') {
             return (
-                <div className="editor_wrapper_edit">
+                <div id="editor_wrapper_edit">
                     <ReactQuill
                         theme="snow"
-                        ref={(quill) => { this.reactQuillRef = quill }}
-                        // defaultValue={this.props.content}
+                        ref={(quill) => this.reactQuillRef = quill}
                         value={this.state.content}
-                        // value={this.props.content}
                         onChange={(html) => this.onChangeEditor(html)}
                         placeholder={this.props.placeholder}
                         modules={modules}
-                        bounds="#dialog-wrapper .ql-container"
+                        bounds="#editor_wrapper_edit"
+                    />
+                    <input 
+                        ref={node => this.imageInputButton = node}
+                        type="file"
+                        accept="image/*"
+                        style={{display: "none"}}
+                        onChange={(evt) => this.imageUploadHandler(evt)}
                     />
                 </div>
             );
@@ -168,10 +167,7 @@ QuillEditor.propTypes = {
     isSmallDevice: PropTypes.bool.isRequired,
     loadingTrue: PropTypes.func.isRequired,
     loadingFalse: PropTypes.func.isRequired,
-    // id: PropTypes.string,
     content: PropTypes.string.isRequired,
-    // contentMaxHeight: PropTypes.string,
-    // isEdit: PropTypes.bool.isRequired,
     enableUploadImg: PropTypes.bool.isRequired,
     placeholder: PropTypes.string,
     changeContentHandler: PropTypes.func.isRequired,
