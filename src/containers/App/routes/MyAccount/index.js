@@ -10,6 +10,7 @@ import { uploadImgur } from '../../../../fetch/imgurAPI';
 import { getMemberEmail, updatePassword } from '../../../../fetch/memberAPI';
 import { changeAvatar, updateMember } from '../../../../redux/member';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
+import { errorLog } from '../../../../Utils/console';
 
 import './myAccount.css';
 
@@ -63,7 +64,7 @@ class MyAccount extends Component {
                     this.checkEmail();
                 };
             })
-            .catch(err => console.error(err.response.data));
+            .catch(err => errorLog(err.response.data));
     }
     fileUploadHandler (evt) {
         if (evt.target.files && evt.target.files[0]) {
@@ -74,7 +75,7 @@ class MyAccount extends Component {
                     this.props.loadingFalse();
                 })
                 .catch((err) => {
-                    console.log('imgurAPI.uploadImgur, error: ', err);
+                    errorLog('imgurAPI.uploadImgur, error: ', err);
                     this.props.loadingFalse();
                 });
         }
@@ -169,9 +170,9 @@ class MyAccount extends Component {
             })
             .catch(err => {
                 err.response ? 
-                    console.error(err.response.data)
+                    errorLog(err.response.data)
                     : 
-                    console.error('removeFavoritePost unhandled error:', err.message);
+                    errorLog('removeFavoritePost unhandled error:', err.message);
             });
     }
     onClickPersonalInfo () {

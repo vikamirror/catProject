@@ -1,4 +1,5 @@
 import * as postAPI from '../fetch/postAPI';
+import { errorLog } from '../Utils/console';
 
 const FETCH_POSTS = 'FETCH_POSTS';
 const ADD_POST_LIST = 'ADD_POST_LIST';
@@ -45,8 +46,8 @@ export function fetchPosts (loadedIds) {
                 };
             })
             .catch(err => {
-                console.error('fetchMember Error:', err.message)
-                console.error('fetchMember Error:', err);
+                errorLog('fetchMember Error:', err.message)
+                errorLog('fetchMember Error:', err);
             });
     };
 };

@@ -1,5 +1,6 @@
 import * as memberAPI from '../fetch/memberAPI';
 import * as sockets from '../sockets/notification';
+import { errorLog } from '../Utils/console';
 
 const LOGIN_TRUE = 'LOGIN_TRUE';
 const LOGIN_FALSE = 'LOGIN_FALSE';
@@ -41,7 +42,7 @@ export function updateMember (memberInfo, updateResult) {
                 }
             })
             .catch(err => {
-                err.response ? console.error(err.response.data) : console.error('removeFavoritePost unhandled error:', err.message);
+                err.response ? errorLog(err.response.data) : errorLog('removeFavoritePost unhandled error:', err.message);
             });
     };
 }
@@ -62,7 +63,7 @@ export function changeAvatar (avatarURL) {
                 }
             })
             .catch(err => {
-                err.response ? console.error(err.response.data) : console.error('removeFavoritePost unhandled error:', err.message);
+                err.response ? errorLog(err.response.data) : errorLog('removeFavoritePost unhandled error:', err.message);
             });
     };
 }
@@ -80,7 +81,7 @@ export function removeFavoritePost (postCuid) {
                 }
             })
             .catch(err => {
-                err.response ? console.error(err.response.data) : console.error('removeFavoritePost unhandled error:', err.message);
+                err.response ? errorLog(err.response.data) : errorLog('removeFavoritePost unhandled error:', err.message);
             });
     }
 }
@@ -104,7 +105,7 @@ export function addFavoritePost (postCuid) {
                 }
             })
             .catch(err => {
-                err.response ? console.error(err.response.data) : console.error('addFavoritePost unhandled error:', err.message);
+                err.response ? errorLog(err.response.data) : errorLog('addFavoritePost unhandled error:', err.message);
             });
     };
 };
@@ -119,13 +120,17 @@ export function fetchMember() {
                         type: LOGIN_TRUE,
                         member: res.data.member,
                     });
+                } else {
+                    dispatch({
+                        type: LOGIN_FALSE,
+                    });
                 }
             }) 
             .catch(err => {
                 dispatch({
                     type: LOGIN_FALSE,
                 });
-                console.log('fetchMember Error:', err);
+                errorLog('fetchMember Error:', err);
             });
     };
 };

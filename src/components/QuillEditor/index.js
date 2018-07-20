@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { loadingTrue, loadingFalse } from '../../redux/isLoading';
 import * as imgurAPI from '../../fetch/imgurAPI';
+import { errorLog } from '../../Utils/console';
 
 import 'react-quill/dist/quill.snow.css';
 import './quillEditorStyle.css';
@@ -109,11 +110,11 @@ class QuillEditor extends Component {
                         this.props.loadingFalse();
                     })
                     .catch(err => {
-                        console.log('imgurAPI.uploadImgur, error: ', err.message);
+                        errorLog('imgurAPI.uploadImgur, error: ', err.message);
                         this.props.loadingFalse();
                     });
             } else {
-                alert('只能上傳圖片');
+                alert('只能上傳圖片喲');
                 this.props.loadingFalse();
             };
         };

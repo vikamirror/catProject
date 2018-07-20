@@ -10,6 +10,7 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin';
 
 import * as imgurAPI from '../../../fetch/imgurAPI';
 import { loadingTrue, loadingFalse } from '../../../redux/isLoading';
+import { log, errorLog } from '../../../Utils/console';
 
 import 'draft-js-image-plugin/lib/plugin.css';
 import 'draft-js-linkify-plugin/lib/plugin.css';
@@ -126,7 +127,7 @@ class DraftEditor extends Component {
         const headerHeight = 56;
         if (findDOMNode(this.refs.draftEditor_ref)) {
             let distanceFromTopOfViewPort = document.getElementById("draft-wrapper").getBoundingClientRect().top;
-            // console.log('distanceFromClientTop:', distanceFromClientTop);
+            // log('distanceFromClientTop:', distanceFromClientTop);
             if (distanceFromTopOfViewPort < headerHeight) {
                 this.setState({imgUploadBtnPositionTop: headerHeight - distanceFromTopOfViewPort + 16});
             } else {
@@ -148,7 +149,7 @@ class DraftEditor extends Component {
                     this.props.loadingFalse();
                 })
                 .catch(err => {
-                    console.error('imgurAPI.uploadImgur, error: ', err.message);
+                    errorLog('imgurAPI.uploadImgur, error: ', err.message);
                     this.props.loadingFalse();
                 });
         };

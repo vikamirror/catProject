@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { authHeader } from './authHeader';
+import { errorLog } from '../Utils/console';
 
 export function updatePassword (passwords) {
     return axios.put('/api/password', passwords, authHeader());
@@ -48,7 +49,7 @@ export async function loginWithFacebook(authResponse) {
             accessToken: authResponse.accessToken,
         });
     } catch (err) {
-        console.log('loginWithFacebook catch err: ', err);
+        errorLog('loginWithFacebook catch err: ', err);
     }
 }
 

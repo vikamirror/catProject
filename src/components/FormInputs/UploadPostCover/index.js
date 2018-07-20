@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { errorLog } from '../../../Utils/console';
 import * as imgurAPI from '../../../fetch/imgurAPI';
 
 import './uploadPostCover.css';
@@ -38,7 +39,7 @@ export default class UploadPostCover extends Component {
                             });
                             this.handleLoading(false);
                         })
-                        .catch(err => console.log('imgurAPI.uploadImgur, error: ', err));
+                        .catch(err => errorLog('imgurAPI.uploadImgur, error: ', err));
             };
         }
     }

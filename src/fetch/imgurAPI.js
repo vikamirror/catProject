@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { errorLog } from '../Utils/console';
 
 const imgurAuthHeader = {
     headers: {
@@ -61,6 +62,6 @@ export async function uploadImgur (file) {
         const base64 = await resizeImage(dataURL);
         return axios.post('https://api.imgur.com/3/image', {'image': base64}, imgurAuthHeader);
     } catch (error) {
-        console.warn('uploadImgur error: ', error.message);
+        errorLog('uploadImgur error: ', error.message);
     };
 }

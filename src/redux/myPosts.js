@@ -1,4 +1,5 @@
 import * as postAPI from '../fetch/postAPI';
+import { errorLog } from '../Utils/console';
 
 const FETCH_MY_POSTS = 'FETCH_MY_POSTS';
 const ADD_MY_POST = 'ADD_MY_POST';
@@ -35,7 +36,7 @@ export function fetchMyPosts () {
                     });
                 }
             })
-            .catch(err => console.error(err.response.data));
+            .catch(err => errorLog(err.response.data));
     };
 };
 

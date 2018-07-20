@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // import PostBody from '../../../../../components/PostBody';
 import * as postAPI from '../../../../../fetch/postAPI';
 import * as sockets from '../../../../../sockets/post';
-// import { addNewPostOfMine } from '../../../../../redux/myPosts';
+import { errorLog } from '../../../../../Utils/console';
 
 import { createEmptyPost } from '../../../../../redux/post';
 import { addMyPost } from '../../../../../redux/myPosts';
@@ -71,7 +71,7 @@ class NewPost extends Component {
                     sockets.addPostListBroadcastEmitter(addedPost);
                 }
             })
-            .catch(err => console.error(err.response.data));
+            .catch(err => errorLog(err.response.data));
 
         // this.props.history.push("/myPosts");
         this.props.history.goBack(); // 為了避免發生ScrollWrapper找不到post-wrapper-id的狀況

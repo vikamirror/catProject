@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 
 import { loadingTrue, loadingFalse } from '../../../redux/isLoading';
 import { changeCover } from '../../../redux/post';
+import { showDialog } from '../../../redux/dialog';
 import * as imgurAPI from '../../../fetch/imgurAPI';
+import { errorLog, warningLog } from '../../../Utils/console';
 // import RenderAfterSeconds from '../../RenderAfterSeconds';
 
 import './cover.css';
@@ -19,8 +21,8 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     loadingTrue: loadingTrue,
     loadingFalse: loadingFalse,
     changeCover: changeCover,
+    showDialog: showDialog,
 }, dispatch));
-
 class Cover extends Component {
     onChangeFileUpload (evt) {
         if (evt.target.files && evt.target.files[0]) {
@@ -42,11 +44,19 @@ class Cover extends Component {
                             this.props.loadingFalse();
                         })
                         .catch((err) => {
-                            console.log('imgurAPI.uploadImgur, error: ', err);
+                            errorLog('imgurAPI.uploadImgur, error: ', err);
                             this.props.loadingFalse();
                         });
             } else {
-                console.warn('只能上傳圖片');
+                warningLog('只能上傳圖片');
+                this.props.showDialog({
+                    type: 'warning',
+                    title: '只能上傳圖片喲',
+                    showCancelButton: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "知道了",
+                    modalVerticalAlign: "middle"
+                });
             }
         }
     }

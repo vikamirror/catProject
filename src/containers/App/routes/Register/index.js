@@ -10,6 +10,7 @@ import { fetchMember } from '../../../../redux/member';
 import FadeErrMsg from '../../../../components/FadeErrMsg';
 import BounceInUp from '../../../../components/BounceInUp';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
+import { errorLog } from '../../../../Utils/console';
 
 import './register.css';
 
@@ -96,7 +97,7 @@ class Register extends Component {
 					}
 				 })
 				 .catch((err) => {
-					console.log('Register, requestRegister, error:', err);
+					errorLog('Register, requestRegister, error:', err);
 					this.props.loadingFalse();
 				 });
 	}
@@ -112,7 +113,7 @@ class Register extends Component {
 						}
 					 })
 					 .catch((err) => {
-						console.log('Register, requestLoginWithFB, error:', err);
+						errorLog('Register, requestLoginWithFB, error:', err);
 						this.props.loadingFalse();
 					 });
 		}

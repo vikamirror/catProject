@@ -8,6 +8,7 @@ import PostPreview from '../../../../components/PostBody/PostPreview';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 import * as postAPI from '../../../../fetch/postAPI';
 import LoadingSpinner from '../../Loading/LoadingSpinner';
+import { errorLog } from '../../../../Utils/console';
 
 const mapStateToProps = state => ({
     member: state.member,
@@ -38,7 +39,7 @@ class MyFavorites extends Component {
                     isFetched: true,
                 });
             })
-            .catch(err => console.error(err.response.data))
+            .catch(err => errorLog(err.response.data))
     }
     render () {
         return (

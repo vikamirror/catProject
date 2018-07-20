@@ -10,6 +10,7 @@ import * as accessLocalStorage from '../../../../fetch/accessLocalStorage';
 import { fetchMember } from '../../../../redux/member';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 import BounceInUp from '../../../../components/BounceInUp';
+import { errorLog } from '../../../../Utils/console';
 
 import './login.css';
 
@@ -79,7 +80,7 @@ class Login extends Component {
                     }
                  })
                  .catch((err) => {
-					console.log('Login requestLogin, err:', err.response.data);
+					errorLog('Login requestLogin, err:', err.response.data);
 					this.setState({ errorMsg: `Oops, ${err.response.data.message}`});
 					this.props.loadingFalse();
 				 });  
@@ -96,7 +97,7 @@ class Login extends Component {
 						}
 					 })
 					 .catch((err) => {
-						console.log('Login, requestLoginWithFB, error:', err.response.data);
+						errorLog('Login, requestLoginWithFB, error:', err.response.data);
 						this.props.loadingFalse();
 					 });
 		}

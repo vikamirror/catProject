@@ -1,4 +1,5 @@
 import * as postAPI from '../fetch/postAPI';
+import { errorLog } from '../Utils/console';
 
 const SEARCHED_POSTS = 'SEARCHED_POSTS';
 const CLEAR_SEARCH = 'CLEAR_SEARCH';
@@ -17,7 +18,7 @@ export function requestSearch (query, loadedIds) {
                     });
                 };
             })
-            .catch(err => console.log('searchPosts Error:', err.message));
+            .catch(err => errorLog('searchPosts Error:', err.message));
     };
 };
 

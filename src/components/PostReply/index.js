@@ -9,6 +9,7 @@ import { showDialog, closeDialog } from '../../redux/dialog';
 import * as messageAPI from '../../fetch/messageAPI';
 import { postNotification } from '../../fetch/notificationAPI';
 import * as sockets from '../../sockets/notification';
+import { errorLog } from '../../Utils/console';
 
 import './postReply.css';
 
@@ -55,7 +56,7 @@ class PostReply extends Component {
                     this.setState({messages: res.data.messages});
                 }
             })
-            .catch(err => console.error('fetchMessages Error:', err.message));
+            .catch(err => errorLog('fetchMessages Error:', err.message));
     }
     setOrderOfMessages () {
         const bool = this.state.orderByAscend ? false : true;
@@ -122,7 +123,7 @@ class PostReply extends Component {
                         this.setState({messages: [messageSent, ...this.state.messages]});
                 }
             })
-            .catch(err => console.log(err.message));
+            .catch(err => errorLog(err.message));
     }
     notifyTaggedMember (messageSent) {
         const notification = {
@@ -153,7 +154,7 @@ class PostReply extends Component {
                     sockets.addNotificationEmitter(notifyData);
                 }
             })
-            .catch(err => console.log(err.response.data));
+            .catch(err => errorLog(err.response.data));
     }
     render () {
         const {messages, orderByAscend} = this.state;

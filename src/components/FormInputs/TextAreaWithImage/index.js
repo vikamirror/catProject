@@ -10,6 +10,7 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin';
 
 import * as imgurAPI from '../../../fetch/imgurAPI';
 import { loadingTrue, loadingFalse } from '../../../redux/isLoading';
+import { errorLog } from '../../../Utils/console';
 
 import 'draft-js-image-plugin/lib/plugin.css';
 import 'draft-js-linkify-plugin/lib/plugin.css';
@@ -90,7 +91,7 @@ class TextAreaWithImage extends Component {
                     this.props.loadingFalse();
                 })
                 .catch(err => {
-                    console.error('imgurAPI.uploadImgur, error: ', err.message);
+                    errorLog('imgurAPI.uploadImgur, error: ', err.message);
                     this.props.loadingFalse();
                 });
         };

@@ -26,6 +26,7 @@ import { loadingTrue, loadingFalse } from '../../redux/isLoading';
 import { showDialog } from '../../redux/dialog';
 import * as postAPI from '../../fetch/postAPI';
 import * as sockets from '../../sockets/post';
+import { errorLog } from '../../Utils/console';
 
 import '../PostBody/postBody.css';
 
@@ -62,7 +63,7 @@ class PostModal extends Component {
                     }
                 }
             })
-            .catch(err => console.log('fetchOnePost Error:', err.response.message));
+            .catch(err => errorLog('fetchOnePost Error:', err.response.message));
     }
     postNotFound () {
         const pushToHome = (confirmValue) => {
@@ -128,7 +129,7 @@ class PostModal extends Component {
                             this.props.loadingFalse();
                         }
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => errorLog(err));
             }
         }
         this.props.showDialog({

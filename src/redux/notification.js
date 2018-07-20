@@ -1,5 +1,6 @@
 import * as notifyAPI from '../fetch/notificationAPI';
 import * as sockets from '../sockets/notification';
+import { errorLog } from '../Utils/console';
 
 const FETCHED_NOTIFICATION = 'FETCHED_NOTIFICATION';
 const UPDATE_NOTIFICATION = 'UPDATE_NOTIFICATION';
@@ -67,7 +68,7 @@ export function fetchNotifications (lastTimeLogout) {
                 });
             })
             .catch(err => {
-                console.error(err.response.data)
+                errorLog(err.response.data)
                 dispatch({
                     type: RESET
                 });
