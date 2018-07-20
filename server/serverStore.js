@@ -7,12 +7,10 @@ import axios from 'axios';
 import rootReducer from '../src/redux';
 import initState from '../src/redux/initialState';
 
-const domain = process.env.DEV_IP;
-
 const prepInitPostList = () => {
     return new Promise((resolve, reject) => {
         axios
-            .post(`${domain}/api/posts`, {loadedIds: []})
+            .post(`http://localhost:${process.env.SERVER_PORT}/api/posts`, {loadedIds: []})
             .then((postsRes) => {
                 resolve(postsRes.data.posts);
             })

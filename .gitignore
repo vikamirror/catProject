@@ -19,6 +19,9 @@
 # amazon ec2 ssh pem
 CatCrush.pem
 
+# ssl certificate
+/sslforfree
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

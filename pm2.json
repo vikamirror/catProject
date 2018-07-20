@@ -1,6 +1,6 @@
 {
     "apps" : [{
-        "name": "catCrush",
+        "name": "catcrush",
         "script": "server/index.js",
         "watch": true,
         "env": {
