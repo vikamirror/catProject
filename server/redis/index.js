@@ -12,7 +12,7 @@ export const mainClient = RedisClient;
 const Redis = () => {
     RedisClient.on("ready", (error) => {
         if (error) {
-            console.log('Redis error:' + error);
+            console.error('Redis error:' + error);
         } else {
             console.log('Redis ready');
         }

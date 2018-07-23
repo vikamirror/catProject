@@ -11,6 +11,7 @@ import { fetchMember } from '../../../../redux/member';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 import BounceInUp from '../../../../components/BounceInUp';
 import { errorLog } from '../../../../Utils/console';
+import { showDialog } from '../../../../redux/dialog';
 
 import './login.css';
 
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
 	fetchMember: fetchMember,
 	loadingTrue: loadingTrue,
 	loadingFalse: loadingFalse,
+	showDialog: showDialog,
 },dispatch));
 
 class Login extends Component {
@@ -66,8 +68,8 @@ class Login extends Component {
 		});
     }
     requestLogin() {
-        if (this.state.emailCheck === false
-			|| this.state.emailCheck === false) {
+		if (this.state.emailCheck === false ||
+			this.state.emailCheck === false) {
 			this.setState({ errorMsg: 'Oops,有資料未填寫完整喔' });
 			return;
 		}
@@ -94,11 +96,19 @@ class Login extends Component {
 						this.props.loadingFalse();
 						if (res.status === 200) {// 註冊成功
 							this.loginSuccess(res.data);
-						}
+						};
 					 })
 					 .catch((err) => {
 						errorLog('Login, requestLoginWithFB, error:', err.response.data);
 						this.props.loadingFalse();
+						this.props.showDialog({
+							type: 'error',
+							title: '臉書登入錯誤, 請洽客服人員',
+							showCancelButton: false,
+							showConfirmButton: true,
+							confirmButtonText: "知道了",
+							modalVerticalAlign: "middle"
+						});
 					 });
 		}
 		FB.getLoginStatus((res) => {
@@ -117,6 +127,16 @@ class Login extends Component {
 		accessLocalStorage.setItems(data);
 		this.props.fetchMember();
 		this.props.history.push('/');
+		if (data.shouldFillEmail) {
+			this.props.showDialog({
+                type: 'warning',
+                title: '請更新會員信箱喲 謝謝!',
+                showCancelButton: false,
+                showConfirmButton: true,
+                confirmButtonText: "知道了",
+                modalVerticalAlign: "middle"
+            });
+		};
 	}
     render() {
         return (

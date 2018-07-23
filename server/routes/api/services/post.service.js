@@ -40,8 +40,12 @@ export function createPost (req, res) {
     const authorCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     Member.findOne({"cuid": authorCuid}, (err, member) => {
         if (err) {
-            res.status(500).json({message: `api/services/post createPost錯誤`});
-            console.error(`api/services/post createPost Member.findOne錯誤: ${err}`);
+            res.status(500).json({message: `伺服器錯誤`});
+            console.error(`
+                api/services/post createPost Member.findOne錯誤: ${err},
+                received from: ${authorCuid},
+                request.body: ${JSON.stringify(req.body)}
+            `);
             return;
         }
         const newPost = new Post({
@@ -64,8 +68,12 @@ export function createPost (req, res) {
         });
         newPost.save((err) => {
             if (err) {
-                res.status(500).json({message: `api/services/post createPost錯誤`});
-                console.error(`api/services/post createPost newPost.save錯誤: ${err}`);
+                res.status(500).json({message: `伺服器錯誤`});
+                console.error(`
+                    api/services/post createPost newPost.save錯誤: ${err},
+                    received from: ${authorCuid},
+                    request.body: ${JSON.stringify(req.body)}
+                `);
                 return;
             };
             const resPost = postWrapper(newPost, member);
@@ -104,8 +112,11 @@ export function getPosts(req, res) {
         .exec((err, posts) => {
             // console.log('posts', posts);
             if (err) {
-                res.status(500).json({message: `api/services/post getPosts`});
-                console.error(`api/services/post getPosts newPost.find: ${err}`);
+                res.status(500).json({message: `伺服器錯誤`});
+                console.error(`
+                    api/services/post.service/getPosts: ${err},
+                    request.body: ${JSON.stringify(req.body)}
+                `);
                 return;
             };
             res.status(200).json({
@@ -155,8 +166,11 @@ export function searchPosts (req, res) {
         .exec((err, posts) => {
             // console.log('posts', posts);
             if (err) {
-                res.status(500).json({message: `api/services/post getPosts`});
-                console.error(`api/services/post getPosts newPost.find: ${err}`);
+                res.status(500).json({message: `伺服器錯誤`});
+                console.error(`
+                    api/services/post.service/searchPosts 錯誤: ${err},
+                    request.body: ${req.body}
+                `);
                 return;
             };
             // console.log('searchPosts', posts);
@@ -216,9 +230,12 @@ export function updatePost (req, res) {
         })
         .catch((err) => {
             res.status(500).json({
-                message: 'updatePost失敗'
+                message: '伺服器錯誤'
             });
-            console.log(`updatePost失敗,原因:"${err}`);
+            console.error(`
+                api/services/post.service/updatePost 錯誤:"${err},
+                request.body: ${JSON.stringify(req.body)}
+            `);
         });
 }
 
@@ -247,8 +264,11 @@ export function getOnePost(req, res) {
         .populate({path: populateField, select: selectedFields})
         .exec((err, post) => {
             if (err) {
-                res.status(500).json({message: `api/services/post getOnePost`});
-                console.error(`api/services/post getOnePost Post.findOne: ${err}`);
+                res.status(500).json({message: `伺服器錯誤`});
+                console.error(`
+                    api/services/post getOnePost Post.findOne: ${err},
+                    req.params: ${JSON.stringify(req.params)}
+                `);
                 return;
             }
             res.status(200).json({
@@ -281,8 +301,11 @@ export function getPostsByAuthor (req, res) {
                 });
             })
             .catch(err => {
-                res.status(500);
-                console.log(err);
+                res.status(500).json({message: `伺服器錯誤`});
+                console.error(`
+                    api/services/post.service/getPostsByAuthor 錯誤: ${err},
+                    received from: ${authorCuid}
+                `);
             });
     });
 }
@@ -306,8 +329,11 @@ export function getFavoritePosts (req, res) {
         )
         .exec((err, member) => {
             if (err) {
-                res.status(500).json({message: 'server getFavoritePosts Error'});
-                console.error('server/post.service/getFavoritePosts/findOne, Error:', err);
+                res.status(500).json({message: '伺服器錯誤'});
+                console.error(`
+                    api/services/post.service/getFavoritePosts/findOne 錯誤: ${err},
+                    received from: ${memberCuid}
+                `);
                 return;
             }
             // console.log('result', member);
@@ -373,7 +399,8 @@ export function deletePost (req, res) {
     if (!req.params.cuid) {
         res.status(400).json({message: '無Post.cuid'});
         return;
-    }
+    };
+    const memberCuid = sanitizeHtml(JSON.parse(req.headers.authorization).cuid);
     Post
         .updateOne(
             {"cuid": req.params.cuid}, 
@@ -383,7 +410,11 @@ export function deletePost (req, res) {
             res.status(200).json({message: '刪除成功'});
         })
         .catch(err => {
-            res.status(500).json({message: 'server deletePost Error'});
-            console.error('server/post.service/deletePost Error:', err);
+            res.status(500).json({message: '伺服器錯誤'});
+            console.error(`
+                api/services/post.service/deletePost 錯誤: ${err},
+                received from: ${memberCuid},
+                req.params: ${JSON.stringify(req.params)}
+            `);
         });
 }

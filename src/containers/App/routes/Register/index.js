@@ -11,6 +11,7 @@ import FadeErrMsg from '../../../../components/FadeErrMsg';
 import BounceInUp from '../../../../components/BounceInUp';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
 import { errorLog } from '../../../../Utils/console';
+import { showDialog } from '../../../../redux/dialog';
 
 import './register.css';
 
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
 	fetchMember: fetchMember,
 	loadingTrue: loadingTrue,
 	loadingFalse: loadingFalse,
+	showDialog: showDialog,
 },dispatch));
 
 class Register extends Component {
@@ -98,6 +100,7 @@ class Register extends Component {
 				 })
 				 .catch((err) => {
 					errorLog('Register, requestRegister, error:', err);
+					this.setState({ errorMsg: `Oops, ${err.response.data.message}`});
 					this.props.loadingFalse();
 				 });
 	}
@@ -115,6 +118,14 @@ class Register extends Component {
 					 .catch((err) => {
 						errorLog('Register, requestLoginWithFB, error:', err);
 						this.props.loadingFalse();
+						this.props.showDialog({
+							type: 'error',
+							title: '臉書註冊錯誤, 請洽客服人員',
+							showCancelButton: false,
+							showConfirmButton: true,
+							confirmButtonText: "知道了",
+							modalVerticalAlign: "middle"
+						});
 					 });
 		}
 		FB.getLoginStatus((res) => {
@@ -133,6 +144,16 @@ class Register extends Component {
 		accessLocalStorage.setItems(data);
 		this.props.fetchMember();
 		this.props.history.push('/');
+		if (data.shouldFillEmail) {
+			this.props.showDialog({
+                type: 'warning',
+                title: '請更新會員信箱喲 謝謝!',
+                showCancelButton: false,
+                showConfirmButton: true,
+                confirmButtonText: "知道了",
+                modalVerticalAlign: "middle"
+            });
+		};
 	}
     render() {
 		return (

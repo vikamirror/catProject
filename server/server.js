@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import path from 'path';
 import http from 'http';
 import socket_io from 'socket.io';
+import consoleStamp from 'console-stamp';
 
 import index from './routes';
 import universalLoader from './routes/universal';
@@ -20,14 +21,30 @@ import sockets from './sockets';
 import database from './mongoose';
 import redis from './redis';
 
+consoleStamp(console, {
+    metadata: () => {
+        return ('[' + process.memoryUsage().rss + ']');
+    },
+    pattern: 'yyyy/mm/dd HH:MM:ss.l',
+    colors: {
+        stamp: 'yellow',
+        label: 'white',
+        metadata: 'green'
+    }
+});
+
 // Create our express app (using the port optionally specified)
 const app = express();
+
+// 紀錄res
+app.use(morgan('dev', {
+    skip: (req, res) => res.statusCode < 400
+}));
 
 // Compress, parse, and log
 app.use(compression()); // gzip 壓縮
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(morgan('dev'));
 
 app.use('/', index); // 從首頁進入時
 

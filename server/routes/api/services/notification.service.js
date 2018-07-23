@@ -40,9 +40,12 @@ export async function postNotification (req, res) {
     Notification.findOneAndUpdate(query, update, options, (error, result) => {
         if (error) {
             res.status(500).json({
-                message: "新增訊息通知, 伺服器錯誤"
+                message: "伺服器錯誤"
             });
-            console.error('notification.service.js/postNotification/findOneAndUpdate error:', error);
+            console.error(`
+                notification.service.js/postNotification/findOneAndUpdate error: ${error},
+                request.body: ${JSON.stringify(req.body)}
+            `);
             return;
         }
         if (!result) {
@@ -74,7 +77,13 @@ export async function postNotification (req, res) {
                 }
             })
             .catch(err => {
-                console.error('notification.service.js/postNotification/findOneAndUpdate/save err:', err);
+                res.status(500).json({
+                    message: "伺服器錯誤"
+                });
+                console.error(`
+                    notification.service.js/postNotification/findOneAndUpdate/save err: ${err},
+                    request.body: ${JSON.stringify(req.body)}
+                `);
             });
     });
 };
@@ -93,9 +102,12 @@ export function getNotifications (req, res) {
         .exec((err, result) => {
             if (err) {
                 res.status(500).json({
-                    message: 'getNotifications server端錯誤'
+                    message: '伺服器錯誤'
                 });
-                console.error('notification.service.js/getNotifications/findOne error:', err);
+                console.error(`
+                    notification.service.js/getNotifications/findOne error: ${err},
+                    received from: ${memberCuid}
+                `);
                 return;
             }
             // console.log('result', result);

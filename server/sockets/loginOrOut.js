@@ -4,7 +4,7 @@ export default function loginAndOutFactory (socket) {
 
     // A帳號登入
     const loginHandler = (cuid) => {
-        console.log(`會員${cuid}登入`);
+        // console.log(`會員${cuid}登入`);
         socket.join(cuid);
         socket.member = cuid;
         emitLastLogoutTimeOfMember(socket.member);
@@ -23,7 +23,7 @@ export default function loginAndOutFactory (socket) {
     
     // A帳號登出
     const logoutHandler = (cuid) => {
-        console.log(`會員${cuid}登出`);
+        // console.log(`會員${cuid}登出`);
         socket.broadcast.to(cuid).emit('logoutAllTheOtherDevices'); // 其他裝置的A帳號登出
         socket.leave(cuid); // 現有的裝置也登出
         saveLogoutTime(cuid, new Date().toISOString());
@@ -33,11 +33,11 @@ export default function loginAndOutFactory (socket) {
     // A帳號斷線
     const disconnectHandler = () => {
         if (socket.member) {
-            console.log(`會員${socket.member}斷線`);
-            socket.leave(socket.member);
+            // console.log(`會員${socket.member}斷線`);
             saveLogoutTime(socket.member, new Date().toISOString());
+            socket.leave(socket.member);
             socket.member = null;
-        }
+        };
     };
  
     return {

@@ -43,8 +43,12 @@ export async function postMessage (req, res) {
     const newMessage = new Message(message);
     newMessage.save((err) => {
         if (err) {
-            res.status(500).json({message: '新增留言, 伺服器錯誤'});
-            console.error(err);
+            res.status(500).json({message: '伺服器錯誤'});
+            console.error(`
+                api/services/message.service/postMessage 錯誤: ${err},
+                received from: ${msgFrom_cuid},
+                request.body: ${JSON.stringify(req.body)}
+            `);
             return;
         }
         res.status(200).json({
@@ -69,6 +73,12 @@ export async function postMessage (req, res) {
 };
 
 export function getMessages (req, res) {
+    if (!req.params.postCuid) {
+        res.status(400).json({
+            message: 'params: post.cuid為undefined或空值'
+        });
+        return;
+    };
     const conditions = {"postCuid": req.params.postCuid};
     const projection = {"_id": 0, "__v": 0};
     Message
@@ -80,8 +90,10 @@ export function getMessages (req, res) {
         .sort({"dateAdded": 1}) // 預設最舊的的排在前面
         .exec((err, messages) => {
             if (err) {
-                res.status(500);
-                console.error('api/services/getMessages 錯誤', err);
+                res.status(500).json({message: '伺服器錯誤'});;
+                console.error(`
+                    api/services/message.service/getMessages 錯誤: ${err},
+                `);
                 return;
             }
             res.status(200).json({

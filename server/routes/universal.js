@@ -21,16 +21,16 @@ const prepHTML = (data, { html, head, body, initState }) => {
 
 const universalLoader = (req, res) => {
     // Load in our HTML file from our build
-    console.log('universalLoader');
+    // console.log('universalLoader');
 
     const builtFile = path.resolve(__dirname, '../../build/index.html');
 
     fs.readFile(builtFile, 'utf8', async (err, htmlData) => {
         // If there's an error... serve up something nasty
         if (err) {
-            console.error('universalLoader, readFile ERROR', err);
-            return res.status(404).end();
-        }
+            console.error(`universalLoader, readFile ERROR: ${err}`);
+            return res.status(500).end();
+        };
 
         // Create a store and sense of history based on the current path
         const { store, history } = await createServerStore(req.path);

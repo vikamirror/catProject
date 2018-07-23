@@ -4,7 +4,6 @@ import cuid from 'cuid';
 import sanitizeHtml from 'sanitize-html';
 import crypto from 'crypto'; // nodejs內建
 import jwt from 'jsonwebtoken';
-
 import sendMail from '../middlewares/sendEmail';
 
 /**
@@ -31,11 +30,14 @@ export function getMember(req, res) {
             .exec((err, member) => {
                 if (err) {
                     res.status(500).json({
-                        message: 'api/services/getMember server錯誤'
+                        message: '伺服器錯誤'
                     });
-                    console.error(`api/services/getMember server錯誤: ${err}`);
+                    console.error(`
+                        received from: ${cuid},
+                        api/services/getMember server錯誤: ${err}
+                    `);
                     return;
-                }
+                };                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
                 if (member[0]) {
                     // console.log('member[0]', member[0]);
                     res.status(200).json({
@@ -66,12 +68,15 @@ export function getMemberEmail (req, res) {
             })
             .catch((err) => {
                 res.status(500).json({
-                    message: 'api/services/getMember server錯誤'
+                    message: '伺服器錯誤'
                 });
-                console.error(`api/services/getMember server錯誤: ${err}`);
+                console.error(`
+                    received from: ${cuid},
+                    api/services/getMember server錯誤: ${err}
+                `);
             });
     }
-}
+};
 
 /**
  * 會員註冊
@@ -89,7 +94,7 @@ export function register(req, res) {
             if (members[0] !== undefined) {
                 // console.log('emailExisted error');
                 throw new Error({ name: 'emailExisted', message: '此信箱已被註冊' });
-            }
+            };
         })
         .then(() => {
             const newMember = new Member(req.body);
@@ -97,7 +102,7 @@ export function register(req, res) {
             newMember.email = sanitizeHtml(newMember.email);
             newMember.password = crypto.createHash('md5').update(sanitizeHtml(newMember.password)).digest('hex');
             newMember.name = sanitizeHtml(newMember.name);
-            newMember.avatar = `http://www.gravatar.com/avatar/${crypto.createHash('md5').update(newMember.email).digest('hex')}?s=120&d=identicon`;
+            newMember.avatar = `https://www.gravatar.com/avatar/${crypto.createHash('md5').update(newMember.email).digest('hex')}?s=120&d=identicon`;
             // 取代_id的亂數
             newMember.cuid = cuid();
             newMember
@@ -126,9 +131,12 @@ export function register(req, res) {
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: 'api/services/register member新增錯誤'}
+                            message: '伺服器錯誤'}
                         );
-                        console.error(`api/services/register member新增錯誤: ${err}`);
+                        console.error(`
+                            api/services/register member新增錯誤: ${err},
+                            request.body: ${JSON.stringify(req.body)}
+                        `);
                     });
         })
         .catch((err) => {
@@ -138,9 +146,12 @@ export function register(req, res) {
                 });
             }
             res.status(500).json({
-                message: 'api/services/register server錯誤'
+                message: '伺服器錯誤'
             });
-            console.log(`api/services/register server錯誤: ${err}`);
+            console.log(`
+                api/services/register server錯誤: ${err},
+                request.body: ${JSON.stringify(req.body)}
+            `);
         });
 }
 
@@ -175,9 +186,12 @@ export function loginWithFacebook(req, res) {
         .exec((err, members) => {
             if (err) {
                 res.status(500).json({
-                    message: '伺服器錯誤, 請洽客服'
+                    message: '伺服器錯誤'
                 });
-                console.error(`api/member.services/loginWithFacebook server錯誤: ${err}`);
+                console.error(`
+                    api/member.services/loginWithFacebook server錯誤: ${err},
+                    request.body: ${JSON.stringify(req.body)}
+                `);
                 return;
             }
             if (members[0] === undefined) { // 若此FB id尚未註冊, 新增一個會員
@@ -193,16 +207,19 @@ export function loginWithFacebook(req, res) {
                     shouldFillEmail = false;
                 };
                 if (sanitizeHtml(req.body.avatar)) {
-                    newMember.avatar = `http://graph.facebook.com/${newMember.facebookID}/picture?type=small`;
+                    newMember.avatar = `https://graph.facebook.com/${newMember.facebookID}/picture?type=small`;
                 };
 
                 const member = new Member(newMember);
                 member.save((err) => {
                     if (err) {   
                         res.status(500).json({
-                            message: "伺服器member新增錯誤, 請洽客服"
+                            message: "伺服器錯誤"
                         });
-                        console.error('api loginWithFacebook member新增錯誤:', err);
+                        console.error(`
+                            api/services/member.service/loginWithFacebook member新增錯誤: ${err},
+                            request.body: ${JSON.stringify(req.body)}
+                        `);
                         return;
                     };
                     /**
@@ -232,7 +249,7 @@ export function loginWithFacebook(req, res) {
                 if (members[0].email) {
                     shouldFillEmail = false;
                 };
-                console.log('shouldFillEmail: ', shouldFillEmail);
+                // console.log('shouldFillEmail: ', shouldFillEmail);
                 /**
                  * jwt token
                  */
@@ -292,7 +309,7 @@ export function login(req, res) {
             const md5  = crypto.createHash('md5');
             const password = sanitizeHtml(req.body.password);
             if (members[0].password !== md5.update(password).digest('hex')) {
-                res.status(403).json({
+                res.status(400).json({
                     message: 'Oops,密碼不正確'
                 });
                 return;
@@ -338,9 +355,13 @@ export function addFavoritePost (req, res) {
             .then(() => res.status(200).json({message: '收藏成功'}))
             .catch((err) => {
                 res.status(500).json({
-                    message: 'api/services/addFavoritePost server錯誤'
+                    message: '伺服器錯誤'
                 });
-                console.error('api/services/addFavoritePost server錯誤:', err);
+                console.error(`
+                    api/services/addFavoritePost server錯誤: ${err},
+                    received from: ${memberCuid},
+                    request.body: ${JSON.stringify(req.body)}
+                `);
             });
     });
 }
@@ -365,9 +386,13 @@ export function removeFavoritePost (req, res) {
             .then(() => res.status(200).json({message: '已從收藏中刪除'}))
             .catch((err) => {
                 res.status(500).json({
-                    message: 'api/services/removeFavoritePost server錯誤'
+                    message: '伺服器錯誤'
                 });
-                console.error('api/services/removeFavoritePost server錯誤:', err);
+                console.error(`
+                    api/services/removeFavoritePost server錯誤: ${err},
+                    received from: ${memberCuid},
+                    request.params: ${JSON.stringify(req.params)}
+                `);
             });
     });
 }
@@ -395,8 +420,12 @@ export function updateMember (req, res) {
             res.status(200).json({message: '編輯成功'});
         })
         .catch(err => {
-            res.status(500).json({message: 'server updateMember Error'});
-            console.error('api/services/member.service/updateMember Error:', err);
+            res.status(500).json({message: '伺服器錯誤'});
+            console.error(`
+                api/services/member.service/updateMember Error: ${err},
+                received from: ${cuid},
+                request.body: ${JSON.stringify(req.body)}
+            `);
         });
 }
 
@@ -428,8 +457,12 @@ export async function updatePassword (req, res) {
                 res.status(200).json({message: '密碼更新成功'});
             })
             .catch(err => {
-                res.status(500).json({message: 'server updatePassword Error'});
-                console.error('api/services/member.service/updatePassword Error:', err);
+                res.status(500).json({message: '伺服器錯誤'});
+                console.error(
+                    `api/services/member.service/updatePassword Error: ${err},
+                    received from: ${cuid},
+                    request.body: ${JSON.stringify(req.body)}
+                `);
             });
     }
 }

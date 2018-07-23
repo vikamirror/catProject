@@ -18,6 +18,8 @@ const Icon = ({type}) => {
             return <div className="u-margin-b-8"><img src={`https://${window.location.hostname}/images/question.png`} alt="" /></div>;
         case 'warning':
             return <div className="u-margin-b-8"><img src={`https://${window.location.hostname}/images/alert.png`} alt="" /></div>;
+        case 'error':
+            return <div className="u-margin-b-8"><img src={`https://${window.location.hostname}/images/wrong.png`} alt="" /></div>;
         default:
             return '';
     }
