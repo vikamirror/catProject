@@ -59,10 +59,14 @@ export function getMemberEmail (req, res) {
     if (cuid) {
         Member
             .findOne(conditions,projection)
-            .then(data => {
-                if (data) {
+            .then(member => {
+                if (member.email) {
                     res.status(200).json({
-                        email: data.email
+                        email: member.email
+                    });
+                } else {
+                    res.status(200).json({
+                        email: ''
                     });
                 }
             })
