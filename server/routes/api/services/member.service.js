@@ -206,7 +206,7 @@ export function loginWithFacebook(req, res) {
                 };
 
                 let shouldFillEmail = true;
-                if (sanitizeHtml(req.body.email)) {
+                if (req.body.email) {
                     newMember.email = sanitizeHtml(req.body.email);
                     shouldFillEmail = false;
                 };
