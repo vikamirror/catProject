@@ -48,7 +48,7 @@ class PostWrapper extends Component {
         const { isFetched, isEdit } = this.props.post;
         return (               
             <BounceInUp inCondition={isFetched} enterMilliseconds={300}>
-                <div className="u-padding-t-16 u-padding-b-16" id="post-wrapper-id">
+                <div className="u-padding-t-16 u-margin-footer" id="post-wrapper-id">
                     <div className="postWrapper">
                         <article className={`article ${isEdit ? "form" : ""}`} id="articleForm-id">       
                             {this.props.children}

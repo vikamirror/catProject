@@ -15,7 +15,6 @@ import NotificationsSM from './NotificationsSM';
 const AppRoutes = ({location}) => {
     const isShowNewPostModal = !!(location.state && location.state.isShowNewPostModal);
     const isShowPostModal = !!(location.state && location.state.isShowPostModal);
-    // const isLogin = !!(member.cuid);
     return (
         <main id="app-routes" className="u-margin-header">      
             <Switch>

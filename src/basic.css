@@ -193,16 +193,16 @@ p{
 * Icons
 * -------------- */
 @font-face {
-    font-family: 'icon';
-    src: url(/font/icon.eot?11374434);
-    src: url(/font/icon.eot?11374434#iefix) format('embedded-opentype'),
-         url(/font/icon.woff2?11374434) format('woff2'),
-         url(/font/icon.woff?11374434) format('woff'),
-         url(/font/icon.ttf?11374434) format('truetype'),
-         url(/font/icon.svg?11374434#icon) format('svg');
+    font-family: 'fontello';
+    src: url('/font/fontello.eot?751566');
+    src: url('/font/fontello.eot?751566#iefix') format('embedded-opentype'),
+         url('/font/fontello.woff2?751566') format('woff2'),
+         url('/font/fontello.woff?751566') format('woff'),
+         url('/font/fontello.ttf?751566') format('truetype'),
+         url('/font/fontello.svg?751566#fontello') format('svg');
     font-weight: normal;
     font-style: normal;
-  }
+}
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -215,7 +215,7 @@ p{
 */
      
 [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "icon";
+    font-family: "fontello";
     font-style: normal;
     font-weight: normal;
     speak: none;
@@ -249,17 +249,15 @@ p{
     /* Uncomment for 3D effect */
     /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-.icon-comment-empty:before { content: '\f0e5'; } /* '' */
 .icon-search:before { content: '\e800'; } /* '' */
 .icon-mail:before { content: '\e801'; } /* '' */
 .icon-heart-empty:before { content: '\e802'; } /* '' */
-.icon-picture:before { content: '\e804'; } /* '' */
 .icon-heart:before { content: '\e803'; } /* '' */
-.icon-star-empty:before { content: '\e806'; } /* '' */
+.icon-picture:before { content: '\e804'; } /* '' */
 .icon-star:before { content: '\e805'; } /* '' */
+.icon-star-empty:before { content: '\e806'; } /* '' */
 .icon-home:before { content: '\e807'; } /* '' */
 .icon-phone:before { content: '\e808'; } /* '' */
-.icon-chat:before { content: '\e80a'; } /* '' */
 .icon-key:before { content: '\e809'; } /* '' */
 .icon-user:before { content: '\e80a'; } /* '' */
 .icon-pencil:before { content: '\e80b'; } /* '' */
@@ -273,6 +271,8 @@ p{
 .icon-ok:before { content: '\e813'; } /* '' */
 .icon-bell:before { content: '\e814'; } /* '' */
 .icon-login:before { content: '\e815'; } /* '' */
+.icon-info:before { content: '\e816'; } /* '' */
+.icon-comment-empty:before { content: '\f0e5'; } /* '' */
 .icon-envelope-open-o:before { content: '\f2b7'; } /* '' */
   
 /* --------------
@@ -697,6 +697,7 @@ span{display: inline-block;}
 .u-margin-b-32{ margin-bottom: 32px !important;}
 .u-margin-t-40{ margin-top: 40px !important; }
 .u-margin-b-40{ margin-bottom: 40px !important; }
+.u-margin-footer{ margin-bottom: 60px !important; }
 
 .u-margin-header{ margin-top: 56px; }
 /* @media (max-width: 768px) {

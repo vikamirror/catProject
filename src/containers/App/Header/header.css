@@ -69,3 +69,16 @@
 .right-actions > li{
     float: left;
 }
+/* --------------
+ * about-link
+ * --------------*/
+.about-link{
+    margin: 6px 4px;
+    padding: 8px 8px;
+    cursor: pointer;
+}
+@media (max-width: 768px){
+    .about-link{
+        margin: 8px 0px;
+    }
+}

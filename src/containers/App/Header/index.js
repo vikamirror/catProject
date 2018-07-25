@@ -13,6 +13,14 @@ import { initial_header } from '../../../redux/header';
 
 import './header.css';
 
+const About = () => (
+    <li className="about-link">
+        <Link to="/about">
+            <span className="icon-btn"><i className="icon icon-info" /></span>
+        </Link>
+    </li>
+);
+
 const mapStateToProps = state => ({
     header: state.header,
     member: state.member,
@@ -42,6 +50,8 @@ const Header = ({header, member, isScrollDown, location}) => {
                             <SearchBar />
                         </div>
                         <ul className="right-actions u-push-right u-clearfix">
+                            {/* 關於我 */}
+                            <About />
                             {/* 通知 */}
                             { member.cuid ? <Notification /> : '' }
                             {/* 會員中心 */}
