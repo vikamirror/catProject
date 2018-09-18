@@ -15,7 +15,7 @@ import './header.css';
 
 const About = () => (
     <li className="about-link">
-        <Link to="/about">
+        <Link to="https://aboutraine.catcrush.club">
             <span className="icon-btn"><i className="icon icon-info" /></span>
         </Link>
     </li>
