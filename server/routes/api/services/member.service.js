@@ -6,6 +6,8 @@ import crypto from 'crypto'; // nodejs內建
 import jwt from 'jsonwebtoken';
 import sendMail from '../middlewares/sendEmail';
 
+const jwtTokenExpiry = () => Math.floor(Date.now() / 1000) + (60 * 60); // 保存1hr
+
 /**
  * 取得會員資訊
  * 參數:無
@@ -118,7 +120,7 @@ export function register(req, res) {
                          */
                         const jwtpayload = { cuid: newMember.cuid };
                         const jwtToken = jwt.sign({
-                                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存1天
+                                exp: jwtTokenExpiry(),
                                 data: {
                                     member: jwtpayload,
                                 },
@@ -231,7 +233,7 @@ export function loginWithFacebook(req, res) {
                      */
                     const jwtpayload = { cuid: member.cuid };
                     const jwtToken = jwt.sign({
-                        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存1天
+                        exp: jwtTokenExpiry(),
                         data: {
                             member: jwtpayload,
                         },
@@ -259,7 +261,7 @@ export function loginWithFacebook(req, res) {
                  */
                 const jwtpayload = { cuid: members[0].cuid };
                 const jwtToken = jwt.sign({
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存1天
+                    exp: jwtTokenExpiry(),
                     data: {
                         member: jwtpayload,
                     },
@@ -323,7 +325,7 @@ export function login(req, res) {
              */
             const jwtpayload = { cuid: members[0].cuid };
             const jwtToken = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 保存一天
+                exp: jwtTokenExpiry(),
                 data: {
                     user: jwtpayload
                 }

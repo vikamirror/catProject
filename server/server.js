@@ -6,6 +6,7 @@ import path from 'path';
 import http from 'http';
 import socket_io from 'socket.io';
 import consoleStamp from 'console-stamp';
+import helmet from 'helmet';
 
 import index from './routes';
 import universalLoader from './routes/universal';
@@ -46,7 +47,7 @@ app.use(compression()); // gzip 壓縮
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.disable('x-powered-by'); // 隱藏response-header:x-powered-by
+app.use(helmet()); // 設定安全相關的http-header
 
 app.use('/', index); // 從首頁進入時
 
