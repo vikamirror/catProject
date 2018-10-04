@@ -47,7 +47,6 @@ const universalLoader = (req, res) => {
         // Let Helmet know to insert the right tags
         const helmet = Helmet.renderStatic();
 
-        // console.log('store.getState:', store.getState);
         // Form the final HTML response
         const html = prepHTML(htmlData, {
             html: helmet.htmlAttributes.toString(),
@@ -60,8 +59,6 @@ const universalLoader = (req, res) => {
         });
 
         // Up, up, and away...
-        // console.log(html);
-        // res.send(html);
         res.status(200).send(html);
     });
 };
