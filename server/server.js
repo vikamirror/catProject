@@ -7,7 +7,7 @@ import http from 'http';
 import socket_io from 'socket.io';
 import consoleStamp from 'console-stamp';
 import helmet from 'helmet';
-import referrerPolicy from 'referrerPolicy';
+import referrerPolicy from 'referrer-policy';
 
 import index from './routes';
 import universalLoader from './routes/universal';
