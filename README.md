@@ -1,7 +1,7 @@
 <img src="./build/favicon.ico" width="100" height="100">
 
 # CatProject
-A minimal forum demo built with the following dependencies:
+A minimal forumhttps://www.evernote.com/shard/s312/nl/41306009/b3ea37f7-ecec-47ac-ae82-0a816407ee06/ demo built with the following dependencies:
 * [cra-ssr](https://github.com/cereallarceny/cra-ssr)
 * [create-react-app](https://github.com/facebook/create-react-app)
 * [react-helmet](https://github.com/nfl/react-helmet)
@@ -26,3 +26,10 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 * Member can edit thier profile page.
 * Mobile-friendly.
 
+## View
+* Home View
+<br>![home view](https://imgur.com/P3AN4gy.jpg)
+* Post Edit View
+<br>![editor view](https://imgur.com/hjP1kOE.jpg)
+* Notification View
+<br>![notification view](https://imgur.com/bvR080H.jpg)
