@@ -25,7 +25,6 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 
 ## Built With
 * [cra-ssr](https://github.com/cereallarceny/cra-ssr)
-
 * [create-react-app](https://github.com/facebook/create-react-app)
 * [react-helmet](https://github.com/nfl/react-helmet)
 * [redux](https://github.com/reduxjs/redux)
