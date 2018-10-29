@@ -1,18 +1,7 @@
 <img src="./build/favicon.ico" width="100" height="100">
 
 # CatProject
-A minimal forumhttps://www.evernote.com/shard/s312/nl/41306009/b3ea37f7-ecec-47ac-ae82-0a816407ee06/ demo built with the following dependencies:
-* [cra-ssr](https://github.com/cereallarceny/cra-ssr)
-* [create-react-app](https://github.com/facebook/create-react-app)
-* [react-helmet](https://github.com/nfl/react-helmet)
-* [redux](https://github.com/reduxjs/redux)
-* [react-quill](https://github.com/zenoamaro/react-quill)
-* [expressjs](https://github.com/expressjs/express)
-* [mongoose](https://github.com/Automattic/mongoose)
-* [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-* [redis](https://github.com/antirez/redis)
-* [socket.io](https://github.com/socketio/socket.io)
-
+A minimal forum application for cat discussion.
 Demo application is deployed on AWS EC2. Please try it out: https://catcrush.club
 
 ## Features
@@ -33,3 +22,17 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 <br>![editor view](https://imgur.com/hjP1kOE.jpg)
 * Notification View
 <br>![notification view](https://imgur.com/bvR080H.jpg)
+
+## Built With
+* [cra-ssr](https://github.com/cereallarceny/cra-ssr)
+
+* [create-react-app](https://github.com/facebook/create-react-app)
+* [react-helmet](https://github.com/nfl/react-helmet)
+* [redux](https://github.com/reduxjs/redux)
+* [react-quill](https://github.com/zenoamaro/react-quill)
+* [expressjs](https://github.com/expressjs/express)
+* [mongoose](https://github.com/Automattic/mongoose)
+* [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+* [redis](https://github.com/antirez/redis)
+* [socket.io](https://github.com/socketio/socket.io)
+
