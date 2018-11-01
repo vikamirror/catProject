@@ -56,3 +56,5 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   - [socket.io](https://github.com/socketio/socket.io)
 
 ## Documentations
+
+## Directory Structure
