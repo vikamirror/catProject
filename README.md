@@ -8,6 +8,7 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 * User registration/login via email or facebook.
 <br>![user-login](https://imgur.com/cw2O2sk.jpg)
 * User can search article by using search bar.
+<br>![search-bar](https://imgur.com/o6CbmzJ.jpg)
 * Member can post/modify/delete an article.
 * Member can leave comment under a post.
 * Member will receive a notification after receiving a tagged message.
