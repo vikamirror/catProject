@@ -23,15 +23,29 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 * Notification View
 <br>![notification view](https://imgur.com/bvR080H.jpg)
 
-## Built With
+## Tech/framework used
+### Front End
+#### React Ecosystem
+* [create-react-app](https://github.com/facebook/create-react-app) - react v16.0.0
+* [react-router](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom) - v4.2.2
+* [redux](https://github.com/reduxjs/redux) - v3.7.2
+* [react-quill](https://github.com/zenoamaro/react-quill) - v1.2.7
+#### Server Side Rendering
 * [cra-ssr](https://github.com/cereallarceny/cra-ssr)
-* [create-react-app](https://github.com/facebook/create-react-app)
-* [react-helmet](https://github.com/nfl/react-helmet)
-* [redux](https://github.com/reduxjs/redux)
-* [react-quill](https://github.com/zenoamaro/react-quill)
+* [react-router-redux](https://github.com/reactjs/react-router-redux) - v5.0.0-alpha.6
+* [react-helmet](https://github.com/nfl/react-helmet) - v5.2.0
+#### XMLHttpRequests
+* [axios](https://github.com/axios/axios) - v0.17.1
+* Async/Await
+#### CSS
+* [Bootstrap](https://github.com/twbs/bootstrap) - v3.3.7
+* [react-transition-group](https://github.com/reactjs/react-transition-group) - v2.2.1
+### Back End
 * [expressjs](https://github.com/expressjs/express)
+#### DataBase
 * [mongoose](https://github.com/Automattic/mongoose)
-* [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
 * [redis](https://github.com/antirez/redis)
-* [socket.io](https://github.com/socketio/socket.io)
-
+#### Security
+* [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+#### Web Socket
+* [socket.io v2.1.1](https://github.com/socketio/socket.io)
