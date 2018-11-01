@@ -5,7 +5,8 @@ A minimal forum application for cat discussion.
 Demo application is deployed on AWS EC2. Please try it out: https://catcrush.club
 
 ## Features
-* User registration via email or facebook.
+* User registration/login via email or facebook.
+<br>![user-login](https://imgur.com/cw2O2sk.jpg)
 * User can search article by using search bar.
 * Member can post/modify/delete an article.
 * Member can leave comment under a post.
