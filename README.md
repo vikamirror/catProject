@@ -12,14 +12,12 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 * Member can post/modify/delete an article.
 <br>![editor view](https://imgur.com/hjP1kOE.jpg)
 * Member can leave comment under a post.
+<br>![leave message](https://imgur.com/IloklMQ.jpg)
 * Member will receive a notification after receiving a tagged message.
 <br>![notification view](https://imgur.com/bvR080H.jpg)
 * Member can save their favorite posts.
 * Member can edit thier profile page.
 * Mobile-friendly.
-
-## View
-* Home View
 <br>![home view](https://imgur.com/P3AN4gy.jpg)
 
 ## Tech/framework used
