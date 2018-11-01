@@ -26,23 +26,24 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 ## Tech/framework used
 ### Front End
 - #### React Ecosystem
-  - [create-react-app](https://github.com/facebook/create-react-app) - react v16.0.0
-  - [react-router](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom) - v4.2.2
-  - [redux](https://github.com/reduxjs/redux) - v3.7.2
-  - [react-quill](https://github.com/zenoamaro/react-quill) - v1.2.7
+  - [create-react-app](https://github.com/facebook/create-react-app)
+  - [react-router](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom)
+  - [redux](https://github.com/reduxjs/redux)
+  - [react-quill](https://github.com/zenoamaro/react-quill)
 - #### Server Side Rendering
   - [cra-ssr](https://github.com/cereallarceny/cra-ssr)
-  - [react-router-redux](https://github.com/reactjs/react-router-redux) - v5.0.0-alpha.6
-  - [react-helmet](https://github.com/nfl/react-helmet) - v5.2.0
+  - [react-router-redux](https://github.com/reactjs/react-router-redux)
+  - [react-helmet](https://github.com/nfl/react-helmet)
 - #### XMLHttpRequests
-  - [axios](https://github.com/axios/axios) - v0.17.1
+  - [axios](https://github.com/axios/axios)
   - Async/Await
 - #### CSS
-  - [Bootstrap](https://github.com/twbs/bootstrap) - v3.3.7
-  - [react-transition-group](https://github.com/reactjs/react-transition-group) - v2.2.1
+  - [Bootstrap](https://github.com/twbs/bootstrap)
+  - [react-transition-group](https://github.com/reactjs/react-transition-group)
 
 ### Back End
-- [expressjs](https://github.com/expressjs/express)
+- #### Framework
+  - [expressjs](https://github.com/expressjs/express)
 - #### DataBase
   - [mongoose](https://github.com/Automattic/mongoose)
   - [redis](https://github.com/antirez/redis)
