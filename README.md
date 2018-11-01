@@ -18,6 +18,7 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 * Member can save their favorite posts.
 <br>![notification view](https://imgur.com/NGiBjIl.jpg)
 * Member can edit thier profile page.
+<br>![notification view](https://imgur.com/R9TsNVN.jpg)
 * Mobile-friendly.
 <br>![home view](https://imgur.com/P3AN4gy.jpg)
 
