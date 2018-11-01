@@ -48,7 +48,11 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   - [mongoose](https://github.com/Automattic/mongoose)
   - [redis](https://github.com/antirez/redis)
 - #### Security
+  - [TLS](https://www.sslforfree.com/) - SSL certificate
+  - [Helmet](https://github.com/helmetjs/helmet) - HTTP Response Header
   - [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+  - [sanitize-html](https://github.com/punkave/sanitize-html) - XSS
+  - crypto - basic password hashing
 - #### Web Socket
   - [socket.io v2.1.1](https://github.com/socketio/socket.io)
 
