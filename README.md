@@ -54,6 +54,6 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   - [sanitize-html](https://github.com/punkave/sanitize-html) - XSS
   - crypto - basic password hashing
 - #### Web Socket
-  - [socket.io v2.1.1](https://github.com/socketio/socket.io)
+  - [socket.io](https://github.com/socketio/socket.io)
 
 ## Documentations
