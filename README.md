@@ -16,6 +16,7 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 * Member will receive a notification after receiving a tagged message.
 <br>![notification view](https://imgur.com/bvR080H.jpg)
 * Member can save their favorite posts.
+<br>![notification view](https://imgur.com/NGiBjIl.jpg)
 * Member can edit thier profile page.
 * Mobile-friendly.
 <br>![home view](https://imgur.com/P3AN4gy.jpg)
