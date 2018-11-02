@@ -58,3 +58,38 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 ## Documentations
 
 ## Directory Structure
+```bash
+  ├── build
+  ├── node_modules
+  ├── public
+  │   ├── font
+  │   ├── images
+  │   ├── favicon.ico
+  │   ├── index.html
+  │   ├── manifest.json
+  ├── server
+  │   ├── index.js
+  │   ├── server.js
+  │   ├── serverStore.js
+  │   ├── mongoose
+  │   ├── redis
+  │   ├── sockets
+  │   │   └── *.js
+  │   ├── routes
+  │   │   ├── universal.js
+  │   │   ├── api
+  │   │   │   ├── controllers
+  │   │   │   │   └── *.controller.js
+  │   │   │   ├── services
+  │   │   │   │   └── *.service.js
+  │   │   │   ├── models
+  │   │   │   │   └── *.model.js
+  │   │   │   ├── middlewares
+  │   └── └── └── └── *.model.js
+  ├── src
+  ├── .env
+  ├── .eslintrc
+  ├── .gitignore
+  ├── package.json
+  ├── yarn.lock
+```
