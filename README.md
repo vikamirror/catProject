@@ -87,9 +87,32 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   │   │   │   ├── middlewares
   │   └── └── └── └── *.model.js
   ├── src
+  │   ├── index.js
+  │   ├── registerServiceWorker.js
+  │   ├── store.js
+  │   ├── basic.css
+  │   ├── bootstrapGrid.css
+  │   ├── components
+  │   │   └── **/*.js/*.css
+  │   ├── containers
+  │   │   └── App
+  │   │       ├── index.js
+  │   │       ├── app.css
+  │   │       ├── **/*.js/*.css
+  │   │       └── routes
+  │   │           ├── index.js
+  │   │           └── **/*.js/*.css
+  │   ├── fetch
+  │   │   └── *.js
+  │   ├── redux
+  │   │   ├── index.js
+  │   │   └── *.js
+  │   ├── sockets
+  │   │   └── *.js
+  │   └── Utils
   ├── .env
   ├── .eslintrc
   ├── .gitignore
   ├── package.json
-  ├── yarn.lock
+  └── yarn.lock
 ```
