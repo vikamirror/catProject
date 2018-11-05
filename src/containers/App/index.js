@@ -91,7 +91,7 @@ class App extends Component {
         const {isScroll, isScrollDown} = this.state;
         return (
             <div id="app">
-                <div id="app_bg" className={background}></div>
+                <div id="app-bg" className={background}></div>
                 {
                     isSmallDevice ?
                     <HeaderSmall shoudHeaderColored={isScroll} isScrollDown={isScrollDown} />

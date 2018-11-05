@@ -1,0 +1,89 @@
+openapi: '3.0.0'
+
+info:
+  version: 1.0.0
+  title: catcrush API
+  description: this is test
+
+components:
+  securitySchemes:
+    memberID:
+      type: apiKey
+      in: header
+      name: cuid
+    memberToken:
+      type: apiKey
+      in: header
+      name: token
+  
+  schemas:
+    authToken:
+      type: object
+      properties:
+        validToken:
+          type: boolean
+          description: 'false'
+        message:
+          type: string
+          description: 請重新登入
+    
+    serverError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 伺服器錯誤
+
+security:
+  - memberID: []
+  - memberToken: []
+
+paths:
+  /api/getMember:
+    get:
+      summary: 取得會員資訊
+      security:
+        - memberID: []
+        - memberToken: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cuid:
+                    type: string
+                    description: 會員cuid
+                  name:
+                    type: string
+                    description: 會員暱稱
+                  avatar:
+                    type: string
+                    description: 會員頭象
+                  favoritePosts:
+                    type: array
+                    description: 會員收藏的文章
+                    items:
+                      type: object
+                      properties:
+                        ObjectId:
+                          type: string
+                          description: Collection Post ObjectId
+        '401':
+          description: invalid token
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/authToken'
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+
+
+
+
+
