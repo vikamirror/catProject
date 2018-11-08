@@ -3,19 +3,14 @@
   "info": {
     "version": "1.0.0",
     "title": "catcrush API",
-    "description": "this is test"
+    "description": "this is catcrush API document"
   },
   "components": {
     "securitySchemes": {
-      "memberID": {
+      "ApiKeyAuth": {
         "type": "apiKey",
         "in": "header",
-        "name": "cuid"
-      },
-      "memberToken": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "token"
+        "name": "authorization"
       }
     },
     "schemas": {
@@ -40,27 +35,57 @@
             "description": "伺服器錯誤"
           }
         }
+      },
+      "emailOrPasswordNulled": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "信箱或密碼為空值或undefined"
+          }
+        }
+      },
+      "emailNonExist": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Oops,該信箱不存在"
+          }
+        }
+      },
+      "passwordInvalid": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Oops,密碼不正確"
+          }
+        }
       }
     }
   },
   "security": [
     {
-      "memberID": []
-    },
+      "ApiKeyAuth": []
+    }
+  ],
+  "tags": [
     {
-      "memberToken": []
+      "name": "member",
+      "description": "與會員有關的API"
     }
   ],
   "paths": {
     "/api/getMember": {
       "get": {
+        "tags": [
+          "member"
+        ],
         "summary": "取得會員資訊",
         "security": [
           {
-            "memberID": []
-          },
-          {
-            "memberToken": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -94,6 +119,503 @@
                           }
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/getMemberEmail": {
+      "get": {
+        "tags": [
+          "member"
+        ],
+        "summary": "取得會員email",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "會員email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/member": {
+      "put": {
+        "tags": [
+          "member"
+        ],
+        "summary": "修改會員資料",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "編輯成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "編輯成功"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/password": {
+      "put": {
+        "tags": [
+          "member"
+        ],
+        "summary": "修改會員密碼",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "密碼更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "密碼更新成功"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/register": {
+      "post": {
+        "tags": [
+          "member"
+        ],
+        "summary": "會員註冊",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "memberToken": {
+                      "type": "string",
+                      "description": "會員token"
+                    },
+                    "member": {
+                      "type": "object",
+                      "properties": {
+                        "cuid": {
+                          "type": "string",
+                          "description": "會員cuid"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "會員暱稱"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "description": "會員頭象"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "此信箱已被註冊",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "此信箱已被註冊"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/loginWithFacebook": {
+      "post": {
+        "tags": [
+          "member"
+        ],
+        "summary": "FB註冊or登入",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "memberToken": {
+                      "type": "string",
+                      "description": "會員token"
+                    },
+                    "member": {
+                      "type": "object",
+                      "properties": {
+                        "cuid": {
+                          "type": "string",
+                          "description": "會員cuid"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "會員暱稱"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "description": "會員頭象"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "facebookID為空值或undefined",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "facebookID為空值或undefined"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "請先登入facebook",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "請先登入facebook"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "member"
+        ],
+        "summary": "會員登入",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "memberToken": {
+                      "type": "string",
+                      "description": "會員token"
+                    },
+                    "member": {
+                      "type": "object",
+                      "properties": {
+                        "cuid": {
+                          "type": "string",
+                          "description": "會員cuid"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "會員暱稱"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "description": "會員頭象"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "登入失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/emailOrPasswordNulled"
+                    },
+                    {
+                      "$ref": "#/components/schemas/emailNonExist"
+                    },
+                    {
+                      "$ref": "#/components/schemas/passwordInvalid"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/favoritePost": {
+      "put": {
+        "tags": [
+          "member"
+        ],
+        "summary": "會員新增一個我的最愛Post",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "收藏成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "收藏成功"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "postCuid為空值或undefined",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "postCuid為空值或undefined"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/favoritePost/{postCuid}": {
+      "delete": {
+        "tags": [
+          "member"
+        ],
+        "summary": "會員移除一個我的最愛Post",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postCuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post cuid"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "postCuid為空值或undefined",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "postCuid為空值或undefined"
                     }
                   }
                 }

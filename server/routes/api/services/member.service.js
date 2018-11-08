@@ -131,7 +131,7 @@ export function register(req, res) {
                                 cuid: newMember.cuid,
                                 name: newMember.name,
                                 avatar: newMember.avatar,
-                                favoritePosts: newMember.favoritePosts,
+                                // favoritePosts: newMember.favoritePosts,
                             },
                         });
                     })
