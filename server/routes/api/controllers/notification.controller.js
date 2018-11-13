@@ -14,9 +14,10 @@ router.use((req, res, next) => {
     next();
 });
 
-// 取得近期tag該會員的50筆message
+// client端新增一個notification
 router.post('/notification', authToken, NotificationService.postNotification);
 
+// 取得近期tag該會員的50筆message
 router.get('/notifications', authToken, NotificationService.getNotifications);
 
 export default router;

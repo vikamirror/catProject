@@ -11,6 +11,17 @@
         "type": "apiKey",
         "in": "header",
         "name": "authorization"
+      },
+      "facebookOauth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://graph.facebook.com/me?access_token={accessToken}",
+            "scopes": {
+              "read": "Grants read access"
+            }
+          }
+        }
       }
     },
     "schemas": {
@@ -62,18 +73,326 @@
             "description": "Oops,密碼不正確"
           }
         }
+      },
+      "requiredFieldNulled": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "必填欄位為undefined或空值"
+          }
+        }
+      },
+      "postCuidNulled": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "缺少post.cuid"
+          }
+        }
+      },
+      "postSchema": {
+        "type": "object",
+        "properties": {
+          "cuid": {
+            "type": "string",
+            "description": "post.cuid"
+          },
+          "title": {
+            "type": "string",
+            "description": "post.title"
+          },
+          "cover": {
+            "type": "string",
+            "description": "post.cover"
+          },
+          "charactor": {
+            "type": "string",
+            "description": "post.charactor"
+          },
+          "city": {
+            "type": "string",
+            "description": "post.city"
+          },
+          "district": {
+            "type": "string",
+            "description": "post.district"
+          },
+          "age": {
+            "type": "string",
+            "description": "post.age"
+          },
+          "gender": {
+            "type": "string",
+            "description": "post.gender"
+          },
+          "isSpay": {
+            "type": "boolean",
+            "description": "post.isSpay"
+          },
+          "requirements": {
+            "type": "array",
+            "description": "post.requirements",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "需求代號"
+                },
+                "desc": {
+                  "type": "string",
+                  "description": "其他內容"
+                },
+                "value": {
+                  "type": "boolean",
+                  "description": "是/否"
+                }
+              }
+            }
+          },
+          "remark": {
+            "type": "string",
+            "description": "post.remark"
+          },
+          "contact": {
+            "type": "string",
+            "description": "post.contact"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "post.contactInfo"
+          },
+          "author": {
+            "type": "object",
+            "properties": {
+              "cuid": {
+                "type": "string",
+                "description": "member.cuid"
+              },
+              "name": {
+                "type": "string",
+                "description": "member.name"
+              },
+              "avatar": {
+                "type": "string",
+                "description": "member.avatar"
+              }
+            }
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "description": "post.isDeleted"
+          },
+          "dateAdded": {
+            "type": "string",
+            "description": "post.dateAdded",
+            "format": "date-time"
+          },
+          "lastModify": {
+            "type": "string",
+            "description": "post.dateAdded",
+            "format": "date-time"
+          }
+        }
+      },
+      "arrayOfPosts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "post": {
+              "$ref": "#/components/schemas/postSchema"
+            }
+          }
+        }
+      },
+      "deleteSucceed": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "刪除成功"
+          }
+        }
+      },
+      "postMessageRequestBody": {
+        "type": "object",
+        "properties": {
+          "postCuid": {
+            "type": "string",
+            "description": "post.cuid"
+          },
+          "taggedMember": {
+            "type": "string",
+            "description": "被tagged的會員 member.cuid"
+          },
+          "message": {
+            "type": "string",
+            "description": "留言內容 Message.message"
+          }
+        },
+        "required": [
+          "postCuid",
+          "taggedMember",
+          "message"
+        ]
+      },
+      "messageSchema": {
+        "type": "object",
+        "properties": {
+          "cuid": {
+            "type": "string",
+            "description": "message.cuid"
+          },
+          "postCuid": {
+            "type": "string",
+            "description": "post.cuid"
+          },
+          "member": {
+            "type": "object",
+            "description": "留言的會員",
+            "properties": {
+              "cuid": {
+                "type": "string",
+                "description": "member.cuid"
+              },
+              "name": {
+                "type": "string",
+                "description": "member.name"
+              },
+              "avatar": {
+                "type": "string",
+                "description": "member.avatar"
+              }
+            }
+          },
+          "tag": {
+            "type": "object",
+            "description": "被tagged的會員",
+            "properties": {
+              "cuid": {
+                "type": "string",
+                "description": "member.cuid"
+              },
+              "name": {
+                "type": "string",
+                "description": "member.name"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "留言內容 message.message"
+          },
+          "dateAdded": {
+            "type": "string",
+            "description": "留言時間 message.dateAdded",
+            "format": "date-time"
+          }
+        }
+      },
+      "arrayOfMessages": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "post": {
+              "$ref": "#/components/schemas/messageSchema"
+            }
+          }
+        }
+      },
+      "notificationItemSchema": {
+        "type": "object",
+        "properties": {
+          "cuid": {
+            "type": "string",
+            "description": "notification.cuid"
+          },
+          "messageFrom": {
+            "type": "object",
+            "description": "留言的會員",
+            "properties": {
+              "memberCuid": {
+                "type": "string",
+                "description": "member.cuid"
+              },
+              "name": {
+                "type": "string",
+                "description": "member.name"
+              },
+              "avatar": {
+                "type": "string",
+                "description": "member.avatar"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "notification.message"
+          },
+          "link": {
+            "type": "object",
+            "description": "訊息所在的網址",
+            "properties": {
+              "pathname": {
+                "type": "string",
+                "description": "網址"
+              },
+              "state": {
+                "type": "object",
+                "description": "網址附帶的訊息 非必要"
+              }
+            }
+          },
+          "dateAdded": {
+            "type": "string",
+            "description": "訊息發布時間",
+            "format": "date-time"
+          }
+        }
+      },
+      "arrayOfNotifications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "notifications": {
+              "$ref": "#/components/schemas/notificationItemSchema"
+            }
+          }
+        }
       }
     }
   },
   "security": [
     {
       "ApiKeyAuth": []
+    },
+    {
+      "facebookOauth": [
+        "accessToken"
+      ]
     }
   ],
   "tags": [
     {
       "name": "member",
       "description": "與會員有關的API"
+    },
+    {
+      "name": "post",
+      "description": "與文章有關的API"
+    },
+    {
+      "name": "message",
+      "description": "與留言有關的API"
+    },
+    {
+      "name": "notification",
+      "description": "與新訊息通知有關的API"
     }
   ],
   "paths": {
@@ -209,6 +528,27 @@
             "ApiKeyAuth": []
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "avatar": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "編輯成功",
@@ -259,6 +599,28 @@
             "ApiKeyAuth": []
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "type": "string"
+                  },
+                  "oldPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "newPassword",
+                  "oldPassword"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "密碼更新成功",
@@ -304,6 +666,32 @@
           "member"
         ],
         "summary": "會員註冊",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "name"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -371,6 +759,36 @@
           "member"
         ],
         "summary": "FB註冊or登入",
+        "security": [
+          {
+            "facebookOauth": [
+              "accessToken"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "facebookID": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "facebookID"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -453,6 +871,27 @@
           "member"
         ],
         "summary": "會員登入",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -530,6 +969,23 @@
             "ApiKeyAuth": []
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "postCuid": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "postCuid"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "收藏成功",
@@ -607,6 +1063,21 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "已從收藏中刪除",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "已從收藏中刪除"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "400": {
             "description": "postCuid為空值或undefined",
             "content": {
@@ -618,6 +1089,903 @@
                       "description": "postCuid為空值或undefined"
                     }
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/post": {
+      "put": {
+        "tags": [
+          "post"
+        ],
+        "summary": "會員更新自己的一篇文章",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cuid": {
+                    "type": "string",
+                    "description": "post.cuid"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "post.title"
+                  },
+                  "cover": {
+                    "type": "string",
+                    "description": "post.cover"
+                  },
+                  "charactor": {
+                    "type": "string",
+                    "description": "post.charactor"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "post.city"
+                  },
+                  "district": {
+                    "type": "string",
+                    "description": "post.district"
+                  },
+                  "age": {
+                    "type": "string",
+                    "description": "post.age"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "description": "post.gender"
+                  },
+                  "contact": {
+                    "type": "string",
+                    "description": "post.contact"
+                  },
+                  "contactInfo": {
+                    "type": "string",
+                    "description": "post.contactInfo"
+                  }
+                },
+                "required": [
+                  "cuid",
+                  "title",
+                  "cover",
+                  "charactor",
+                  "district",
+                  "age",
+                  "gender",
+                  "contact",
+                  "contactInfo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "修改後的文章",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "必填欄位為undefined或空值",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/requiredFieldNulled"
+                    },
+                    {
+                      "$ref": "#/components/schemas/postCuidNulled"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "會員發新文章",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "post.title"
+                  },
+                  "cover": {
+                    "type": "string",
+                    "description": "post.cover"
+                  },
+                  "charactor": {
+                    "type": "string",
+                    "description": "post.charactor"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "post.city"
+                  },
+                  "district": {
+                    "type": "string",
+                    "description": "post.district"
+                  },
+                  "age": {
+                    "type": "string",
+                    "description": "post.age"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "description": "post.gender"
+                  },
+                  "isSpay": {
+                    "type": "boolean",
+                    "description": "post.isSpay"
+                  },
+                  "requirements": {
+                    "type": "array",
+                    "description": "post.requirements",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "需求代號"
+                        },
+                        "desc": {
+                          "type": "string",
+                          "description": "其他內容"
+                        },
+                        "value": {
+                          "type": "boolean",
+                          "description": "是/否"
+                        }
+                      }
+                    }
+                  },
+                  "remark": {
+                    "type": "string",
+                    "description": "post.remark"
+                  },
+                  "contact": {
+                    "type": "string",
+                    "description": "post.contact"
+                  },
+                  "contactInfo": {
+                    "type": "string",
+                    "description": "post.contactInfo"
+                  }
+                },
+                "required": [
+                  "title",
+                  "cover",
+                  "charactor",
+                  "city",
+                  "district",
+                  "age",
+                  "gender",
+                  "contact",
+                  "contactInfo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "新增成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "新增成功"
+                    },
+                    "post": {
+                      "$ref": "#/components/schemas/postSchema"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "必填欄位為undefined或空值",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/requiredFieldNulled"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts": {
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "取得所有文章",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loadedIds": {
+                    "type": "array",
+                    "description": "client端已收到的文章cuid",
+                    "items": {
+                      "type": "string",
+                      "description": "post.cuid"
+                    }
+                  }
+                },
+                "required": [
+                  "loadedIds"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "$ref": "#/components/schemas/arrayOfPosts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "req.body缺少:loadedIds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "req.body缺少:loadedIds"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search": {
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "搜尋文章",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "文章關鍵字"
+                  },
+                  "loadedIds": {
+                    "type": "array",
+                    "description": "client端已收到的文章cuid",
+                    "items": {
+                      "type": "string",
+                      "description": "post.cuid"
+                    }
+                  }
+                },
+                "required": [
+                  "query",
+                  "loadedIds"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "$ref": "#/components/schemas/arrayOfPosts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "req.body缺少loadedIds或query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "req.body缺少loadedIds或query"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/post/{cuid}": {
+      "get": {
+        "tags": [
+          "post"
+        ],
+        "summary": "由post.cuid取得該篇文章",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "post.cuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "無附帶post.cuid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postCuidNulled"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "post"
+        ],
+        "summary": "會員刪除一篇自己的文章",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "post.cuid"
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "刪除成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/deleteSucceed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "無附帶post.cuid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postCuidNulled"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/myPosts": {
+      "get": {
+        "tags": [
+          "post"
+        ],
+        "summary": "取得一個member的所有文章",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "$ref": "#/components/schemas/arrayOfPosts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/favoritePosts": {
+      "get": {
+        "tags": [
+          "post"
+        ],
+        "summary": "取得該會員喜歡的所有文章",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "$ref": "#/components/schemas/arrayOfPosts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message": {
+      "post": {
+        "tags": [
+          "message"
+        ],
+        "summary": "會員在一個文章底下發新留言",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/postMessageRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "新增留言成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "新增留言成功"
+                    },
+                    "newMessage": {
+                      "$ref": "#/components/schemas/messageSchema"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "必填欄位為undefined或空值",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/requiredFieldNulled"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/messages/{postCuid}": {
+      "get": {
+        "tags": [
+          "message"
+        ],
+        "summary": "取得一篇文章底下的所有留言",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postCuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "post.cuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "$ref": "#/components/schemas/arrayOfMessages"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "post.cuid為undefined或空值",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postCuidNulled"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notifications": {
+      "get": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "取得近期tag該會員的50筆message",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "notifications": {
+                      "$ref": "#/components/schemas/arrayOfNotifications"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authToken"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serverError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notification": {
+      "post": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "新增一個notification",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "messageTo": {
+                    "type": "string",
+                    "description": "指定收訊息的會員 member.cuid"
+                  },
+                  "messageFrom": {
+                    "type": "string",
+                    "description": "發布訊息的會員 member.cuid"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "訊息內容 notification.message"
+                  }
+                },
+                "required": [
+                  "messageTo",
+                  "messageFrom",
+                  "message"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "新增通知成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "notification": {
+                      "$ref": "#/components/schemas/notificationItemSchema"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "必填欄位為undefined或空值",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/requiredFieldNulled"
                 }
               }
             }
