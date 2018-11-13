@@ -116,3 +116,4 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   ├── package.json
   └── yarn.lock
 ```
+## Deploy on your own server
