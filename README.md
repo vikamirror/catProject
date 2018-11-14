@@ -117,7 +117,7 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   └── yarn.lock
 ```
 ## Run on your own server
-Environmental requirement
+### Environmental requirement
 - Node.js > v8.11.2
 - NPM / Yarn
 - Git
@@ -125,8 +125,7 @@ Environmental requirement
 ```
 $ git clone https://github.com/vikamirror/catProject
 ```
-Install dependencies
-<br>
+### Install dependencies
 - Using npm:
 ```
 $ npm i
@@ -135,3 +134,15 @@ $ npm i
 ```
 $ yarn
 ```
+
+### To run the app in development environment:
+```
+$ yarn run server
+```
+The app will run on port `3009`. Visit http://localhost:3009 (if you ran the dev), you will see the app is running via server side rendering. Please note that the development environment will **not** include Hot-Reload.
+<br>
+If you need reload after edits on client side, you can open another terminal and run the script `yarn start` for client side rendering on port `3000`(based on *create-react-app*).
+```
+$ yarn start
+```
+However, do **not** close the terminal on port `3009` simultaneously, or the app will lose connection to server.
