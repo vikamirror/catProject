@@ -116,4 +116,22 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   ├── package.json
   └── yarn.lock
 ```
-## Deploy on your own server
+## Run on your own server
+Environmental requirement
+- Node.js > v8.11.2
+- NPM / Yarn
+- Git
+
+```
+$ git clone https://github.com/vikamirror/catProject
+```
+Install dependencies
+<br>
+- Using npm:
+```
+$ npm i
+```
+- Using yarn:
+```
+$ yarn
+```
