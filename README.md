@@ -135,7 +135,7 @@ $ npm i
 $ yarn
 ```
 
-### To run the app in development environment:
+### To run the app in development environment
 ```
 $ yarn run server
 ```
@@ -146,3 +146,6 @@ If you need reload after edits on client side, you can open another terminal and
 $ yarn start
 ```
 However, do **not** close the terminal on port `3009` simultaneously, or the app will lose connection to server.
+
+### Change Database
+Please check the .env file at root directory. You can change the current mongoose/redis URL with your own database.
