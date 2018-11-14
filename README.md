@@ -147,5 +147,16 @@ $ yarn start
 ```
 However, do **not** close the terminal on port `3009` simultaneously, or the app will lose connection to server.
 
-### Change Database
-Please check the .env file at root directory. You can change the current mongoose/redis URL with your own database.
+### Database Configuration
+Please check the `.env` file at root directory. You can change the current mongoose/redis URL with your own database.
+```
+# The Mongoose database on which to run the develop
+MONGO_URL=mongodb://yourMongooseUrl
+
+# The redis on which to run the develop
+REDIS_HOST=yourRedisHostUrl
+REDIS_PORT=yourRedisPort
+REDIS_AUTH=yourRedisAuth
+```
+## License
+This project is licensed under the MIT License - see the LICENSE.md file for details.
