@@ -55,6 +55,9 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
 - #### Web Socket
   - [socket.io](https://github.com/socketio/socket.io)
 
+### Depoly
+- #### [Nginx](https://www.nginx.com/)
+
 ## Documentations
 - [API Doc](https://catcrush.club/apiDoc/index.html)
 ## Directory Structure
