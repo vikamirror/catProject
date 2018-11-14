@@ -117,8 +117,8 @@ Demo application is deployed on AWS EC2. Please try it out: https://catcrush.clu
   └── yarn.lock
 ```
 ## Run on your own server
-### Environmental requirement
-- Node.js > v8.11.2
+### Prerequisites
+- Node.js >= 8.11.2 version
 - NPM / Yarn
 - Git
 
