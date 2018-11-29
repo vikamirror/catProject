@@ -1,10 +1,8 @@
-openapi: '3.0.0'
-
+openapi: 3.0.0
 info:
   version: 1.0.0
   title: catcrush API
   description: this is catcrush API document
-
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -15,12 +13,10 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: https://graph.facebook.com/me?access_token={accessToken}
+          authorizationUrl: 'https://graph.facebook.com/me?access_token={accessToken}'
           scopes:
             read: Grants read access
-      
   schemas:
-  
     authToken:
       type: object
       properties:
@@ -30,49 +26,42 @@ components:
         message:
           type: string
           description: 請重新登入
-    
     serverError:
       type: object
       properties:
         message:
           type: string
           description: 伺服器錯誤
-          
     emailOrPasswordNulled:
       type: object
       properties:
         message:
           type: string
           description: 信箱或密碼為空值或undefined
-          
     emailNonExist:
       type: object
       properties:
         message:
           type: string
-          description: Oops,該信箱不存在
-          
+          description: 'Oops,該信箱不存在'
     passwordInvalid:
       type: object
       properties:
         message:
           type: string
-          description: Oops,密碼不正確
-    
+          description: 'Oops,密碼不正確'
     requiredFieldNulled:
       type: object
       properties:
         message:
           type: string
           description: 必填欄位為undefined或空值
-    
     postCuidNulled:
       type: object
       properties:
         message:
           type: string
           description: 缺少post.cuid
-          
     postSchema:
       type: object
       properties:
@@ -150,7 +139,6 @@ components:
           type: string
           description: post.dateAdded
           format: date-time
-        
     arrayOfPosts:
       type: array
       items:
@@ -158,14 +146,12 @@ components:
         properties:
           post:
             $ref: '#/components/schemas/postSchema'
-            
     deleteSucceed:
       type: object
       properties:
         message:
           type: string
           description: 刪除成功
-          
     postMessageRequestBody:
       type: object
       properties:
@@ -182,7 +168,6 @@ components:
         - postCuid
         - taggedMember
         - message
-        
     messageSchema:
       type: object
       properties:
@@ -222,7 +207,6 @@ components:
           type: string
           description: 留言時間 message.dateAdded
           format: date-time
-          
     arrayOfMessages:
       type: array
       items:
@@ -230,7 +214,6 @@ components:
         properties:
           post:
             $ref: '#/components/schemas/messageSchema'
-            
     notificationItemSchema:
       type: object
       properties:
@@ -267,7 +250,6 @@ components:
           type: string
           description: 訊息發布時間
           format: date-time
-            
     arrayOfNotifications:
       type: array
       items:
@@ -275,11 +257,10 @@ components:
         properties:
           notifications:
             $ref: '#/components/schemas/notificationItemSchema'
-            
 security:
   - ApiKeyAuth: []
-  - facebookOauth: [accessToken]
-
+  - facebookOauth:
+      - accessToken
 tags:
   - name: member
     description: 與會員有關的API
@@ -289,13 +270,10 @@ tags:
     description: 與留言有關的API
   - name: notification
     description: 與新訊息通知有關的API
-
 paths:
-
-  # Member
   /api/getMember:
     get:
-      tags: 
+      tags:
         - member
       summary: 取得會員資訊
       security:
@@ -322,7 +300,7 @@ paths:
                     items:
                       type: object
                       properties:
-                        ObjectId:
+                        cuid:
                           type: string
                           description: Collection Post ObjectId
         '401':
@@ -330,17 +308,16 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/authToken'
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
   /api/getMemberEmail:
     get:
-      tags: 
+      tags:
         - member
       summary: 取得會員email
       security:
@@ -360,17 +337,16 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/authToken'
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
   /api/member:
     put:
-      tags: 
+      tags:
         - member
       summary: 修改會員資料
       security:
@@ -403,17 +379,16 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/authToken'
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-  
   /api/password:
     put:
-      tags: 
+      tags:
         - member
       summary: 修改會員密碼
       security:
@@ -447,17 +422,16 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/authToken'
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-  
   /api/register:
     post:
-      tags: 
+      tags:
         - member
       summary: 會員註冊
       requestBody:
@@ -514,14 +488,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-          
   /api/loginWithFacebook:
     post:
-      tags: 
+      tags:
         - member
       summary: FB註冊or登入
-      security: 
-        - facebookOauth: [accessToken]
+      security:
+        - facebookOauth:
+            - accessToken
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -558,15 +532,6 @@ paths:
                       avatar:
                         type: string
                         description: 會員頭象
-        '401':
-          description: 請先登入facebook
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                    description: 請先登入facebook
         '400':
           description: facebookID為空值或undefined
           content:
@@ -576,16 +541,24 @@ paths:
                   message:
                     type: string
                     description: facebookID為空值或undefined
+        '401':
+          description: 請先登入facebook
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    description: 請先登入facebook
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
   /api/login:
     post:
-      tags: 
+      tags:
         - member
       summary: 會員登入
       requestBody:
@@ -638,10 +611,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
   /api/favoritePost:
     put:
-      tags: 
+      tags:
         - member
       summary: 會員新增一個我的最愛Post
       security:
@@ -680,17 +652,16 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/authToken'
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
-  /api/favoritePost/{postCuid}:
+  '/api/favoritePost/{postCuid}':
     delete:
-      tags: 
+      tags:
         - member
       summary: 會員移除一個我的最愛Post
       security:
@@ -726,15 +697,13 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/authToken'
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-  
-  # Post
   /api/post:
     put:
       tags:
@@ -795,12 +764,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/postSchema'
-        '401':
-          description: invalid token
-          content:
-            application/json:
-              schema:
-                 $ref: '#/components/schemas/authToken'
         '400':
           description: 必填欄位為undefined或空值
           content:
@@ -809,6 +772,12 @@ paths:
                 anyOf:
                   - $ref: '#/components/schemas/requiredFieldNulled'
                   - $ref: '#/components/schemas/postCuidNulled'
+        '401':
+          description: invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
@@ -898,25 +867,24 @@ paths:
                     description: 新增成功
                   post:
                     $ref: '#/components/schemas/postSchema'
-        '401':
-          description: invalid token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/authToken'
         '400':
           description: 必填欄位為undefined或空值
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/requiredFieldNulled'
+        '401':
+          description: invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/serverError'          
-  
+                $ref: '#/components/schemas/serverError'
   /api/posts:
     post:
       tags:
@@ -948,7 +916,7 @@ paths:
                   posts:
                     $ref: '#/components/schemas/arrayOfPosts'
         '400':
-          description: req.body缺少:loadedIds
+          description: 'req.body缺少:loadedIds'
           content:
             application/json:
               schema:
@@ -956,14 +924,13 @@ paths:
                 properties:
                   message:
                     type: string
-                    description: req.body缺少:loadedIds
+                    description: 'req.body缺少:loadedIds'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
   /api/search:
     post:
       tags:
@@ -1013,8 +980,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-              
-  /api/post/{cuid}:
+  '/api/post/{cuid}':
     get:
       tags:
         - post
@@ -1077,7 +1043,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
   /api/myPosts:
     get:
       tags:
@@ -1102,12 +1067,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/authToken'
         '500':
-            description: 伺服器錯誤
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/serverError'
-                  
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
   /api/favoritePosts:
     get:
       tags:
@@ -1132,13 +1096,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/authToken'
         '500':
-            description: 伺服器錯誤
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/serverError'
-                  
-  # message
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
   /api/message:
     post:
       tags:
@@ -1182,8 +1144,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
-  /api/messages/{postCuid}:
+  '/api/messages/{postCuid}':
     get:
       tags:
         - message
@@ -1217,8 +1178,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
-  # notification
   /api/notifications:
     get:
       tags:
@@ -1241,14 +1200,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authToken'            
+                $ref: '#/components/schemas/authToken'
         '500':
           description: 伺服器錯誤
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-        
   /api/notification:
     post:
       tags:
@@ -1303,4 +1261,3 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-                
