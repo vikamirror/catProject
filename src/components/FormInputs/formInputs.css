@@ -9,7 +9,7 @@
 
 .select-wrapper::before{
     content: '\e80f';
-    font: normal normal normal 12px/1 icon;
+    font: normal normal normal 12px/1 fontello;
     color: #4F8196;
     display: inline-block;
     position: absolute;
