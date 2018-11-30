@@ -29,6 +29,17 @@
 }
 
 /*-----------
+ * 清除全部
+ *----------- */
+.ql-reset::after{
+    content: "reset";
+    font-weight: bold;
+}
+.ql-reset{
+    outline: 0;
+}
+
+/*-----------
  * 超連結輸入框
  *----------- */
 #dialog-wrapper .ql-snow .ql-tooltip[data-mode=link]::before {

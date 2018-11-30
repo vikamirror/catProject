@@ -25,11 +25,15 @@ class QuillEditor extends Component {
             this.ReactQuill = require('react-quill');
         }
         this.state = {
-            customImgBtnHasCreated: false,
-            content: '',
+            customBtnsHasCreated: false,
+            customResetBtnHasCreated: false,
+            content: ''
         };
         this.editModule = {
-            toolbar: [['bold','image', 'link', 'clean']]
+            toolbar: [
+                ['bold','image', 'link', 'clean'],
+                ['reset']
+            ]
         };
         this.editModuleWithoutImage = {
             toolbar: [['bold', 'link', 'clean']]
@@ -57,9 +61,12 @@ class QuillEditor extends Component {
         // if (!this.state.previewBtnHasCreated) {
         //     this.createPreviewBtn();
         // }
-        if (!this.state.customImgBtnHasCreated) {
-            this.createCustomImageBtn();
+        if (!this.state.customBtnsHasCreated) {
+            this.activateCustomBtn();
         }
+        // if (!this.state.customImgBtnHasCreated) {
+        //     this.createCustomImageBtn();
+        // }
         // this.setState({isAttachedQuillRefs: true});
     }
     // createPreviewBtn () {
@@ -83,12 +90,28 @@ class QuillEditor extends Component {
     //         this.quillRef.enable(false); // 切換成預覽
     //     }
     // }
-    createCustomImageBtn () {
-        const toolbar = this.quillRef.getModule('toolbar');
-        this.setState({customImgBtnHasCreated: true});
-
-        toolbar.addHandler('image', () => this.onClickImageUploadButton());
+    activateCustomBtn () {
+        this.createResetBtn();
+        this.setState({customBtnsHasCreated: true});
     }
+    createResetBtn () {
+        // const toolbar = this.quillRef.getModule('toolbar');
+        const resetButton = document.querySelector('.ql-reset');
+        resetButton.addEventListener('click', () => this.resetContent());
+    }
+    removeResetBtn () {
+        const resetButton = document.querySelector('.ql-reset');
+        resetButton.removeEventListener('click', () => this.resetContent());
+    }
+    resetContent () {
+        this.setState({content: ''});
+    }
+    // createCustomImageBtn () {
+    //     const toolbar = this.quillRef.getModule('toolbar');
+    //     // this.setState({customImgBtnHasCreated: true});
+
+    //     toolbar.addHandler('image', () => this.onClickImageUploadButton());
+    // }
     onClickImageUploadButton () {
         if (this.imageInputButton) {
             const imageUploadBtn = this.imageInputButton;
@@ -133,6 +156,9 @@ class QuillEditor extends Component {
     //         imgUploadInput.removeEventListener("change", (evt) => this.onChangeImage(evt));
     //     }
     // }
+    componentWillUnmount () {
+        this.removeResetBtn();
+    }
     render () {
         const ReactQuill = this.ReactQuill;
         const modules = this.props.enableUploadImg ? this.editModule : this.editModuleWithoutImage;
@@ -148,7 +174,7 @@ class QuillEditor extends Component {
                         modules={modules}
                         bounds="#editor_wrapper_edit"
                     />
-                    <input 
+                    <input
                         ref={node => this.imageInputButton = node}
                         type="file"
                         accept="image/*"

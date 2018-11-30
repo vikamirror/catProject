@@ -19,7 +19,7 @@ import Contact from '../PostBody/Contact';
 import Stream from '../PostBody/Stream';
 import Edit from '../PostBody/Edit';
 import PostReply from '../PostReply';
-import { fetchOnePost, savePost } from '../../redux/post';
+import { fetchOnePost, savePost, rollBackPost } from '../../redux/post';
 import { updateMyPost, deleteMyPost } from '../../redux/myPosts';
 import { updatePostList, deletePostList } from '../../redux/postList';
 import { loadingTrue, loadingFalse } from '../../redux/isLoading';
@@ -38,6 +38,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => (bindActionCreators({
     fetchOnePost: fetchOnePost,
     savePost: savePost,
+    rollBackPost: rollBackPost,
     updateMyPost: updateMyPost,
     updatePostList: updatePostList,
     showDialog: showDialog,
@@ -114,6 +115,9 @@ class PostModal extends Component {
                 });
             });
     }
+    handleCancel () {
+        this.props.rollBackPost();
+    }
     handleDelete () {
         const shouldDeletePost = (confirmValue) => {
             if (confirmValue.confirm) {
@@ -182,7 +186,10 @@ class PostModal extends Component {
                 {
                     isEdit ? '' :  <Helmet><title>{title}</title></Helmet>
                 }
-                <PostWrapper onClickSubmit={() => this.handleUpdate()}>
+                <PostWrapper 
+                    onClickSubmit={() => this.handleUpdate()}
+                    onClickCancel={() => this.handleCancel()}
+                >
                     <Title
                         ref={node => this.titleNode = node} 
                         isEdit={isEdit}
@@ -277,6 +284,7 @@ PostModal.propTypes = {
     fetchOnePost: PropTypes.func.isRequired,
     savePost: PropTypes.func.isRequired,
     updateMyPost: PropTypes.func.isRequired,
+    rollBackPost: PropTypes.func.isRequired,
     updatePostList: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
     deleteMyPost: PropTypes.func.isRequired,

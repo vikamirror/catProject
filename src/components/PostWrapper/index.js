@@ -11,12 +11,12 @@ import { showPostBackground, showInitialBackground } from '../../redux/backgroun
 
 import './postWrapper.css';
 
-const PostEditFooter = ({onClickClose, onClickSubmit}) => (
+const PostEditFooter = ({onClickCancel, onClickSubmit}) => (
     <div>
         <hr className="hr-line-style2" />
         <div className="u-clearfix">
             <div className="btn-group u-push-right">     
-                <div className="btn btn-sm btn-cancel" onClick={(e) => onClickClose(e)}>關閉</div>
+                <div className="btn btn-sm btn-cancel" onClick={(e) => onClickCancel(e)}>取消</div>
                 <div className="btn btn-sm btn-primary" onClick={(e) => onClickSubmit(e)}>送出</div>
             </div>
         </div>
@@ -44,7 +44,7 @@ class PostWrapper extends Component {
         this.props.showInitialBackground();
     }
     render () {
-        const { onClickSubmit } = this.props;
+        const { onClickSubmit, onClickCancel } = this.props;
         const { isFetched, isEdit } = this.props.post;
         return (               
             <BounceInUp inCondition={isFetched} enterMilliseconds={300}>
@@ -55,7 +55,7 @@ class PostWrapper extends Component {
                             {
                                 isEdit ? 
                                 <PostEditFooter 
-                                    onClickClose={(e) => this.handleClose(e)}
+                                    onClickCancel={(e) => onClickCancel(e)}
                                     onClickSubmit={(e) => onClickSubmit(e)} 
                                 /> 
                                 : 
@@ -72,9 +72,8 @@ class PostWrapper extends Component {
 PostWrapper.propTypes = {
     post: PropTypes.shape({
         isEdit: PropTypes.bool.isRequired,
-        isFetched: PropTypes.bool.isRequired
+        isFetched: PropTypes.bool.isRequired,
     }),
-    onClickSubmit: PropTypes.func,
 };
 
 // 因為要使用history.goBack()

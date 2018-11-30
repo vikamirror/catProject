@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// import PostBody from '../../../../../components/PostBody';
 import * as postAPI from '../../../../../fetch/postAPI';
 import * as sockets from '../../../../../sockets/post';
 import { errorLog } from '../../../../../Utils/console';
@@ -74,7 +73,11 @@ class NewPost extends Component {
             .catch(err => errorLog(err.response.data));
 
         // this.props.history.push("/myPosts");
-        this.props.history.goBack(); // 為了避免發生ScrollWrapper找不到post-wrapper-id的狀況
+        this.handleClose();
+        // this.props.history.goBack(); // 為了避免發生ScrollWrapper找不到post-wrapper-id的狀況
+    }
+    handleCancel () {
+        this.props.history.goBack();
     }
     render () {
         const {
@@ -93,7 +96,10 @@ class NewPost extends Component {
             contactInfo
         } = this.props.post;
         return (
-            <PostWrapper onClickSubmit={(e) => this.handleSubmit(e)}>
+            <PostWrapper 
+                onClickSubmit={(e) => this.handleSubmit(e)}
+                onClickCancel={() => this.handleCancel()}
+            >
                 <Title 
                     isEdit={isEdit} 
                     title={title}

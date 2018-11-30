@@ -185,7 +185,8 @@ const editorTutorial = `
     <p>這裡是範例, 可將<strong>文字加粗</strong></p><p>也可在這裡插入圖片, 如下圖</p>
     <p><img src="${imageForExample}"></p>
     <p>也可插入超連結 <a href="https://google.com.tw" target="_blank">https://google.com.tw</a></p>
-    <p>最右側的按鈕為清除格式</p>
+    <p>Tx為清除既有的文字格式. 若您的內文是從它處複製貼上, 可選取文字, 並點擊Tx清除文字格式</p>
+    <p>reset為清空內文. 您可點擊reset清空這裡的範例圖文</p>
 `;
 
 const initialState = {
