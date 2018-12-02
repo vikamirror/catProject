@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { post_header, showInitialHeader } from '../../../redux/header';
+import { post_header } from '../../../redux/header';
 import { rollBackPost } from '../../../redux/post';
+import { showDialog } from '../../../redux/dialog';
 
 import './postHeader.css';
 
@@ -15,17 +16,46 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
     rollBackPost: rollBackPost,
-    showInitialHeader: showInitialHeader,
+    showDialog,
 }, dispatch));
-const PostHeader = ({header, post, shoudHeaderColored, rollBackPost, history}) => {
+const PostHeader = ({header, post, shoudHeaderColored, rollBackPost, history, location, showDialog}) => {
     if (header !== post_header) {
         return '';
     };
     const handleClose = (e) => {
-        if (post.cuid && post.isEdit) {
-            rollBackPost();
+        if (location.pathname === "/myPosts/newPost") {
+            // create post
+            showDialog({
+                type: 'question',
+                title: '放棄編輯回到上一頁？',
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                showConfirmButton: true,
+                confirmButtonText: "確定",
+                onClickConfirmButton: (confirmValue) => {
+                    if (confirmValue.confirm) {
+                        history.goBack();
+                    };
+                },
+                buttonsAlign: "center",
+            });
+        } else if (post.isEdit) {
+            // update post
+            showDialog({
+                type: 'question',
+                title: '放棄編輯？',
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                showConfirmButton: true,
+                confirmButtonText: "確定",
+                onClickConfirmButton: (confirmValue) => {
+                    if (confirmValue.confirm) {
+                        rollBackPost();
+                    };
+                },
+                buttonsAlign: "center",
+            });
         } else {
-            e.stopPropagation();
             history.goBack();
         };
     }
@@ -47,5 +77,14 @@ const PostHeader = ({header, post, shoudHeaderColored, rollBackPost, history}) =
 };
 PostHeader.propTypes = {
     header: PropTypes.string.isRequired,
+    post: PropTypes.shape({
+        cuid: PropTypes.string.isRequired,
+        isEdit: PropTypes.bool.isRequired
+    }),
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }),
+    showDialog: PropTypes.func.isRequired,
+    rollBackPost: PropTypes.func.isRequired,
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostHeader));

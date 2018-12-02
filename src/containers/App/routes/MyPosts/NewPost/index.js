@@ -21,6 +21,7 @@ import Gender from '../../../../../components/PostBody/Gender';
 import Spay from '../../../../../components/PostBody/Spay';
 import Requirements from '../../../../../components/PostBody/Requirements';
 import Contact from '../../../../../components/PostBody/Contact';
+import { showDialog } from '../../../../../redux/dialog';
 
 import '../../../../../components/PostBody/postBody.css';
 
@@ -32,6 +33,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     createEmptyPost: createEmptyPost,
     addMyPost: addMyPost,
     addPostList: addPostList,
+    showDialog: showDialog,
 }, dispatch));
 class NewPost extends Component {
     componentDidMount () {
@@ -77,7 +79,21 @@ class NewPost extends Component {
         // this.props.history.goBack(); // 為了避免發生ScrollWrapper找不到post-wrapper-id的狀況
     }
     handleCancel () {
-        this.props.history.goBack();
+        const goBackToPreviousPage = (confirmValue) => {
+            if (confirmValue.confirm) {
+                this.props.history.goBack();
+            };
+        };
+        this.props.showDialog({
+            type: 'question',
+            title: '放棄編輯回到上一頁？',
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            showConfirmButton: true,
+            confirmButtonText: "確定",
+            onClickConfirmButton: (confirmValue) => goBackToPreviousPage(confirmValue),
+            buttonsAlign: "center",
+        });
     }
     render () {
         const {
@@ -173,5 +189,9 @@ NewPost.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired
     }),
+    createEmptyPost: PropTypes.func.isRequired,
+    addMyPost: PropTypes.func.isRequired,
+    addPostList: PropTypes.func.isRequired,
+    showDialog: PropTypes.func.isRequired
 };
 export default connect(mapStateToProps, mapDispatchToProps)(NewPost);

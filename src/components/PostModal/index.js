@@ -116,7 +116,21 @@ class PostModal extends Component {
             });
     }
     handleCancel () {
-        this.props.rollBackPost();
+        const cancelUpdate = (confirmValue) => {
+            if (confirmValue.confirm) {
+                this.props.rollBackPost();
+            };
+        };
+        this.props.showDialog({
+            type: 'question',
+            title: '放棄編輯？',
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            showConfirmButton: true,
+            confirmButtonText: "確定",
+            onClickConfirmButton: (confirmValue) => cancelUpdate(confirmValue),
+            buttonsAlign: "center",
+        });
     }
     handleDelete () {
         const shouldDeletePost = (confirmValue) => {
@@ -190,6 +204,11 @@ class PostModal extends Component {
                     onClickSubmit={() => this.handleUpdate()}
                     onClickCancel={() => this.handleCancel()}
                 >
+                    <Edit
+                        isEdit={isEdit}
+                        handleDelete={() => this.handleDelete()}
+                        scrollToTop={() => this.handleScrollToModalTop()}
+                    />
                     <Title
                         ref={node => this.titleNode = node} 
                         isEdit={isEdit}
@@ -246,11 +265,7 @@ class PostModal extends Component {
                     />
                     <hr className="hr-line-style1" />
                     <Stream />
-                    <Edit
-                        isEdit={isEdit}
-                        handleDelete={() => this.handleDelete()}
-                        scrollToTop={() => this.handleScrollToModalTop()}
-                    />
+                    
                     { isEdit ? '' : <PostReply /> }
                 </PostWrapper>
             </div>

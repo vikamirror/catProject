@@ -32,6 +32,7 @@ const Edit = ({member, post, isEdit, backUpAndEdit, scrollToTop, handleDelete}) 
         <div className="u-text-right line-height-32">
             <EditButton onClickEdit={() => handleEdit()} />
             <DeleteButton onClickDelete={() => handleDelete()} />
+            <hr className="hr-line-style1" />
         </div>
     );
 };
