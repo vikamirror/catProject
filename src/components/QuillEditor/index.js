@@ -36,7 +36,10 @@ class QuillEditor extends Component {
             ]
         };
         this.editModuleWithoutImage = {
-            toolbar: [['bold', 'link', 'clean']]
+            toolbar: [
+                ['bold', 'link', 'clean'],
+                ['reset']
+            ]
         };
         this.reactQuillRef = null;
         this.quillRef = null;
