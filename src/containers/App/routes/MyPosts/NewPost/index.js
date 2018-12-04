@@ -73,16 +73,15 @@ class NewPost extends Component {
                     this.props.addMyPost(addedPost);
                     this.props.addPostList(addedPost);
                     this.props.loadingFalse();
+                    this.props.history.push("/myPosts");
                     sockets.addPostListBroadcastEmitter(addedPost);
                 }
             })
             .catch(err => {
                 errorLog(err.response.data);
                 this.props.loadingFalse();
+                this.props.history.push("/myPosts");
             });
-
-        // this.props.history.push("/myPosts");
-        this.handleClose();
         // this.props.history.goBack(); // 為了避免發生ScrollWrapper找不到post-wrapper-id的狀況
     }
     handleCancel () {
