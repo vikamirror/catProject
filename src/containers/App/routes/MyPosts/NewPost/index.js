@@ -46,8 +46,7 @@ class NewPost extends Component {
             this.props.history.push("/");
         }
     }
-    handleSubmit (e) {
-        e.stopPropagation();
+    handleSubmit () {
         this.props.loadingTrue();
         const newPost = {
             title: this.props.post.title,
@@ -121,7 +120,7 @@ class NewPost extends Component {
         } = this.props.post;
         return (
             <PostWrapper 
-                onClickSubmit={(e) => this.handleSubmit(e)}
+                onClickSubmit={() => this.handleSubmit()}
                 onClickCancel={() => this.handleCancel()}
             >
                 <Title 
