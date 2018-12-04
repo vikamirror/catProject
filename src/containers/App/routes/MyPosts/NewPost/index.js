@@ -22,6 +22,7 @@ import Spay from '../../../../../components/PostBody/Spay';
 import Requirements from '../../../../../components/PostBody/Requirements';
 import Contact from '../../../../../components/PostBody/Contact';
 import { showDialog } from '../../../../../redux/dialog';
+import { loadingTrue, loadingFalse } from '../../../../../redux/isLoading';
 
 import '../../../../../components/PostBody/postBody.css';
 
@@ -34,6 +35,8 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     addMyPost: addMyPost,
     addPostList: addPostList,
     showDialog: showDialog,
+    loadingTrue: loadingTrue,
+    loadingFalse: loadingFalse,
 }, dispatch));
 class NewPost extends Component {
     componentDidMount () {
@@ -45,6 +48,7 @@ class NewPost extends Component {
     }
     handleSubmit (e) {
         e.stopPropagation();
+        this.props.loadingTrue();
         const newPost = {
             title: this.props.post.title,
             cover: this.props.post.cover,
@@ -69,10 +73,14 @@ class NewPost extends Component {
                     // console.log('addedPost', addedPost);
                     this.props.addMyPost(addedPost);
                     this.props.addPostList(addedPost);
+                    this.props.loadingFalse();
                     sockets.addPostListBroadcastEmitter(addedPost);
                 }
             })
-            .catch(err => errorLog(err.response.data));
+            .catch(err => {
+                errorLog(err.response.data);
+                this.props.loadingFalse();
+            });
 
         // this.props.history.push("/myPosts");
         this.handleClose();

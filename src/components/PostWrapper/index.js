@@ -8,20 +8,9 @@ import BounceInUp from '../BounceInUp';
 import { clearPost } from '../../redux/post';
 import { showPostHeader, showInitialHeader } from '../../redux/header';
 import { showPostBackground, showInitialBackground } from '../../redux/background';
+import PostEditFooter from './PostEditFooter';
 
 import './postWrapper.css';
-
-const PostEditFooter = ({onClickCancel, onClickSubmit}) => (
-    <div>
-        <hr className="hr-line-style2" />
-        <div className="u-clearfix">
-            <div className="btn-group u-push-right">     
-                <div className="btn btn-sm btn-cancel" onClick={(e) => onClickCancel(e)}>取消</div>
-                <div className="btn btn-sm btn-primary" onClick={(e) => onClickSubmit(e)}>送出</div>
-            </div>
-        </div>
-    </div>
-);
 
 const mapStateToProps = state => ({
     post: state.post,

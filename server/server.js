@@ -45,8 +45,10 @@ app.use(morgan('dev', {
 
 // Compress, parse, and log
 app.use(compression()); // gzip 壓縮
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // 設定安全相關的http-header
 app.use(helmet());

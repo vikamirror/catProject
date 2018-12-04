@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Avatar from '../../../../../components/Avatar';
-import { removeImgLinkTag, ellipsisTextAfterMaxLength }  from '../../../../../Utils/stringFormat';
+import { removeImgLinkTag, removeHTMLTag, ellipsisTextAfterMaxLength }  from '../../../../../Utils/stringFormat';
 import {addFavoritePost, removeFavoritePost} from '../../../../../redux/member';
 import { isContainedInArray } from '../../../../../Utils/variableCheck';
 // import DraftEditor from '../../../../../components/FormInputs/DraftEditor';
@@ -17,7 +17,7 @@ const mapDispatchToProps = dispatch => (bindActionCreators({
     removeFavoritePost: removeFavoritePost,
 }, dispatch));
 function PostCover({cuid, cover ,title, avatar, introduction, match, member, addFavoritePost, removeFavoritePost}) {
-    const intro =  ellipsisTextAfterMaxLength(removeImgLinkTag(introduction), 80);
+    const intro =  ellipsisTextAfterMaxLength(removeHTMLTag(introduction), 80);
     let isFavorite = member.cuid ? isContainedInArray(member.favoritePosts, 'cuid', cuid) : false;
     return (
         <section className="postCover">

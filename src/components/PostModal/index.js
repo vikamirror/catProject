@@ -80,6 +80,7 @@ class PostModal extends Component {
         });
     }
     handleUpdate () {
+        this.props.loadingTrue();
         const postForUpdate = {
             cuid: this.props.post.cuid,
             title: this.props.post.title,
@@ -104,6 +105,7 @@ class PostModal extends Component {
                     this.props.savePost(updatedPost);
                     this.props.updateMyPost(updatedPost);
                     this.props.updatePostList(updatedPost);
+                    this.props.loadingFalse();
                     sockets.updatePostListBroadcastEmitter(updatedPost);
                 }
             })
@@ -113,6 +115,7 @@ class PostModal extends Component {
                     title: err.response.data.message,
                     confirmButtonText: '知道了',
                 });
+                this.props.loadingFalse();
             });
     }
     handleCancel () {

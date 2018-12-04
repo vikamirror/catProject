@@ -342,7 +342,7 @@ ul {
     transition: all 0.3s;
 }
 
-.btn:disabled{
+.btn.disabled{
     opacity: 0.6;
     cursor: not-allowed;
 }
