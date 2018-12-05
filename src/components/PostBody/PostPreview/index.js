@@ -11,7 +11,7 @@ import './postPreview.css';
 
 const PostPreview = ({post, currentPath}) => {
     return (
-        <div className="mypost postWrapper">
+        <div className="postPreview postWrapper">
             <Title 
                 title={post.title}
                 isEdit={false}
