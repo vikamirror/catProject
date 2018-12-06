@@ -95,6 +95,7 @@ class QuillEditor extends Component {
     // }
     activateCustomBtn () {
         this.createResetBtn();
+        this.createCustomImageBtn();
         this.setState({customBtnsHasCreated: true});
     }
     createResetBtn () {
@@ -109,12 +110,12 @@ class QuillEditor extends Component {
     resetContent () {
         this.setState({content: ''});
     }
-    // createCustomImageBtn () {
-    //     const toolbar = this.quillRef.getModule('toolbar');
-    //     // this.setState({customImgBtnHasCreated: true});
+    createCustomImageBtn () {
+        const toolbar = this.quillRef.getModule('toolbar');
+        // this.setState({customImgBtnHasCreated: true});
 
-    //     toolbar.addHandler('image', () => this.onClickImageUploadButton());
-    // }
+        toolbar.addHandler('image', () => this.onClickImageUploadButton());
+    }
     onClickImageUploadButton () {
         if (this.imageInputButton) {
             const imageUploadBtn = this.imageInputButton;
@@ -129,7 +130,7 @@ class QuillEditor extends Component {
                 imgurAPI
                     .uploadImgur(imgForUpload)
                     .then((imgurRes) => { 
-                        // console.log('imgurRes', imgurRes);
+                        console.log('imgurRes', imgurRes);
                         const imgLink = imgurRes.data.data.link;
                         const range = this.quillRef.getSelection();
                         this.quillRef.insertEmbed(range.index, 'image', imgLink);
