@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { loadingTrue, loadingFalse } from '../../redux/isLoading';
 import * as imgurAPI from '../../fetch/imgurAPI';
-import { errorLog } from '../../Utils/console';
+import { errorLog, warningLog } from '../../Utils/console';
 
 import 'react-quill/dist/quill.snow.css';
 import './quillEditorStyle.css';
@@ -34,12 +34,30 @@ class QuillEditor extends Component {
                 ['bold','image', 'link', 'clean'],
                 ['reset']
             ]
+            // toolbar: {
+            //     container: [
+            //         ['bold','image', 'link', 'clean'],
+            //         ['reset']
+            //     ],
+            //     handlers: {
+            //       'customControl': () => { warningLog('QuillEditor: toolbar is not yet init') }
+            //     }
+            // }
         };
         this.editModuleWithoutImage = {
             toolbar: [
                 ['bold', 'link', 'clean'],
                 ['reset']
             ]
+            // toolbar: {
+            //     container: [
+            //         ['bold', 'link', 'clean'],
+            //         ['reset']
+            //     ],
+            //     handlers: {
+            //       'customControl': () => { warningLog('QuillEditor: toolbar is not yet init') }
+            //     }
+            // }
         };
         this.reactQuillRef = null;
         this.quillRef = null;
@@ -130,7 +148,7 @@ class QuillEditor extends Component {
                 imgurAPI
                     .uploadImgur(imgForUpload)
                     .then((imgurRes) => { 
-                        console.log('imgurRes', imgurRes);
+                        // console.log('imgurRes', imgurRes);
                         const imgLink = imgurRes.data.data.link;
                         const range = this.quillRef.getSelection();
                         this.quillRef.insertEmbed(range.index, 'image', imgLink);
