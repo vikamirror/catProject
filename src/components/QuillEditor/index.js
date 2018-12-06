@@ -30,34 +30,34 @@ class QuillEditor extends Component {
             content: ''
         };
         this.editModule = {
-            toolbar: [
-                ['bold','image', 'link', 'clean'],
-                ['reset']
-            ]
-            // toolbar: {
-            //     container: [
-            //         ['bold','image', 'link', 'clean'],
-            //         ['reset']
-            //     ],
-            //     handlers: {
-            //       'customControl': () => { warningLog('QuillEditor: toolbar is not yet init') }
-            //     }
-            // }
+            // toolbar: [
+            //     ['bold','image', 'link', 'clean'],
+            //     ['reset']
+            // ]
+            toolbar: {
+                container: [
+                    ['bold','image', 'link', 'clean'],
+                    ['reset']
+                ],
+                handlers: {
+                  'reset': () => this.resetContent()
+                }
+            }
         };
         this.editModuleWithoutImage = {
-            toolbar: [
-                ['bold', 'link', 'clean'],
-                ['reset']
-            ]
-            // toolbar: {
-            //     container: [
-            //         ['bold', 'link', 'clean'],
-            //         ['reset']
-            //     ],
-            //     handlers: {
-            //       'customControl': () => { warningLog('QuillEditor: toolbar is not yet init') }
-            //     }
-            // }
+            // toolbar: [
+            //     ['bold', 'link', 'clean'],
+            //     ['reset']
+            // ]
+            toolbar: {
+                container: [
+                    ['bold', 'link', 'clean'],
+                    ['reset']
+                ],
+                handlers: {
+                    'reset': () => this.resetContent()
+                }
+            }
         };
         this.reactQuillRef = null;
         this.quillRef = null;
@@ -112,19 +112,19 @@ class QuillEditor extends Component {
     //     }
     // }
     activateCustomBtn () {
-        this.createResetBtn();
+        // this.createResetBtn();
         this.createCustomImageBtn();
         this.setState({customBtnsHasCreated: true});
     }
-    createResetBtn () {
-        // const toolbar = this.quillRef.getModule('toolbar');
-        const resetButton = document.querySelector('.ql-reset');
-        resetButton.addEventListener('click', () => this.resetContent());
-    }
-    removeResetBtn () {
-        const resetButton = document.querySelector('.ql-reset');
-        resetButton.removeEventListener('click', () => this.resetContent());
-    }
+    // createResetBtn () {
+    //     // const toolbar = this.quillRef.getModule('toolbar');
+    //     const resetButton = document.querySelector('.ql-reset');
+    //     resetButton.addEventListener('click', () => this.resetContent());
+    // }
+    // removeResetBtn () {
+    //     const resetButton = document.querySelector('.ql-reset');
+    //     resetButton.removeEventListener('click', () => this.resetContent());
+    // }
     resetContent () {
         this.setState({content: ''});
     }
@@ -178,9 +178,9 @@ class QuillEditor extends Component {
     //         imgUploadInput.removeEventListener("change", (evt) => this.onChangeImage(evt));
     //     }
     // }
-    componentWillUnmount () {
-        this.removeResetBtn();
-    }
+    // componentWillUnmount () {
+    //     this.removeResetBtn();
+    // }
     render () {
         const ReactQuill = this.ReactQuill;
         const modules = this.props.enableUploadImg ? this.editModule : this.editModuleWithoutImage;
