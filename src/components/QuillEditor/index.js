@@ -40,7 +40,8 @@ class QuillEditor extends Component {
                     ['reset']
                 ],
                 handlers: {
-                  'reset': () => this.resetContent()
+                  'reset': () => this.resetContent(),
+                  'image': () => this.onClickImageUploadButton()
                 }
             }
         };
@@ -82,9 +83,9 @@ class QuillEditor extends Component {
         // if (!this.state.previewBtnHasCreated) {
         //     this.createPreviewBtn();
         // }
-        if (!this.state.customBtnsHasCreated) {
-            this.activateCustomBtn();
-        }
+        // if (!this.state.customBtnsHasCreated) {
+        //     this.activateCustomBtn();
+        // }
         // if (!this.state.customImgBtnHasCreated) {
         //     this.createCustomImageBtn();
         // }
@@ -111,11 +112,11 @@ class QuillEditor extends Component {
     //         this.quillRef.enable(false); // 切換成預覽
     //     }
     // }
-    activateCustomBtn () {
-        // this.createResetBtn();
-        this.createCustomImageBtn();
-        this.setState({customBtnsHasCreated: true});
-    }
+    // activateCustomBtn () {
+    //     // this.createResetBtn();
+    //     this.createCustomImageBtn();
+    //     this.setState({customBtnsHasCreated: true});
+    // }
     // createResetBtn () {
     //     // const toolbar = this.quillRef.getModule('toolbar');
     //     const resetButton = document.querySelector('.ql-reset');
@@ -128,12 +129,12 @@ class QuillEditor extends Component {
     resetContent () {
         this.setState({content: ''});
     }
-    createCustomImageBtn () {
-        const toolbar = this.quillRef.getModule('toolbar');
-        // this.setState({customImgBtnHasCreated: true});
+    // createCustomImageBtn () {
+    //     const toolbar = this.quillRef.getModule('toolbar');
+    //     // this.setState({customImgBtnHasCreated: true});
 
-        toolbar.addHandler('image', () => this.onClickImageUploadButton());
-    }
+    //     toolbar.addHandler('image', () => this.onClickImageUploadButton());
+    // }
     onClickImageUploadButton () {
         if (this.imageInputButton) {
             const imageUploadBtn = this.imageInputButton;
