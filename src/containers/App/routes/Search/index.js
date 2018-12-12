@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from "react-router-dom";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import LazyLoad from 'react-lazy-load';
+import MasonryPosts from '../../../../components/MasonryPosts';
 
 import PostCover from '../Home/PostCover';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
@@ -29,22 +29,34 @@ class Search extends Component {
             this.props.history.push("/");
             return;
         };
+        // this.props.loadingTrue();
+        // const loadedIds = this.props.searchPosts.loadedIds;
+        // const query = this.props.match.params.query;
+        // this.props.requestSearch(query, loadedIds);
+        this.startSearching();
+    }
+    componentDidUpdate (prevProps) {
+        this.shouldReqSearch(prevProps);
+        this.shouldStopLoading(prevProps.searchPosts);
+    }
+    shouldReqSearch (prevProps) {
+        // 當網址的query改變，重新搜尋
+        if (this.props.match.params.query !== prevProps.match.params.query) {
+            this.startSearching();
+        };
+    }
+    shouldStopLoading (prevSearchPosts) {
+        // 當searchPosts.query已改變，代表查詢結果已回傳到前端，停止loading
+        if (this.props.searchPosts.query && (this.props.searchPosts.query !== prevSearchPosts.query)) {
+            this.props.loadingFalse();
+        };
+    }
+    startSearching () {
         this.props.loadingTrue();
+        this.props.clearSearch();
         const loadedIds = this.props.searchPosts.loadedIds;
         const query = this.props.match.params.query;
         this.props.requestSearch(query, loadedIds);
-    }
-    componentDidUpdate (prevProps) {
-        if (this.props.match.params.query !== prevProps.match.params.query) {
-            this.props.loadingTrue();
-            this.props.clearSearch();
-            const loadedIds = this.props.searchPosts.loadedIds;
-            const query = this.props.match.params.query;
-            this.props.requestSearch(query, loadedIds);
-        };
-        if (this.props.searchPosts.query && (this.props.searchPosts.query !== prevProps.searchPosts.query)) {
-            this.props.loadingFalse();
-        };
     }
     componentWillUnmount () {
         this.props.loadingFalse();
@@ -65,31 +77,31 @@ class Search extends Component {
                         <div className="font-size-24 u-mb-16">{query}</div>
                         { !posts.length ? <div className="font-size-16 u-mb-16">查無資料</div> : '' }
                     </div>
-                    <article className="articles">
+                    <MasonryPosts>
                         {
                             posts.map((post, index) => (
-                                <LazyLoad key={index}>
-                                    <Link
-                                        to={{
-                                            pathname: `/search/${query}/${post.cuid}`,
-                                            state: {
-                                                isShowPostModal: true,
-                                                modalPath: `/search/${query}`
-                                            }
-                                        }}
-                                    >
-                                        <PostCover
-                                            cuid={post.cuid}
-                                            cover={post.cover}
-                                            title={post.title}
-                                            avatar={post.author.avatar}
-                                            introduction={post.charactor} 
-                                        />
-                                    </Link>
-                                </LazyLoad>
+                                <Link
+                                    className="search__post-link"
+                                    key={index}
+                                    to={{
+                                        pathname: `/search/${query}/${post.cuid}`,
+                                        state: {
+                                            isShowPostModal: true,
+                                            modalPath: `/search/${query}`
+                                        }
+                                    }}
+                                >
+                                    <PostCover
+                                        cuid={post.cuid}
+                                        cover={post.cover}
+                                        title={post.title}
+                                        avatar={post.author.avatar}
+                                        introduction={post.charactor} 
+                                    />
+                                </Link>
                             ))
                         }
-                    </article>
+                    </MasonryPosts>
                 </div>
             </div>
         );

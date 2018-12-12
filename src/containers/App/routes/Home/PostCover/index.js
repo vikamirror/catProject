@@ -20,7 +20,7 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
     const intro =  ellipsisTextAfterMaxLength(removeHTMLTag(introduction), 80);
     let isFavorite = member.cuid ? isContainedInArray(member.favoritePosts, 'cuid', cuid) : false;
     return (
-        <section className="postCover">
+        <article className="postCover">
             <div className="imageBox u-padding-b-16">
                 <img src={cover} alt="" />
             </div>
@@ -55,7 +55,7 @@ function PostCover({cuid, cover ,title, avatar, introduction, match, member, add
                 }
                 </div>
             </div>
-        </section>
+        </article>
     );
 }
 

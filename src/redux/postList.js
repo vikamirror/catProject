@@ -39,10 +39,12 @@ export function fetchPosts (loadedIds) {
             .getPosts(loadedIds)
             .then((res) => {
                 if (res.status === 200) {
-                    dispatch({
-                        type: FETCH_POSTS,
-                        posts: res.data.posts,
-                    });
+                    if (res.data.posts.length > 0) {
+                        dispatch({
+                            type: FETCH_POSTS,
+                            posts: res.data.posts,
+                        });
+                    };
                 };
             })
             .catch(err => {

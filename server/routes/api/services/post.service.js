@@ -93,7 +93,7 @@ export function getPosts(req, res) {
         });
         return;
     };
-    
+    console.log('nin', req.body.loadedIds.length);
     const conditions = {
         "isDeleted": false,
         "cuid": { "$nin": req.body.loadedIds }, // not in Array
@@ -102,15 +102,15 @@ export function getPosts(req, res) {
     const populateField = 'author';
     const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
     // const pageNumber =  req.query.page;
-    const postsPerPage = 50;
-
+    const postsPerPage = 10;
+    
     Post
         .find(conditions, projection)
         .populate({path: populateField, select: selectedFields})
         .sort({lastModify: -1}) // 最近更新文章的排在前面
         .limit(postsPerPage)
         .exec((err, posts) => {
-            // console.log('posts', posts);
+            console.log('posts.length', posts.length);
             if (err) {
                 res.status(500).json({message: `伺服器錯誤`});
                 console.error(`
@@ -119,6 +119,7 @@ export function getPosts(req, res) {
                 `);
                 return;
             };
+
             res.status(200).json({
                 posts: posts
             });
@@ -140,7 +141,7 @@ export function searchPosts (req, res) {
     const populateField = "author";
     const selectedFields = "cuid name avatar -_id"; // -減號: 剔除_id
     // const pageNumber =  req.query.page;
-    const postsPerPage = 50;
+    const postsPerPage = 10;
 
     // select * from POST
     // WHERE "isDeleted" = false 

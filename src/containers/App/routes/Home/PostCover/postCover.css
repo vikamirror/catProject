@@ -6,10 +6,16 @@
     border-radius: 4px;
     background-color: #fefefe;
     /* display: inline-block; */
-    /* width: 100%;  */
+    width: 20em;
     margin-bottom: 24px;
     /* height: auto; */
 }
+@media (max-width: 360px){
+    .postCover{
+        width: 18em;
+    }
+}
+
 .postCover:hover{
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 }

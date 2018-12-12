@@ -78,7 +78,7 @@ const PostHeader = ({header, post, shoudHeaderColored, rollBackPost, history, lo
 PostHeader.propTypes = {
     header: PropTypes.string.isRequired,
     post: PropTypes.shape({
-        cuid: PropTypes.string.isRequired,
+        // cuid: PropTypes.string.isRequired,
         isEdit: PropTypes.bool.isRequired
     }),
     history: PropTypes.shape({
