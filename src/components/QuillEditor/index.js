@@ -185,7 +185,7 @@ class QuillEditor extends Component {
     render () {
         const ReactQuill = this.ReactQuill;
         const modules = this.props.enableUploadImg ? this.editModule : this.editModuleWithoutImage;
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && ReactQuill) {
             return (
                 <div id="editor_wrapper_edit">
                     <ReactQuill

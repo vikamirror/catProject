@@ -10,7 +10,7 @@ if (typeof window !== 'undefined') {
 
 const QuillEditorReadOnly = ({content, placeholder}) => {
     const readOnlyModule = {toolbar: false};
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && ReactQuill) {
         return (
             <div className="editor_wrapper_readOnly">
                 <ReactQuill
