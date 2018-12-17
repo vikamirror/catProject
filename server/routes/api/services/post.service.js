@@ -93,7 +93,7 @@ export function getPosts(req, res) {
         });
         return;
     };
-    console.log('nin', req.body.loadedIds.length);
+    // console.log('nin', req.body.loadedIds.length);
     const conditions = {
         "isDeleted": false,
         "cuid": { "$nin": req.body.loadedIds }, // not in Array
