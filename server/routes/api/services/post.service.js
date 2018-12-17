@@ -110,7 +110,7 @@ export function getPosts(req, res) {
         .sort({lastModify: -1}) // 最近更新文章的排在前面
         .limit(postsPerPage)
         .exec((err, posts) => {
-            console.log('posts.length', posts.length);
+            // console.log('posts.length', posts.length);
             if (err) {
                 res.status(500).json({message: `伺服器錯誤`});
                 console.error(`
