@@ -9,7 +9,6 @@ import { changeCover } from '../../../redux/post';
 import { showDialog } from '../../../redux/dialog';
 import * as imgurAPI from '../../../fetch/imgurAPI';
 import { errorLog, warningLog } from '../../../Utils/console';
-// import RenderAfterSeconds from '../../RenderAfterSeconds';
 
 import './cover.css';
 

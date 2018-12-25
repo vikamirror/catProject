@@ -18,6 +18,7 @@ import Routes from './routes';
 import Dialog from './Dialog';
 import ScrollWrapper from '../../components/ScrollWrapper';
 import Loading from './Loading';
+import InitAnimation from './InitAnimation';
 import * as sockets from '../../sockets/loginOrOut';
 
 import './app.css';
@@ -42,9 +43,11 @@ class App extends Component {
         this.state = {
             isScroll: false,
             isScrollDown: false,
+            initAppAnimation: true, 
         };
     }
     componentDidMount () { // localStorage只有在componentDidMount及componentWillUnmount才能抓到
+        this.stopInitAnimation();
         this.props.fetchMember();
         // console.log('window.__PRELOADED_STATE__', window.__PRELOADED_STATE__);
         if (!window.__PRELOADED_STATE__) {
@@ -86,9 +89,14 @@ class App extends Component {
     handleScrollDown (isScrollDown) {
         isScrollDown ? this.setState({isScrollDown: true}) : this.setState({isScrollDown: false});
     }
+    stopInitAnimation () {
+        setTimeout(() => {
+            this.setState({initAppAnimation: false});
+        }, 1000);
+    }
     render() {
         const {background, isSmallDevice, location, member} = this.props;
-        const {isScroll, isScrollDown} = this.state;
+        const {isScroll, isScrollDown, initAppAnimation} = this.state;
         return (
             <div id="app">
                 <div id="app-bg" className={background}></div>
@@ -115,6 +123,7 @@ class App extends Component {
                 { isSmallDevice ? <SmallDeviceFooter isScrollDown={isScrollDown} /> : '' }
                 <Loading />
                 <Dialog />
+                <InitAnimation shouldStart={initAppAnimation} /> 
             </div>
         );
     }

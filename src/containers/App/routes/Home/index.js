@@ -5,7 +5,7 @@ import { withRouter, Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import MasonryPosts from '../../../../components/MasonryPosts';
+import MasonryLayout from '../../../../components/MasonryLayout';
 
 import PostCover from './PostCover';
 import * as sockets from '../../../../sockets/post';
@@ -14,7 +14,7 @@ import { addPostList, updatePostList, deletePostList, fetchPosts } from '../../.
 import './home.css';
 
 let fetchAllowed = true;
-const mapStateToProps = state => ({ 
+const mapStateToProps = state => ({
     postList: state.postList,
 });
 const mapDispatchToProps = dispatch => (bindActionCreators({
@@ -37,10 +37,10 @@ class Home extends Component {
         this.removeScrollListener();
     }
     scrollListener () {
-        document.addEventListener("scroll", this.shouldLoadMorePosts.bind(this));
+        document.addEventListener("scroll", this.shouldLoadMorePosts);
     }
     removeScrollListener () {
-        document.removeEventListener("scroll", this.shouldLoadMorePosts.bind(this));
+        document.removeEventListener("scroll", this.shouldLoadMorePosts);
     }
     isFetchPostsAllowed (prevPostList) {
         if (prevPostList.length === 0) {
@@ -68,7 +68,7 @@ class Home extends Component {
             fetchAllowed = true;
         };
     }
-    shouldLoadMorePosts () {
+    shouldLoadMorePosts = () => {
         if (!fetchAllowed) {
             return;
         };
@@ -114,7 +114,7 @@ class Home extends Component {
                     <title>Cat Crush</title>
                 </Helmet>
                 <div className="container u-padding-t-24">
-                    <MasonryPosts>
+                    <MasonryLayout>
                         {
                             this.props.postList.map((post, index) => (
                                 <Link
@@ -139,7 +139,7 @@ class Home extends Component {
                                 </Link>
                             ))
                         }
-                    </MasonryPosts>
+                    </MasonryLayout>
                 </div>     
             </div>
         );

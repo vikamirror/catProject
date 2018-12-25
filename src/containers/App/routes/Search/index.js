@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from "react-router-dom";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import MasonryPosts from '../../../../components/MasonryPosts';
+import MasonryLayout from '../../../../components/MasonryLayout';
 
 import PostCover from '../Home/PostCover';
 import { loadingTrue, loadingFalse } from '../../../../redux/isLoading';
@@ -77,7 +77,7 @@ class Search extends Component {
                         <div className="font-size-24 u-mb-16">{query}</div>
                         { !posts.length ? <div className="font-size-16 u-mb-16">查無資料</div> : '' }
                     </div>
-                    <MasonryPosts>
+                    <MasonryLayout>
                         {
                             posts.map((post, index) => (
                                 <Link
@@ -101,7 +101,7 @@ class Search extends Component {
                                 </Link>
                             ))
                         }
-                    </MasonryPosts>
+                    </MasonryLayout>
                 </div>
             </div>
         );

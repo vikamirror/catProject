@@ -9,16 +9,16 @@ export default class ScrollWrapper extends Component {
         this.scrollWrapperRef = null;
     }
     componentDidMount () {
-        window.addEventListener("scroll", evt => this.handleScroll(evt));
+        window.addEventListener("scroll", this.handleScroll);
         // 因為html, body的overflow: hidden, 因此能scroll的只有id=root跟id=app
         // 後來我把html, body的overflow: hidden拿掉了
         // document.getElementById(this.props.wrapperId).addEventListener("scroll", evt => this.handleScroll(evt));
     }
     componentWillUnmount () {
-        window.removeEventListener("scroll", evt => this.handleScroll(evt));
+        window.removeEventListener("scroll", this.handleScroll);
         // document.getElementById(this.props.wrapperId).removeEventListener("scroll", evt => this.handleScroll(evt));
     }
-    handleScroll (evt) {
+    handleScroll = () => {
         const scrollWrapper = this.scrollWrapperRef;
         // 取得scroll的位置
         // let currentScroll = document.getElementById(this.props.wrapperId).scrollTop || document.body.scrollTop;
